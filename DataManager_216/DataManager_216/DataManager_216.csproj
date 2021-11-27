@@ -135,9 +135,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Class Libraries\GeneralCustomClassLib\GeneralCustomClassLib.csproj">
-      <Project>{096513cc-0cf6-4eb0-ab6b-e8a58846f9cb}</Project>
-      <Name>GeneralCustomClassLib</Name>
+    <ProjectReference Include="..\GeneralFormLibrary1\GeneralFormLibrary1.csproj">
+      <Project>{72bc2bfd-48d5-4466-b9cb-da0595d0e041}</Project>
+      <Name>GeneralFormLibrary1</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace DataManager_216
 {
     static class Program
@@ -20,7 +21,6 @@ namespace DataManager_216
             //Update check
             string ApplicationName = "DataManager_216";
             ApplicationUpdater.UpdateThisApp(ApplicationName);
-            
             Application.Run(new frmMain());
         }
     }
