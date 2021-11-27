@@ -134,5 +134,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Class Libraries\GeneralCustomClassLib\GeneralCustomClassLib.csproj">
+      <Project>{096513cc-0cf6-4eb0-ab6b-e8a58846f9cb}</Project>
+      <Name>GeneralCustomClassLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
