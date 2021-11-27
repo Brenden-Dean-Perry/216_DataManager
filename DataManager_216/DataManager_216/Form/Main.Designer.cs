@@ -33,6 +33,7 @@ namespace DataManager_216
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aPIsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,7 +50,8 @@ namespace DataManager_216
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dataToolStripMenuItem});
+            this.dataToolStripMenuItem,
+            this.aPIsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1197, 28);
@@ -67,9 +69,15 @@ namespace DataManager_216
             // dataViewerToolStripMenuItem
             // 
             this.dataViewerToolStripMenuItem.Name = "dataViewerToolStripMenuItem";
-            this.dataViewerToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.dataViewerToolStripMenuItem.Size = new System.Drawing.Size(173, 26);
             this.dataViewerToolStripMenuItem.Text = "Data Viewer";
             this.dataViewerToolStripMenuItem.Click += new System.EventHandler(this.dataViewerToolStripMenuItem_Click);
+            // 
+            // aPIsToolStripMenuItem
+            // 
+            this.aPIsToolStripMenuItem.Name = "aPIsToolStripMenuItem";
+            this.aPIsToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
+            this.aPIsToolStripMenuItem.Text = "APIs";
             // 
             // frmMain
             // 
@@ -96,6 +104,7 @@ namespace DataManager_216
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dataViewerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aPIsToolStripMenuItem;
     }
 }
 

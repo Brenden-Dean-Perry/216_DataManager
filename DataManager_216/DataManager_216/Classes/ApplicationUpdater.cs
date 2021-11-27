@@ -9,22 +9,38 @@ namespace DataManager_216
 {
     public static class ApplicationUpdater
     {
-        private static string AppFolderPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\DataManager\Production\";
-        private static string AppInstallerFullPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\DataManager\Production\";
+        private static string AppFolderPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\DataManager_216\Production\";
+        private static string AppInstallerFullPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\AppInstaller\AppInstaller.exe";
+        enum AppVersionFormat
+        {
+            DotSeperator,
+            UnderscoreSeperator
+        }
+
         public static void UpdateThisApp(string AppName)
         {
-            string NewestVersion = GetNewestAppVersion();
+            if (!System.IO.Directory.Exists(AppFolderPath))
+            {
+                MessageBox.Show("Folder path does not exist: " + AppFolderPath);
+                return;
+            }
+
+            string NewestVersion_Dot = GetNewestAppVersion(AppVersionFormat.DotSeperator);
+            string NewestVersion_Underscore = GetNewestAppVersion(AppVersionFormat.UnderscoreSeperator);
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             string CurrentVersion = fvi.FileVersion;
 
-            if (NewestVersion != null && CurrentVersion != NewestVersion)
+            MessageBox.Show("Current Verison: " + CurrentVersion + " | Newest version: " + NewestVersion_Dot);
+
+            if (NewestVersion_Dot != null && CurrentVersion != NewestVersion_Dot)
             {
                 if(System.IO.File.Exists(AppInstallerFullPath))
                 {
-                    string NewVersionAppInstallerFormat = "";
-                    string[] args = { AppName, NewVersionAppInstallerFormat };
+                    MessageBox.Show("About to run AppInstaller");
+                    string[] args = { AppName, NewestVersion_Underscore};
                     RunCommandInCMD(AppInstallerFullPath, args);
+                    Application.Exit();
                 }
                 else
                 {
@@ -35,7 +51,7 @@ namespace DataManager_216
             MessageBox.Show(assembly.Location);
         }
 
-        private static string GetNewestAppVersion()
+        private static string GetNewestAppVersion(AppVersionFormat versionFormat = AppVersionFormat.DotSeperator)
         {
             if (!System.IO.Directory.Exists(AppFolderPath))
             {
@@ -84,7 +100,15 @@ namespace DataManager_216
 
             if(MaxVersion.Length >= 1)
             {
-                return string.Join(".", MaxVersion);
+                if(versionFormat == AppVersionFormat.UnderscoreSeperator)
+                {
+                    return string.Join("_", MaxVersion);
+                }
+                else
+                {
+                    return string.Join(".", MaxVersion);
+                }
+                
             }
             else
             {
