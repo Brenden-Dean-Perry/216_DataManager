@@ -21,5 +21,10 @@ namespace DataManager_216
         {
             this.Text = GlobalAppProperties.AppName;
         }
+
+        private void dataViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("New");
+        }
     }
 }

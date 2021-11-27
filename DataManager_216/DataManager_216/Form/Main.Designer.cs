@@ -32,6 +32,7 @@ namespace DataManager_216
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,9 +58,18 @@ namespace DataManager_216
             // 
             // dataToolStripMenuItem
             // 
+            this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dataViewerToolStripMenuItem});
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.dataToolStripMenuItem.Text = "Data";
+            // 
+            // dataViewerToolStripMenuItem
+            // 
+            this.dataViewerToolStripMenuItem.Name = "dataViewerToolStripMenuItem";
+            this.dataViewerToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.dataViewerToolStripMenuItem.Text = "Data Viewer";
+            this.dataViewerToolStripMenuItem.Click += new System.EventHandler(this.dataViewerToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -85,6 +95,7 @@ namespace DataManager_216
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataViewerToolStripMenuItem;
     }
 }
 

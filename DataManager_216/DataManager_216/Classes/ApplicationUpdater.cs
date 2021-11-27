@@ -10,7 +10,8 @@ namespace DataManager_216
     public static class ApplicationUpdater
     {
         private static string AppFolderPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\DataManager\Production\";
-        public static void UpdateThisApp()
+        private static string AppInstallerFullPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\DataManager\Production\";
+        public static void UpdateThisApp(string AppName)
         {
             string NewestVersion = GetNewestAppVersion();
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
@@ -19,7 +20,17 @@ namespace DataManager_216
 
             if (NewestVersion != null && CurrentVersion != NewestVersion)
             {
-                MessageBox.Show("updated needed");
+                if(System.IO.File.Exists(AppInstallerFullPath))
+                {
+                    string NewVersionAppInstallerFormat = "";
+                    string[] args = { AppName, NewVersionAppInstallerFormat };
+                    RunCommandInCMD(AppInstallerFullPath, args);
+                }
+                else
+                {
+                    MessageBox.Show("AppInstaller was not found. Your application will not be updated. Please reach out for technical support.");
+
+                }
             }
 
             MessageBox.Show(assembly.Location);
@@ -129,6 +140,15 @@ namespace DataManager_216
             {
                 return null;
             }
+        }
+
+
+        private static void RunCommandInCMD(string ProgramFullPath, string[] parameters)
+        {
+            string strCmdText;
+            string parameterString = string.Join(" ", parameters);
+            strCmdText = "/C " + ProgramFullPath+ " " + parameterString;
+            System.Diagnostics.Process.Start("CMD.exe", strCmdText);
         }
     }
 }
