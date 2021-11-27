@@ -16,6 +16,7 @@ namespace DataManager_216
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            ApplicationUpdater.UpdateThisApp();
             Application.Run(new frmMain());
         }
     }
