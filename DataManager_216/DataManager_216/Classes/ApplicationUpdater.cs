@@ -29,7 +29,6 @@ namespace DataManager_216
                 else
                 {
                     MessageBox.Show("AppInstaller was not found. Your application will not be updated. Please reach out for technical support.");
-
                 }
             }
 
