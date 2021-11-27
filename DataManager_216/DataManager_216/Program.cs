@@ -16,7 +16,7 @@ namespace DataManager_216
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             //Update check
             string ApplicationName = "DataManager_216";
             ApplicationUpdater.UpdateThisApp(ApplicationName);

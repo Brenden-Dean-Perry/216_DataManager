@@ -34,6 +34,7 @@ namespace DataManager_216
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aPIsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataImporterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,7 +62,8 @@ namespace DataManager_216
             // dataToolStripMenuItem
             // 
             this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dataViewerToolStripMenuItem});
+            this.dataViewerToolStripMenuItem,
+            this.dataImporterToolStripMenuItem});
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.dataToolStripMenuItem.Text = "Data";
@@ -78,6 +80,12 @@ namespace DataManager_216
             this.aPIsToolStripMenuItem.Name = "aPIsToolStripMenuItem";
             this.aPIsToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
             this.aPIsToolStripMenuItem.Text = "APIs";
+            // 
+            // dataImporterToolStripMenuItem
+            // 
+            this.dataImporterToolStripMenuItem.Name = "dataImporterToolStripMenuItem";
+            this.dataImporterToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.dataImporterToolStripMenuItem.Text = "Data Importer";
             // 
             // frmMain
             // 
@@ -105,6 +113,7 @@ namespace DataManager_216
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dataViewerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aPIsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataImporterToolStripMenuItem;
     }
 }
 

@@ -9,7 +9,9 @@ namespace DataManager_216
 {
     public static class ApplicationUpdater
     {
-        private static string AppFolderPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\DataManager_216\Production\";
+        private static string AppFolderPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\DataManager_216\";
+        private static string AppFolderPath_Production = AppFolderPath + @"Production\";
+        private static string AppFolderPath_CurrentInstall = AppFolderPath + @"Current Install\";
         private static string AppInstallerFullPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\AppInstaller\AppInstaller.exe";
         enum AppVersionFormat
         {
@@ -19,25 +21,24 @@ namespace DataManager_216
 
         public static void UpdateThisApp(string AppName)
         {
-            if (!System.IO.Directory.Exists(AppFolderPath))
+            if (!System.IO.Directory.Exists(AppFolderPath_Production))
             {
-                MessageBox.Show("Folder path does not exist: " + AppFolderPath);
+                MessageBox.Show("Folder path does not exist: " + AppFolderPath_Production);
                 return;
             }
 
-            string NewestVersion_Dot = GetNewestAppVersion(AppVersionFormat.DotSeperator);
             string NewestVersion_Underscore = GetNewestAppVersion(AppVersionFormat.UnderscoreSeperator);
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-            string CurrentVersion = fvi.FileVersion;
+            string versionFilePath = AppFolderPath_CurrentInstall + "version.txt";
+            string CurrentVersion = "1_0_0_0"; //If not found set to early version to force update
+            if (System.IO.File.Exists(versionFilePath))
+            {
+                CurrentVersion = System.IO.File.ReadAllText(versionFilePath).Trim();
+            }
 
-            MessageBox.Show("Current Verison: " + CurrentVersion + " | Newest version: " + NewestVersion_Dot);
-
-            if (NewestVersion_Dot != null && CurrentVersion != NewestVersion_Dot)
+            if (NewestVersion_Underscore != null && CurrentVersion != NewestVersion_Underscore)
             {
                 if(System.IO.File.Exists(AppInstallerFullPath))
                 {
-                    MessageBox.Show("About to run AppInstaller");
                     string[] args = { AppName, NewestVersion_Underscore};
                     RunCommandInCMD(AppInstallerFullPath, args);
                     Application.Exit();
@@ -47,19 +48,17 @@ namespace DataManager_216
                     MessageBox.Show("AppInstaller was not found. Your application will not be updated. Please reach out for technical support.");
                 }
             }
-
-            MessageBox.Show(assembly.Location);
         }
 
         private static string GetNewestAppVersion(AppVersionFormat versionFormat = AppVersionFormat.DotSeperator)
         {
-            if (!System.IO.Directory.Exists(AppFolderPath))
+            if (!System.IO.Directory.Exists(AppFolderPath_Production))
             {
-                MessageBox.Show("Directory not found: " + AppFolderPath);
+                MessageBox.Show("Directory not found: " + AppFolderPath_Production);
                 return null;
             }
 
-            string[] filesInDirectory = System.IO.Directory.GetDirectories(AppFolderPath);
+            string[] filesInDirectory = System.IO.Directory.GetDirectories(AppFolderPath_Production);
             List<int[]> dirVersions = new List<int[]>();
             foreach (string dir in filesInDirectory)
             {
