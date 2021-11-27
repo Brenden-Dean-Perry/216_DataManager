@@ -9,7 +9,7 @@ namespace DataManager_216
 {
     public static class ApplicationUpdater
     {
-        private static string AppFolderPath { get; } =  @"C:\Program Files\216_DataManager\";
+        private static string AppFolderPath { get; } = @"C:\Users\brend\OneDrive\Desktop\216\DataManager\Production\";
         public static void UpdateThisApp()
         {
             string NewestVersion = GetNewestAppVersion();
