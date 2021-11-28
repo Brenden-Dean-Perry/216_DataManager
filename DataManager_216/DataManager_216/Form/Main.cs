@@ -7,9 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GeneralCustomClassLib;
-using GeneralFormLibrary;
-using ClassLibrary1;
+using GeneralFormLibrary1;
 
 namespace DataManager_216
 {
@@ -27,8 +25,8 @@ namespace DataManager_216
 
         private void dataViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("New");
-            Test();
+            frmDataViewer dataViewer = new frmDataViewer();
+            dataViewer.Show();
         }
     }
 }

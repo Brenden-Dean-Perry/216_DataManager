@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace GeneralFormLibrary1
 {
-    class DatabaseAPI
+    public class DatabaseAPI
     {
+
+        public static void Test()
+        {
+
+        }
+
     }
 }
