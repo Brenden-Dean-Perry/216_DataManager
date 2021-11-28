@@ -10,13 +10,19 @@ namespace GeneralFormLibrary1
 {
     public static class FormControls
     {
-        public static ToolStripItem UpdateToolStripItemLabel(ToolStrip statusStrip, string value, ToolStripItem existingLabel = null)
+        /// <summary>
+        /// Clears your Tool Strip and adds a new message item with text = to the value provided.
+        /// </summary>
+        /// <param name="toolStrip">Your Form's existing Tool Strip</param>
+        /// <param name="value">Message you want to show</param>
+        /// <returns></returns>
+        public static ToolStripItem UpdateToolStripItemLabel(ToolStrip toolStrip, string value)
         {
             //Clear old items
-            statusStrip.Items.Clear();
+            toolStrip.Items.Clear();
 
             ToolStripItem statusLabel;
-            statusLabel = statusStrip.Items.Add(value);
+            statusLabel = toolStrip.Items.Add(value);
             statusLabel.BackColor = Color.Transparent;
             statusLabel.ForeColor = Color.Black;
 
