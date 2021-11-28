@@ -28,5 +28,21 @@ namespace GeneralFormLibrary1
 
             return statusLabel;
         }
+
+        public static void AssignListToComboBox<T>(ComboBox comboBox, List<T> list, string displayMember, string valueMember = null)
+        {
+            comboBox.DataSource = list;
+            comboBox.DisplayMember = displayMember;
+
+            if(valueMember != null)
+            {
+                comboBox.ValueMember = valueMember;
+            }
+        }
+
+        public static void AssignListToDataGridView<T>(DataGridView dataGridView, List<T> list)
+        {
+            dataGridView.DataSource = list;
+        }
     }
 }

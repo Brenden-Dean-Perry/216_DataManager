@@ -86,7 +86,9 @@
   <ItemGroup>
     <Compile Include="Classes\ApplicationUpdater.cs" />
     <Compile Include="Classes\GlobalAppProperties.cs" />
-    <Compile Include="DataAccess.cs" />
+    <Compile Include="DataAccess\DataAccess.cs" />
+    <Compile Include="DataModels\Model_User.cs" />
+    <Compile Include="DataModels\Model_SubAssetClass.cs" />
     <Compile Include="Form\DataViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,9 +161,6 @@
       <Name>GeneralFormLibrary1</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataAccess\" />
-    <Folder Include="DataModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

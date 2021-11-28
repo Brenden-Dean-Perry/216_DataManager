@@ -62,6 +62,7 @@ namespace DataManager_216
             // 
             // comboBox_DataViewer_TableSelection
             // 
+            this.comboBox_DataViewer_TableSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_DataViewer_TableSelection.FormattingEnabled = true;
             this.comboBox_DataViewer_TableSelection.Location = new System.Drawing.Point(37, 13);
             this.comboBox_DataViewer_TableSelection.Name = "comboBox_DataViewer_TableSelection";
@@ -86,6 +87,7 @@ namespace DataManager_216
             this.btn_DataViewer_Export.TabIndex = 4;
             this.btn_DataViewer_Export.Text = "Export";
             this.btn_DataViewer_Export.UseVisualStyleBackColor = true;
+            this.btn_DataViewer_Export.Click += new System.EventHandler(this.btn_DataViewer_Export_Click);
             // 
             // frmDataViewer
             // 
