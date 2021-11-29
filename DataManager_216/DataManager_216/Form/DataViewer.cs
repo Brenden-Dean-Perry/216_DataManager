@@ -57,7 +57,15 @@ namespace DataManager_216
 
         private void btn_DataViewer_Export_Click(object sender, EventArgs e)
         {
-
+            string rowFilter = string.Format("[{0}] = '{1}'", "FirstName", "Isla");
+            if(dataGridView_DataViewer.Rows.Count != 0)
+            {
+                SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>  model = (SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>)dataGridView_DataViewer.DataSource;
+                SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> t = new SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>(model.Where(x => x.FirstName == "Isla").ToList<GeneralFormLibrary1.DataModels.Model_User>());
+                dataGridView_DataViewer.DataSource = null;
+                dataGridView_DataViewer.DataSource = t;
+            }
+            
         }
 
     }

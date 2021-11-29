@@ -29,29 +29,32 @@ namespace GeneralFormLibrary1
         private void AnimatedMessage(MentionStatusDelegate mentionStatus)
         {
             int counter = 0;
+            StringBuilder message = new StringBuilder();
             for (int i = 0; i < 300; i++)
             {
-                string message = "Requesting Data.";
+                message.Clear();
+                message.Append("Requesting Data.");
                 if (counter == 1)
                 {
-                    message = message + ".";
+                    message.Append(".");
                 }
                 else if (counter == 2)
                 {
-                    message = message + "..";
+                    message.Append("..");
                 }
                 else if (counter >= 3)
                 {
                     counter = -1;
                 }
                 System.Threading.Thread.Sleep(500);
-                mentionStatus(message);
+                mentionStatus(message.ToString());
 
                 //Check if canceled
                 if (TokenSource.IsCancellationRequested)
                 {
-                    message = "Request Complete";
-                    mentionStatus(message);
+                    message.Clear();
+                    message.Append("Request Complete");
+                    mentionStatus(message.ToString());
                     return;
                 }
                 counter++;
