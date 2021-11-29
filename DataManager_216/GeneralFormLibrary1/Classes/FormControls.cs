@@ -22,7 +22,7 @@ namespace GeneralFormLibrary1
         /// <param name="toolStrip">Your Form's existing Tool Strip</param>
         /// <param name="value">Message you want to show</param>
         /// <returns></returns>
-        public ToolStripItem UpdateToolStripItemLabel(ToolStrip toolStrip, string value)
+        public static ToolStripItem UpdateToolStripItemLabel(ToolStrip toolStrip, string value)
         {
             ToolStripItem statusLabel;
 
@@ -35,7 +35,7 @@ namespace GeneralFormLibrary1
             return statusLabel;
         }
 
-        public ToolStripItem UpdateToolStripItemLabel_Async(ToolStrip toolStrip, string value)
+        public static ToolStripItem UpdateToolStripItemLabel_Async(ToolStrip toolStrip, string value)
         {
             //Initialize a default toolstrip & item in case the Begin Invoke doesn't properly assign one
             ToolStrip ts = new ToolStrip();

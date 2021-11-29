@@ -14,8 +14,7 @@ namespace GeneralFormLibrary1
 
         public static List<DataModels.Model_User> GetDataList_PI_Users()
         {
-            GeneralFormLibrary1.DatabaseAPI db = new DatabaseAPI();
-            List<GeneralFormLibrary1.DataModels.Model_User> model = db.GetData_List<GeneralFormLibrary1.DataModels.Model_User>("Use Pi DECLARE @cnt INT = 0 WHILE @cnt < 10000000 BEGIN SET @cnt = @cnt + 1 END; Select * From Users;");
+            List<GeneralFormLibrary1.DataModels.Model_User> model = GeneralFormLibrary1.DatabaseAPI.GetData_List<GeneralFormLibrary1.DataModels.Model_User>("Use Pi DECLARE @cnt INT = 0 WHILE @cnt < 10000000 BEGIN SET @cnt = @cnt + 1 END; Select * From Users;");
             return model;
         }
 

@@ -22,7 +22,7 @@ namespace GeneralFormLibrary1
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
 
-        public List<T> GetData_List<T>(string SQLquery, object Parameter_obj = null)
+        public static List<T> GetData_List<T>(string SQLquery, object Parameter_obj = null)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GeneralFormLibrary1.DatabaseAPI.ConnectionValue("PC")))
             {
