@@ -36,26 +36,26 @@ namespace DataManager_216
             GeneralFormLibrary1.FormControls fc = new FormControls();
 
             //Start status animation
-            StatusAnimation status = new StatusAnimation(this, statusStrip_DataViewer);
             var tokenSource = new CancellationTokenSource();
-            status.Start(tokenSource);
+            StatusAnimation status = new StatusAnimation(this, statusStrip_DataViewer, tokenSource);
+            status.Start();
 
             //Do task
-            List<GeneralFormLibrary1.DataModels.Model_User> model = await Task.Run(() => GetDa());
+            SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> model = await Task.Run(() => GetDa());
             GeneralFormLibrary1.FormControls.AssignListToDataGridView<GeneralFormLibrary1.DataModels.Model_User>(dataGridView_DataViewer, model);
 
             //Cancel animation
-            tokenSource.Cancel();
+            status.Cancel();
 
             await Task.Run(() => Thread.Sleep(3000));
             fc.UpdateToolStripItemLabel(statusStrip_DataViewer, "");
         }
 
 
-        private List<GeneralFormLibrary1.DataModels.Model_User> GetDa()
+        private SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> GetDa()
         {
             GeneralFormLibrary1.DatabaseAPI db = new DatabaseAPI();
-            List<GeneralFormLibrary1.DataModels.Model_User> model = GeneralFormLibrary1.DataAccess.GetData_PI_Users();
+            SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> model = new SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>(GeneralFormLibrary1.DataAccess.GetDataList_PI_Users());
             return model;
         }
 

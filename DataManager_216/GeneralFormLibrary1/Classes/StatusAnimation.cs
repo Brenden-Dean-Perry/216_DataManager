@@ -17,14 +17,16 @@ namespace GeneralFormLibrary1
 
         private Form TargetForm {get; set;}
         private StatusStrip TargetStatusStrip { get; set; }
+        private CancellationTokenSource TokenSource { get; set; }
 
-        public StatusAnimation(Form form, StatusStrip statusStrip)
+        public StatusAnimation(Form form, StatusStrip statusStrip, CancellationTokenSource tokenSource)
         {
             TargetForm = form;
             TargetStatusStrip = statusStrip;
+            TokenSource = tokenSource;
         }
 
-        private static void AnimatedMessage(MentionStatusDelegate mentionStatus, CancellationToken ct)
+        private void AnimatedMessage(MentionStatusDelegate mentionStatus)
         {
             int counter = 0;
             for (int i = 0; i < 300; i++)
@@ -46,7 +48,7 @@ namespace GeneralFormLibrary1
                 mentionStatus(message);
 
                 //Check if canceled
-                if (ct.IsCancellationRequested)
+                if (TokenSource.IsCancellationRequested)
                 {
                     message = "Request Complete";
                     mentionStatus(message);
@@ -58,15 +60,19 @@ namespace GeneralFormLibrary1
             return;
         }
 
-        public void Start(CancellationTokenSource tokenSource)
+        public void Start()
         {
-            CancellationToken ct = tokenSource.Token;
+            CancellationToken ct = TokenSource.Token;
             Task t = Task.Run(() =>
             {
-                GeneralFormLibrary1.StatusAnimation.AnimatedMessage(StatusUpdate, ct);
-            }, tokenSource.Token);
+                AnimatedMessage(StatusUpdate);
+            }, TokenSource.Token);
         }
 
+        public void Cancel()
+        {
+            TokenSource.Cancel();
+        }
 
         private void StatusUpdate(string status)
         {
@@ -83,7 +89,7 @@ namespace GeneralFormLibrary1
             }
             catch
             {
-
+                TokenSource.Cancel();
             }
         }
 

@@ -55,6 +55,7 @@
     <Compile Include="DataModels\Model_User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classes\StatusAnimation.cs" />
+    <Compile Include="CustomObject\SortableBindingList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

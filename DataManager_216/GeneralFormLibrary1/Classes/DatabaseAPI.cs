@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 using Dapper;
 using System.Data;
+using System.ComponentModel;
 
 namespace GeneralFormLibrary1
 {
