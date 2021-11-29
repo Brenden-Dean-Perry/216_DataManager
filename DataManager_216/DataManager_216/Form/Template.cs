@@ -16,5 +16,10 @@ namespace DataManager_216
         {
             InitializeComponent();
         }
+
+        private void Template_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

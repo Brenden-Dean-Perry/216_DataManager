@@ -38,7 +38,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public T GetData<T>(string SQLquery, object Parameter_obj = null)
+        public static T GetData<T>(string SQLquery, object Parameter_obj = null)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GeneralFormLibrary1.DatabaseAPI.ConnectionValue("PC")))
             {
@@ -52,41 +52,6 @@ namespace GeneralFormLibrary1
                     return connection.Query<T>(SQLquery, Parameter_obj).FirstOrDefault<T>();
                 }
 
-            }
-        }
-
-        public async Task<List<T>> GetData_List_Async<T>(string SQLquery, object Parameter_obj = null)
-        {
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GeneralFormLibrary1.DatabaseAPI.ConnectionValue("PC")))
-            {
-                IEnumerable<T> enumerable;
-                if (Parameter_obj == null)
-                {
-                    enumerable = await connection.QueryAsync<T>(SQLquery).ConfigureAwait(false);
-                }
-                else
-                {
-                    enumerable = await connection.QueryAsync<T>(SQLquery, Parameter_obj).ConfigureAwait(false);
-                }
-                return enumerable.ToList<T>();
-            }
-        }
-
-        public async Task<T> GetData_Async<T>(string SQLquery, object Parameter_obj = null)
-        {
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GeneralFormLibrary1.DatabaseAPI.ConnectionValue("PC")))
-            {
-                IEnumerable<T> enumerable;
-                if (Parameter_obj == null)
-                {
-                    enumerable = await connection.QueryAsync<T>(SQLquery).ConfigureAwait(false);
-                }
-                else
-                {
-                    enumerable = await connection.QueryAsync<T>(SQLquery, Parameter_obj).ConfigureAwait(false);  
-                }
-
-                return enumerable.FirstOrDefault<T>();
             }
         }
 

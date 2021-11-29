@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using GeneralFormLibrary1;
 
@@ -13,6 +14,7 @@ namespace DataManager_216
 {
     public partial class frmDataViewer : Form
     {
+        private delegate void InvokeDelegate();
 
         public frmDataViewer()
         {
@@ -21,53 +23,48 @@ namespace DataManager_216
 
         private void frmDataViewer_Load(object sender, EventArgs e)
         {
-            GeneralFormLibrary1.FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, "Loaded");
+            GeneralFormLibrary1.FormControls fc = new FormControls();
             GeneralFormLibrary1.DatabaseAPI db = new DatabaseAPI();
 
-            List<DataModels.Model_User> users = db.GetData_List<DataModels.Model_User>("Use Pi Select * From Users;");
+            List<GeneralFormLibrary1.DataModels.Model_User> users = db.GetData_List<GeneralFormLibrary1.DataModels.Model_User>("Use Pi Select * From Users;");
 
-            GeneralFormLibrary1.FormControls.AssignListToComboBox<DataModels.Model_User>(comboBox_DataViewer_TableSelection, users, "FirstName");
+            GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_User>(comboBox_DataViewer_TableSelection, users, "FirstName");
         }
 
         private async void btn_DataViewer_Search_Click(object sender, EventArgs e)
         {
-            GeneralFormLibrary1.FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, DateTime.Now.ToString());
-            await RunAsync();
-            GeneralFormLibrary1.FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, "After Async");
+            GeneralFormLibrary1.FormControls fc = new FormControls();
 
+            //Start status animation
+            StatusAnimation status = new StatusAnimation(this, statusStrip_DataViewer);
+            var tokenSource = new CancellationTokenSource();
+            status.Start(tokenSource);
+
+            //Do task
+            List<GeneralFormLibrary1.DataModels.Model_User> model = await Task.Run(() => GetDa());
+            GeneralFormLibrary1.FormControls.AssignListToDataGridView<GeneralFormLibrary1.DataModels.Model_User>(dataGridView_DataViewer, model);
+
+            //Cancel animation
+            tokenSource.Cancel();
+
+            await Task.Run(() => Thread.Sleep(3000));
+            fc.UpdateToolStripItemLabel(statusStrip_DataViewer, "");
         }
 
-        private async Task RunAsync()
+
+        private List<GeneralFormLibrary1.DataModels.Model_User> GetDa()
         {
             GeneralFormLibrary1.DatabaseAPI db = new DatabaseAPI();
-            List<DataModels.Model_User> model = await db.GetData_List_Async<DataModels.Model_User>("Use Pi DECLARE @cnt INT = 0 WHILE @cnt < 10000000 BEGIN SET @cnt = @cnt + 1 END; Select * From Users;");
-
-            GeneralFormLibrary1.FormControls.AssignListToDataGridView<DataModels.Model_User>(dataGridView_DataViewer, model);
+            List<GeneralFormLibrary1.DataModels.Model_User> model = GeneralFormLibrary1.DataAccess.GetData_PI_Users();
+            return model;
         }
 
 
-        private async Task RunAsync2()
+
+        private void btn_DataViewer_Export_Click(object sender, EventArgs e)
         {
-            GeneralFormLibrary1.DatabaseAPI db = new DatabaseAPI();
-            List<DataModels.Model_SubAssetClass> model = await db.GetData_List_Async<DataModels.Model_SubAssetClass>("Use Pi DECLARE @cnt INT = 0 WHILE @cnt < 10000000 BEGIN SET @cnt = @cnt + 1 END; Select * From SubAssetClass;");
 
-            GeneralFormLibrary1.FormControls.AssignListToDataGridView<DataModels.Model_SubAssetClass>(dataGridView_DataViewer, model);
-            
-            int counter = 0;
-            for (int i = 0; i<20;  i++)
-            {
-                GeneralFormLibrary1.FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, counter.ToString());
-                System.Threading.Thread.Sleep(1000);
-                counter++;
-            }
-            
         }
 
-        private async void btn_DataViewer_Export_Click(object sender, EventArgs e)
-        {
-            GeneralFormLibrary1.FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, DateTime.Now.ToString());
-            await RunAsync2();
-            GeneralFormLibrary1.FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, "After Async");
-        }
     }
 }

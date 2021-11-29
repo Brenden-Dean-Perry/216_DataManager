@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataManager_216.DataModels
+namespace GeneralFormLibrary1.DataModels
 {
     public class Model_User
     {

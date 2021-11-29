@@ -82,13 +82,11 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ApplicationUpdater.cs" />
     <Compile Include="Classes\GlobalAppProperties.cs" />
-    <Compile Include="DataAccess\DataAccess.cs" />
-    <Compile Include="DataModels\Model_User.cs" />
-    <Compile Include="DataModels\Model_SubAssetClass.cs" />
     <Compile Include="Form\DataViewer.cs">
       <SubType>Form</SubType>
     </Compile>

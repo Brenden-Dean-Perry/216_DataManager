@@ -35,9 +35,9 @@ namespace DataManager_216
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 780);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 782);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1141, 24);
+            this.statusStrip1.Size = new System.Drawing.Size(1141, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -50,6 +50,7 @@ namespace DataManager_216
             this.Controls.Add(this.statusStrip1);
             this.Name = "Template";
             this.Text = "Template";
+            this.Load += new System.EventHandler(this.Template_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
