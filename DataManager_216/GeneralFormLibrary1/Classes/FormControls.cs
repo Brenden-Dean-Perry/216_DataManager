@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Windows.Threading;
 using System.Threading;
 using System.ComponentModel;
+using System.Data;
 
 namespace GeneralFormLibrary1
 {
@@ -108,6 +109,55 @@ namespace GeneralFormLibrary1
 
             aProp.SetValue(c, true, null);
         }
+
+        public static void FilterDataGridView(DataGridView dataGridView, string Filter)
+        {
+            // Prevent exception when hiding rows out of view
+            CurrencyManager currencyManager = (CurrencyManager)dataGridView.BindingContext[dataGridView.DataSource];
+            currencyManager.SuspendBinding();
+
+            // Show all lines
+            for (int i = 0; i < dataGridView.RowCount; i++)
+            {
+                dataGridView.Rows[i].Visible = true;
+                i++;
+            }
+
+            // Hide the ones that you want with the filter you want.
+            for (int i = 0; i < dataGridView.RowCount; i++)
+            {
+                if (dataGridView.Rows[i].Cells[1].Value.ToString().IndexOf(Filter) >= 0)
+                {
+                    dataGridView.Rows[i].Visible = true;
+                }
+                else
+                {
+                    dataGridView.Rows[i].Visible = false;
+                }
+            }
+
+            // Resume data grid view binding
+            currencyManager.ResumeBinding();
+        }
+
+        public static void UnfilterDataGridView(DataGridView dataGridView)
+        {
+            // Prevent exception when hiding rows out of view
+            //CurrencyManager currencyManager = (CurrencyManager)dataGridView.BindingContext[dataGridView.DataSource];
+            //currencyManager.SuspendBinding();
+
+            // Show all lines
+            for (int i = 0; i < dataGridView.RowCount; i++)
+            {
+                dataGridView.Rows[i].Visible = true;
+                i++;
+            }
+
+            // Resume data grid view binding
+            //currencyManager.ResumeBinding();
+        }
+
+
 
     }
 }

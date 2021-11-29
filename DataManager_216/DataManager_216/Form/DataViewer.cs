@@ -60,10 +60,9 @@ namespace DataManager_216
             string rowFilter = string.Format("[{0}] = '{1}'", "FirstName", "Isla");
             if(dataGridView_DataViewer.Rows.Count != 0)
             {
-                SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>  model = (SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>)dataGridView_DataViewer.DataSource;
-                SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> t = new SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>(model.Where(x => x.FirstName == "Isla").ToList<GeneralFormLibrary1.DataModels.Model_User>());
-                dataGridView_DataViewer.DataSource = null;
-                dataGridView_DataViewer.DataSource = t;
+                GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, "Isla");
+                MessageBox.Show("Stop");
+                GeneralFormLibrary1.FormControls.UnfilterDataGridView(dataGridView_DataViewer);
             }
             
         }
