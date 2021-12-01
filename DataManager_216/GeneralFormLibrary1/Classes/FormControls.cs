@@ -17,6 +17,16 @@ namespace GeneralFormLibrary1
         
         private delegate void InvokeDelegate();
 
+        public enum ComparisonOperator
+        {
+            Equals,
+            DoNotEqual,
+            LessThan,
+            GreaterThan,
+            LessThanOrEqualTo,
+            GreaterThanOrEqualTo
+        }
+
         /// <summary>
         /// Clears your Tool Strip and adds a new message item with text = to the value provided.
         /// </summary>
@@ -117,11 +127,12 @@ namespace GeneralFormLibrary1
             aProp.SetValue(c, true, null);
         }
 
-        public static void FilterDataGridView(DataGridView dataGridView, string Filter)
+        public static void FilterDataGridView(DataGridView dataGridView, int ColumnIndex, ComparisonOperator comparisonOperator, string FilterValue)
         {
             // Prevent exception when hiding rows out of view
             CurrencyManager currencyManager = (CurrencyManager)dataGridView.BindingContext[dataGridView.DataSource];
             currencyManager.SuspendBinding();
+            TypeCode FilterValueDataTypeCode = Type.GetTypeCode(dataGridView.Rows[1].Cells[ColumnIndex].Value.GetType());
 
             // Show all lines
             for (int i = 0; i < dataGridView.RowCount; i++)
@@ -133,9 +144,19 @@ namespace GeneralFormLibrary1
             // Hide the ones that you want with the filter you want.
             for (int i = 0; i < dataGridView.RowCount; i++)
             {
-                if (dataGridView.Rows[i].Cells[1].Value.ToString().IndexOf(Filter) >= 0)
+                if (comparisonOperator == ComparisonOperator.Equals && dataGridView.Rows[i].Cells[ColumnIndex].Value.ToString().IndexOf(FilterValue) >= 0)
                 {
                     dataGridView.Rows[i].Visible = true;
+                }
+                else if(comparisonOperator == ComparisonOperator.DoNotEqual && (dataGridView.Rows[i].Cells[ColumnIndex].Value == null || dataGridView.Rows[i].Cells[ColumnIndex].Value.ToString().IndexOf(FilterValue) < 0))
+                {
+                    dataGridView.Rows[i].Visible = true;
+                }
+                //If Numeric 
+                else if (TypeCodeIsNumeric(FilterValueDataTypeCode) == true)
+                {
+                    //Allow for >, >=, <, & <= operators here
+                    throw new Exception("Not implemented");
                 }
                 else
                 {
@@ -147,12 +168,23 @@ namespace GeneralFormLibrary1
             currencyManager.ResumeBinding();
         }
 
+
+        private static bool TypeCodeIsNumeric(TypeCode type)
+        {
+            if (type == TypeCode.Byte || type == TypeCode.DateTime || type == TypeCode.Decimal || type == TypeCode.Double ||
+                type == TypeCode.Int16 || type == TypeCode.Int32 || type == TypeCode.Int64 || type == TypeCode.SByte ||
+                type == TypeCode.Single || type == TypeCode.UInt16 || type == TypeCode.UInt32 || type == TypeCode.UInt64)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static void UnfilterDataGridView(DataGridView dataGridView)
         {
-            // Prevent exception when hiding rows out of view
-            //CurrencyManager currencyManager = (CurrencyManager)dataGridView.BindingContext[dataGridView.DataSource];
-            //currencyManager.SuspendBinding();
-
             // Show all lines
             for (int i = 0; i < dataGridView.RowCount; i++)
             {
@@ -160,8 +192,6 @@ namespace GeneralFormLibrary1
                 i++;
             }
 
-            // Resume data grid view binding
-            //currencyManager.ResumeBinding();
         }
 
 

@@ -24,9 +24,9 @@ namespace GeneralFormLibrary1
             return model;
         }
 
-        public static List<DataModels.Model_TableName> GetDatabaseTableNames(string DatabaseName)
+        public static List<DataModels.Model_TableName> GetDatabaseTableNames_PI()
         {
-            List<GeneralFormLibrary1.DataModels.Model_TableName> model = GeneralFormLibrary1.DatabaseAPI.GetData_List<GeneralFormLibrary1.DataModels.Model_TableName>("Use " + DatabaseName + " SELECT name[TableName] FROM sysobjects WHERE xtype = 'U' Order by name;");
+            List<GeneralFormLibrary1.DataModels.Model_TableName> model = GeneralFormLibrary1.DatabaseAPI.GetData_List<GeneralFormLibrary1.DataModels.Model_TableName>("Use Pi SELECT name[TableName] FROM sysobjects WHERE xtype = 'U' Order by name;");
             return model;
         }
 

@@ -23,7 +23,7 @@ namespace DataManager_216
 
         private void frmDataViewer_Load(object sender, EventArgs e)
         {
-            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = GeneralFormLibrary1.DataAccess.GetDatabaseTableNames("Pi");
+            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = GeneralFormLibrary1.DataAccess.GetDatabaseTableNames_PI();
             GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataViewer_TableSelection, tables, "TableName");
         }
 
@@ -60,7 +60,7 @@ namespace DataManager_216
             string rowFilter = string.Format("[{0}] = '{1}'", "FirstName", "Isla");
             if(dataGridView_DataViewer.Rows.Count != 0)
             {
-                GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, "Isla");
+                GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, 1, FormControls.ComparisonOperator.Equals, "Isla");
                 MessageBox.Show("Stop");
                 GeneralFormLibrary1.FormControls.UnfilterDataGridView(dataGridView_DataViewer);
             }
