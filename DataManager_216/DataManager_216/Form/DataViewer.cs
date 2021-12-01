@@ -23,8 +23,8 @@ namespace DataManager_216
 
         private void frmDataViewer_Load(object sender, EventArgs e)
         {
-            List<GeneralFormLibrary1.DataModels.Model_User> users = GeneralFormLibrary1.DatabaseAPI.GetData_List<GeneralFormLibrary1.DataModels.Model_User>("Use Pi Select * From Users;");
-            GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_User>(comboBox_DataViewer_TableSelection, users, "FirstName");
+            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = GeneralFormLibrary1.DataAccess.GetDatabaseTableNames("Pi");
+            GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataViewer_TableSelection, tables, "TableName");
         }
 
         private async void btn_DataViewer_Search_Click(object sender, EventArgs e)
@@ -66,6 +66,5 @@ namespace DataManager_216
             }
             
         }
-
     }
 }

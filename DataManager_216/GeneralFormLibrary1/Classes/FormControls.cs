@@ -74,6 +74,13 @@ namespace GeneralFormLibrary1
             FormatDataGridView(dataGridView, SetToReadOnly);
         }
 
+        public static void AssignDataTableToDataGridView(DataGridView dataGridView, DataTable dataTable, bool SetToReadOnly = true)
+        {
+            dataGridView.DataSource = dataTable;
+
+            FormatDataGridView(dataGridView, SetToReadOnly);
+        }
+
 
         private static void FormatDataGridView(DataGridView dataGridView, bool SetToReadOnly = true)
         {

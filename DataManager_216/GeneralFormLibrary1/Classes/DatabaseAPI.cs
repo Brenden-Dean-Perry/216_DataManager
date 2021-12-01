@@ -7,6 +7,7 @@ using System.Configuration;
 using Dapper;
 using System.Data;
 using System.ComponentModel;
+using System.Data.SqlClient;
 
 namespace GeneralFormLibrary1
 {
@@ -17,12 +18,12 @@ namespace GeneralFormLibrary1
         /// </summary>
         /// <param name="name">Name of connection per your App.config file</param>
         /// <returns></returns>
-        public static string ConnectionValue(string name)
+        internal static string ConnectionValue(string name)
         {
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
 
-        public static List<T> GetData_List<T>(string SQLquery, object Parameter_obj = null)
+        internal static List<T> GetData_List<T>(string SQLquery, object Parameter_obj = null)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GeneralFormLibrary1.DatabaseAPI.ConnectionValue("PC")))
             {
@@ -39,7 +40,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public static T GetData<T>(string SQLquery, object Parameter_obj = null)
+        internal static T GetData<T>(string SQLquery, object Parameter_obj = null)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GeneralFormLibrary1.DatabaseAPI.ConnectionValue("PC")))
             {
@@ -52,9 +53,9 @@ namespace GeneralFormLibrary1
                 {
                     return connection.Query<T>(SQLquery, Parameter_obj).FirstOrDefault<T>();
                 }
-
             }
         }
+
 
     }
 }
