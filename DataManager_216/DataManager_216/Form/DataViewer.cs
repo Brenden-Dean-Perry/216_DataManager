@@ -15,6 +15,7 @@ namespace DataManager_216
     public partial class frmDataViewer : Form
     {
         private delegate void InvokeDelegate();
+        private List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter> gridViewFilters = new List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter>();
 
         public frmDataViewer()
         {
@@ -25,6 +26,17 @@ namespace DataManager_216
         {
             List<GeneralFormLibrary1.DataModels.Model_TableName> tables = GeneralFormLibrary1.DataAccess.GetDatabaseTableNames_PI();
             GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataViewer_TableSelection, tables, "TableName");
+            dataGridView_DataViewer.MouseClick += dataGridView_DataViewer_MouseClick;
+        }
+
+        private void dataGridView_DataViewer_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+                RightClickDropDownMenu dropDownMenu = new RightClickDropDownMenu(contextMenu, dataGridView_DataViewer, gridViewFilters);
+                dropDownMenu.Show(RightClickDropDownMenu.MenuOption.DefaultMenuWithFilters, e);
+            }
         }
 
         private async void btn_DataViewer_Search_Click(object sender, EventArgs e)
@@ -59,11 +71,16 @@ namespace DataManager_216
         {
             if(dataGridView_DataViewer.Rows.Count != 0)
             {
-                GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, 1, ComparisonOperator.Operator.Contains, "Is");
-                MessageBox.Show("Stop");
+                //GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, 1, ComparisonOperator.Operator.Contains, "Is");
+               // MessageBox.Show("Stop");
                 GeneralFormLibrary1.FormControls.UnfilterDataGridView(dataGridView_DataViewer);
             }
             
+        }
+
+        private void dataGridView_DataViewer_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

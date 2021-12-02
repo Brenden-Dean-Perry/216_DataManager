@@ -117,112 +117,105 @@ namespace GeneralFormLibrary1
             aProp.SetValue(c, true, null);
         }
 
-        public static void FilterDataGridView<T>(DataGridView dataGridView, int ColumnIndex, ComparisonOperator.Operator comparisonOperator, T FilterValue)
+        public static void FilterDataGridView(DataGridView dataGridView, List<DataModels.Model_DataGridViewFilter> filters)
         {
             // Prevent exception when hiding rows out of view
             CurrencyManager currencyManager = (CurrencyManager)dataGridView.BindingContext[dataGridView.DataSource];
             currencyManager.SuspendBinding();
-            TypeCode FilterValueDataTypeCode = Type.GetTypeCode(dataGridView.Rows[1].Cells[ColumnIndex].Value.GetType());
+
+            MessageBox.Show(filters.Count().ToString());
 
             // Hide the ones that you want with the filter you want.
-            for (int i = 0; i < dataGridView.RowCount; i++)
+            foreach(DataModels.Model_DataGridViewFilter filter in filters)
             {
-                if(dataGridView.Rows[i].Visible == false)
+                TypeCode FilterValueDataTypeCode = Type.GetTypeCode(dataGridView.Rows[1].Cells[filter.ColumnIndexToFilter].Value.GetType());
+
+                for (int i = 0; i < dataGridView.RowCount; i++)
                 {
-                    //Do nothing as we want to keep their visability set to false
-                }
-                else
-                {
-                    if (comparisonOperator == ComparisonOperator.Operator.Equals && dataGridView.Rows[i].Cells[ColumnIndex].Value.ToString().IndexOf(FilterValue.ToString()) >= 0)
+                    if (dataGridView.Rows[i].Visible == false)
                     {
-                        //Do nothing keep this visable
-                    }
-                    else if (comparisonOperator == ComparisonOperator.Operator.DoNotEqual && (dataGridView.Rows[i].Cells[ColumnIndex].Value == null || dataGridView.Rows[i].Cells[ColumnIndex].Value.ToString().IndexOf(FilterValue.ToString()) < 0))
-                    {
-                        //Do nothing keep this visable
-                    }
-                    else if(comparisonOperator == ComparisonOperator.Operator.Contains && (dataGridView.Rows[i].Cells[ColumnIndex].Value.ToString().ToLower().Contains(FilterValue.ToString().ToLower())))
-                    {
-                        //Do nothing keep this visable
-                    }
-                    //If Numeric 
-                    else if (TypeCodeIsNumeric(FilterValueDataTypeCode) == true)
-                    {
-                        //If type code of cell value is double then try parse values as double
-                        if (Type.GetTypeCode(dataGridView.Rows[i].Cells[ColumnIndex].Value.GetType()) == TypeCode.Double && Double.TryParse(FilterValue.ToString(), out double FilterValue_Double) == true && Double.TryParse(dataGridView.Rows[i].Cells[ColumnIndex].Value.ToString(), out double CellValue_Double) == true)
-                        {
-                            //Allow for >, >=, <, & <= operators here
-                            if (comparisonOperator == ComparisonOperator.Operator.GreaterThan && CellValue_Double > FilterValue_Double)
-                            {
-                                //Do nothing keep this visable
-                            }
-                            else if (comparisonOperator == ComparisonOperator.Operator.GreaterThanOrEqualTo && CellValue_Double >= FilterValue_Double)
-                            {
-                                //Do nothing keep this visable
-                            }
-                            else if (comparisonOperator == ComparisonOperator.Operator.LessThan && CellValue_Double < FilterValue_Double)
-                            {
-                                //Do nothing keep this visable
-                            }
-                            else if (comparisonOperator == ComparisonOperator.Operator.LessThanOrEqualTo && CellValue_Double <= FilterValue_Double)
-                            {
-                                //Do nothing keep this visable
-                            }
-                            else
-                            {
-                                dataGridView.Rows[i].Visible = false;
-                            }
-                        }
-                        else if (Decimal.TryParse(FilterValue.ToString(), out decimal FilterValue_Decimal) == true && Decimal.TryParse(dataGridView.Rows[i].Cells[ColumnIndex].Value.ToString(), out decimal CellValue_Decimal) == true)
-                        {
-                            //Allow for >, >=, <, & <= operators here
-                            if (comparisonOperator == ComparisonOperator.Operator.GreaterThan && CellValue_Decimal > FilterValue_Decimal)
-                            {
-                                //Do nothing keep this visable
-                            }
-                            else if (comparisonOperator == ComparisonOperator.Operator.GreaterThanOrEqualTo && CellValue_Decimal >= FilterValue_Decimal)
-                            {
-                                //Do nothing keep this visable
-                            }
-                            else if(comparisonOperator == ComparisonOperator.Operator.LessThan && CellValue_Decimal< FilterValue_Decimal)
-                            {
-                                //Do nothing keep this visable
-                            }
-                            else if (comparisonOperator == ComparisonOperator.Operator.LessThanOrEqualTo && CellValue_Decimal <= FilterValue_Decimal)
-                            {
-                                //Do nothing keep this visable
-                            }
-                            else
-                            {
-                                dataGridView.Rows[i].Visible = false;
-                            }
-                        }
+                        //Do nothing as we want to keep their visability set to false
                     }
                     else
                     {
-                        dataGridView.Rows[i].Visible = false;
+                        if (filter.Operator == ComparisonOperator.Operator.Equals && dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().IndexOf(filter.FilterValue.ToString()) >= 0)
+                        {
+                            //Do nothing keep this visable
+                        }
+                        else if (filter.Operator == ComparisonOperator.Operator.DoNotEqual && (dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value == null || dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().IndexOf(filter.FilterValue.ToString()) < 0))
+                        {
+                            //Do nothing keep this visable
+                        }
+                        else if (filter.Operator == ComparisonOperator.Operator.Contains && (dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().ToLower().Contains(filter.FilterValue.ToString().ToLower())))
+                        {
+                            //Do nothing keep this visable
+                        }
+                        //If Numeric 
+                        else if (DataTypes.TypeCodeIsNumeric(FilterValueDataTypeCode) == true)
+                        {
+                            //If type code of cell value is double then try parse values as double
+                            if (Type.GetTypeCode(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.GetType()) == TypeCode.Double && Double.TryParse(filter.FilterValue.ToString(), out double FilterValue_Double) == true && Double.TryParse(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString(), out double CellValue_Double) == true)
+                            {
+                                //Allow for >, >=, <, & <= operators here
+                                if (filter.Operator == ComparisonOperator.Operator.GreaterThan && CellValue_Double > FilterValue_Double)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else if (filter.Operator == ComparisonOperator.Operator.GreaterThanOrEqualTo && CellValue_Double >= FilterValue_Double)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else if (filter.Operator == ComparisonOperator.Operator.LessThan && CellValue_Double < FilterValue_Double)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else if (filter.Operator == ComparisonOperator.Operator.LessThanOrEqualTo && CellValue_Double <= FilterValue_Double)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else
+                                {
+                                    dataGridView.Rows[i].Visible = false;
+                                }
+                            }
+                            else if (Decimal.TryParse(filter.FilterValue.ToString(), out decimal FilterValue_Decimal) == true && Decimal.TryParse(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString(), out decimal CellValue_Decimal) == true)
+                            {
+                                //Allow for >, >=, <, & <= operators here
+                                if (filter.Operator == ComparisonOperator.Operator.GreaterThan && CellValue_Decimal > FilterValue_Decimal)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else if (filter.Operator == ComparisonOperator.Operator.GreaterThanOrEqualTo && CellValue_Decimal >= FilterValue_Decimal)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else if (filter.Operator == ComparisonOperator.Operator.LessThan && CellValue_Decimal < FilterValue_Decimal)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else if (filter.Operator == ComparisonOperator.Operator.LessThanOrEqualTo && CellValue_Decimal <= FilterValue_Decimal)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else
+                                {
+                                    dataGridView.Rows[i].Visible = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            dataGridView.Rows[i].Visible = false;
+                        }
                     }
-                } 
+                }
             }
+            
 
             // Resume data grid view binding
             currencyManager.ResumeBinding();
         }
 
-
-        private static bool TypeCodeIsNumeric(TypeCode type)
-        {
-            if (type == TypeCode.Byte || type == TypeCode.DateTime || type == TypeCode.Decimal || type == TypeCode.Double ||
-                type == TypeCode.Int16 || type == TypeCode.Int32 || type == TypeCode.Int64 || type == TypeCode.SByte ||
-                type == TypeCode.Single || type == TypeCode.UInt16 || type == TypeCode.UInt32 || type == TypeCode.UInt64)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         public static void UnfilterDataGridView(DataGridView dataGridView)
         {
