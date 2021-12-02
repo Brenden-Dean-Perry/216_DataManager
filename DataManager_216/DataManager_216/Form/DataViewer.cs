@@ -57,10 +57,9 @@ namespace DataManager_216
 
         private void btn_DataViewer_Export_Click(object sender, EventArgs e)
         {
-            string rowFilter = string.Format("[{0}] = '{1}'", "FirstName", "Isla");
             if(dataGridView_DataViewer.Rows.Count != 0)
             {
-                GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, 1, FormControls.ComparisonOperator.Equals, "Isla");
+                GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, 1, ComparisonOperator.Operator.Contains, "Is");
                 MessageBox.Show("Stop");
                 GeneralFormLibrary1.FormControls.UnfilterDataGridView(dataGridView_DataViewer);
             }
