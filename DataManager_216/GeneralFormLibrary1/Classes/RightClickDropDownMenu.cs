@@ -116,7 +116,7 @@ namespace GeneralFormLibrary1
 
             foreach(string item in GetRightClickMenuItems(rightClickMenu, currentDataGridView))
             {
-                if(item == item_SubMenuEnd && nextItemIsSubMenu == false)
+                if(item == item_SubMenuEnd && nextItemIsSub_Sub_Menu == false)
                 {
                     nextItemIsSubMenu = false;
                 }
@@ -124,7 +124,22 @@ namespace GeneralFormLibrary1
                 {
                     if(nextItemIsSub_Sub_Menu == true)
                     {
-                        throw new Exception("not implemented");
+                        if(item == item_Seperator)
+                        {
+                            ((contextMenuStrip.Items[itemIndex] as ToolStripMenuItem).DropDownItems[itemIndex_SubMenu] as ToolStripMenuItem).DropDownItems.Add(item_Seperator);
+                        }
+                        else if (item == item_SubMenuEnd)
+                        {
+                            nextItemIsSub_Sub_Menu = false;
+                        }
+                        else if(item == item_SubMenuStart)
+                        {
+                            throw new Exception("Sorry, third level drop downs have not been configured yet");
+                        }
+                        else
+                        {
+                            ((contextMenuStrip.Items[itemIndex] as ToolStripMenuItem).DropDownItems[itemIndex_SubMenu] as ToolStripMenuItem).DropDownItems.Add(item, null, Item_Click);
+                        }
                     }
                 }
                 else if(item == item_SubMenuStart)
@@ -139,9 +154,8 @@ namespace GeneralFormLibrary1
                 else
                 {
                     ToolStripMenuItem menuItem = new ToolStripMenuItem(item);
-                    contextMenuStrip.Items.Add(item);
+                    contextMenuStrip.Items.Add(item,null, Item_Click);
                     itemIndex++;
-                    menuItem.Click += new EventHandler(Item_Click);
                 }
 
                 //Validation
@@ -164,8 +178,6 @@ namespace GeneralFormLibrary1
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
 
-            MessageBox.Show("Item click");
-
             if(item.Text == item_Copy)
             {
                 currentDataGridView.CurrentCell = currentDataGridView[currentMouseOverColumnIndex, currentMouseOverRowIndex];
@@ -173,7 +185,6 @@ namespace GeneralFormLibrary1
             }
             else if (item.Text == item_Equals)
             {
-                MessageBox.Show("Clicked");
                 //Add filter to filter list
                 DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.Equals, filterValue, filterValueDataType);
                 dataGridViewFilters.Add(gridViewFilter);
@@ -196,6 +207,54 @@ namespace GeneralFormLibrary1
                     FormControls.FilterDataGridView(gridViewFilter.DataGridViewObj, dataGridViewFilters);
                 }
             }
+            else if (item.Text == item_GreaterThan)
+            {
+                //Add filter to filter list
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.GreaterThan, filterValue, filterValueDataType);
+                dataGridViewFilters.Add(gridViewFilter);
+
+                //Filter Value
+                if (!(currentDataGridView.Rows.Count == 0))
+                {
+                    FormControls.FilterDataGridView(gridViewFilter.DataGridViewObj, dataGridViewFilters);
+                }
+            }
+            else if (item.Text == item_GreaterThanOrEqualTo)
+            {
+                //Add filter to filter list
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.GreaterThanOrEqualTo, filterValue, filterValueDataType);
+                dataGridViewFilters.Add(gridViewFilter);
+
+                //Filter Value
+                if (!(currentDataGridView.Rows.Count == 0))
+                {
+                    FormControls.FilterDataGridView(gridViewFilter.DataGridViewObj, dataGridViewFilters);
+                }
+            }
+            else if (item.Text == item_LessThan)
+            {
+                //Add filter to filter list
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.LessThan, filterValue, filterValueDataType);
+                dataGridViewFilters.Add(gridViewFilter);
+
+                //Filter Value
+                if (!(currentDataGridView.Rows.Count == 0))
+                {
+                    FormControls.FilterDataGridView(gridViewFilter.DataGridViewObj, dataGridViewFilters);
+                }
+            }
+            else if (item.Text == item_LessThanOrEqualTo)
+            {
+                //Add filter to filter list
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.LessThanOrEqualTo, filterValue, filterValueDataType);
+                dataGridViewFilters.Add(gridViewFilter);
+
+                //Filter Value
+                if (!(currentDataGridView.Rows.Count == 0))
+                {
+                    FormControls.FilterDataGridView(gridViewFilter.DataGridViewObj, dataGridViewFilters);
+                }
+            }
             else if(item.Text == item_ClearAllFilters)
             {
                 dataGridViewFilters = ClearFilters(dataGridViewFilters, currentDataGridView);
@@ -205,8 +264,7 @@ namespace GeneralFormLibrary1
             {
                 dataGridViewFilters = ClearFilters(dataGridViewFilters, currentDataGridView, currentMouseOverColumnIndex);
                 FormControls.UnfilterDataGridView(currentDataGridView);
-
-                MessageBox.Show("need to refilter!");
+                FormControls.FilterDataGridView(currentDataGridView, dataGridViewFilters);
             }
             else
             {

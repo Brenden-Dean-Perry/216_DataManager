@@ -123,8 +123,6 @@ namespace GeneralFormLibrary1
             CurrencyManager currencyManager = (CurrencyManager)dataGridView.BindingContext[dataGridView.DataSource];
             currencyManager.SuspendBinding();
 
-            MessageBox.Show(filters.Count().ToString());
-
             // Hide the ones that you want with the filter you want.
             foreach(DataModels.Model_DataGridViewFilter filter in filters)
             {
@@ -219,14 +217,11 @@ namespace GeneralFormLibrary1
 
         public static void UnfilterDataGridView(DataGridView dataGridView)
         {
-
             // Show all lines
             for (int i = 0; i < dataGridView.RowCount; i++)
             {
-                MessageBox.Show(i.ToString());
                 dataGridView.Rows[i].Visible = true;
             }
-
         }
 
 
