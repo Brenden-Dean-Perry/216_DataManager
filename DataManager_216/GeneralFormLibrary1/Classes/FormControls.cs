@@ -92,7 +92,7 @@ namespace GeneralFormLibrary1
             dataGridView.AllowUserToResizeColumns = true;
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AllowUserToDeleteRows = false;
-            dataGridView.EnableHeadersVisualStyles = true;
+            dataGridView.EnableHeadersVisualStyles = false;
 
 
             foreach (DataGridViewColumn col in dataGridView.Columns)
@@ -112,6 +112,11 @@ namespace GeneralFormLibrary1
                 {
                     column.HeaderText = column.HeaderText.Substring(0, column.HeaderText.Length - FilterDesignation.Length);
                 }
+
+                if(column.HeaderCell.Style.ForeColor == Color.Red)
+                {
+                    column.HeaderCell.Style.ForeColor = Color.Black;
+                }
             }
 
             //Add filter designations
@@ -122,7 +127,6 @@ namespace GeneralFormLibrary1
                     DataGridViewColumn column = dataGridView.Columns[filterModel.ColumnIndexToFilter];
                     column.HeaderText = column.HeaderText + FilterDesignation;
                     column.HeaderCell.Style.ForeColor = Color.Red;
-                    column.HeaderCell.Style.BackColor = Color.Red;
                 }
             }
         }
