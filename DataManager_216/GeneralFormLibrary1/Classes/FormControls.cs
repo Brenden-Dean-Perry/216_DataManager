@@ -14,7 +14,7 @@ namespace GeneralFormLibrary1
 {
     public partial class FormControls
     {
-        
+
         private delegate void InvokeDelegate();
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace GeneralFormLibrary1
             comboBox.DataSource = list;
             comboBox.DisplayMember = displayMember;
 
-            if(valueMember != null)
+            if (valueMember != null)
             {
                 comboBox.ValueMember = valueMember;
             }
@@ -92,13 +92,39 @@ namespace GeneralFormLibrary1
             dataGridView.AllowUserToResizeColumns = true;
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.EnableHeadersVisualStyles = true;
 
-            
+
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
                 col.ReadOnly = SetToReadOnly;
             }
-            
+
+        }
+
+        private static void FormatDataGridView_DesignateFilteredColumns(DataGridView dataGridView, List<DataModels.Model_DataGridViewFilter> dataGridViewFilters)
+        {
+            string FilterDesignation = " (F)";
+            //Remove filter designations
+            foreach (DataGridViewColumn column in dataGridView.Columns)
+            {
+                if (column.HeaderText.EndsWith(FilterDesignation))
+                {
+                    column.HeaderText = column.HeaderText.Substring(0, column.HeaderText.Length - FilterDesignation.Length);
+                }
+            }
+
+            //Add filter designations
+            foreach (DataModels.Model_DataGridViewFilter filterModel in dataGridViewFilters)
+            {
+                if (filterModel.DataGridViewObj == dataGridView)
+                {
+                    DataGridViewColumn column = dataGridView.Columns[filterModel.ColumnIndexToFilter];
+                    column.HeaderText = column.HeaderText + FilterDesignation;
+                    column.HeaderCell.Style.ForeColor = Color.Red;
+                    column.HeaderCell.Style.BackColor = Color.Red;
+                }
+            }
         }
 
         private static void SetDoubleBuffered(System.Windows.Forms.Control c)
@@ -124,7 +150,7 @@ namespace GeneralFormLibrary1
             currencyManager.SuspendBinding();
 
             // Hide the ones that you want with the filter you want.
-            foreach(DataModels.Model_DataGridViewFilter filter in filters)
+            foreach (DataModels.Model_DataGridViewFilter filter in filters)
             {
                 TypeCode FilterValueDataTypeCode = Type.GetTypeCode(dataGridView.Rows[1].Cells[filter.ColumnIndexToFilter].Value.GetType());
 
@@ -208,7 +234,8 @@ namespace GeneralFormLibrary1
                     }
                 }
             }
-            
+
+            FormatDataGridView_DesignateFilteredColumns(dataGridView, filters);
 
             // Resume data grid view binding
             currencyManager.ResumeBinding();
@@ -222,9 +249,8 @@ namespace GeneralFormLibrary1
             {
                 dataGridView.Rows[i].Visible = true;
             }
+ 
         }
-
-
 
     }
 }

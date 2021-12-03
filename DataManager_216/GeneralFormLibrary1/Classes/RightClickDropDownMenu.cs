@@ -99,7 +99,6 @@ namespace GeneralFormLibrary1
             }
             else
             {
-                menuItems.Add(item_ClearColumnFilters);
                 menuItems.Add(item_ClearAllFilters);
             }
 
@@ -259,6 +258,7 @@ namespace GeneralFormLibrary1
             {
                 dataGridViewFilters = ClearFilters(dataGridViewFilters, currentDataGridView);
                 FormControls.UnfilterDataGridView(currentDataGridView);
+                FormControls.FilterDataGridView(currentDataGridView, dataGridViewFilters);
             }
             else if (item.Text == item_ClearColumnFilters)
             {
