@@ -156,7 +156,7 @@ namespace GeneralFormLibrary1
             // Hide the ones that you want with the filter you want.
             foreach (DataModels.Model_DataGridViewFilter filter in filters)
             {
-                TypeCode FilterValueDataTypeCode = Type.GetTypeCode(dataGridView.Rows[1].Cells[filter.ColumnIndexToFilter].Value.GetType());
+                TypeCode FilterValueDataTypeCode = Type.GetTypeCode(dataGridView.Rows[0].Cells[filter.ColumnIndexToFilter].Value.GetType());
 
                 for (int i = 0; i < dataGridView.RowCount; i++)
                 {
