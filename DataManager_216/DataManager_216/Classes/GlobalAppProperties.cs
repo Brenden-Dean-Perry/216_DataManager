@@ -6,8 +6,21 @@ using System.Threading.Tasks;
 
 namespace DataManager_216
 {
-    public static class GlobalAppProperties
+
+    public class GlobalAppProperties
     {
         public static string AppName = "216";
+        public static string Username { get; set; }
+        public static string Password { get; set; }
+
+        public static Dictionary<string, string> GetCredentials()
+        {
+            Dictionary<string, string> credentials = new Dictionary<string, string>();
+            credentials.Add("username", Username);
+            credentials.Add("password", Password);
+
+            return credentials;
+        }
+
     }
 }

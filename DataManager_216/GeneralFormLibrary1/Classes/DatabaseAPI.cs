@@ -16,16 +16,33 @@ namespace GeneralFormLibrary1
         /// <summary>
         /// Returns connection string from your App.config file
         /// </summary>
-        /// <param name="name">Name of connection per your App.config file</param>
+        /// <param name="connectionName">Name of connection per your App.config file</param>
         /// <returns></returns>
-        internal static string ConnectionValue(string name)
+        public static string ConnectionString(string connectionName, Dictionary<string, string> credentials = null)
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            if(credentials is null)
+            {
+                return ConfigurationManager.ConnectionStrings[connectionName].ConnectionString;
+            }
+            else
+            {
+                return ConfigurationManager.ConnectionStrings[connectionName].ConnectionString.Replace("/***username***/", credentials["username"]).Replace("/***password***/", credentials["password"]);
+            }
+
+            
         }
 
-        internal static List<T> GetData_List<T>(string SQLquery, object Parameter_obj = null)
+        /// <summary>
+        /// Returns queried data from a database
+        /// </summary>
+        /// <typeparam name="T">Generic Object</typeparam>
+        /// <param name="ConnectionString">Database connection string</param>
+        /// <param name="SQLquery">SQL query. Make sure you include a "Use" statement</param>
+        /// <param name="Parameter_obj">Parameter object</param>
+        /// <returns></returns>
+        internal static List<T> GetData_List<T>(string ConnectionString, string SQLquery, object Parameter_obj = null)
         {
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GeneralFormLibrary1.DatabaseAPI.ConnectionValue("PC")))
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionString))
             {
 
                 if (Parameter_obj == null)
@@ -39,10 +56,17 @@ namespace GeneralFormLibrary1
 
             }
         }
-
-        internal static T GetData<T>(string SQLquery, object Parameter_obj = null)
+        /// <summary>
+        /// Returns queried data from a database
+        /// </summary>
+        /// <typeparam name="T">Generic Object</typeparam>
+        /// <param name="ConnectionString">Database connection string</param>
+        /// <param name="SQLquery">SQL query. Make sure you include a "Use" statement</param>
+        /// <param name="Parameter_obj">Parameter object</param>
+        /// <returns></returns>
+        internal static T GetData<T>(string ConnectionString, string SQLquery, object Parameter_obj = null)
         {
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GeneralFormLibrary1.DatabaseAPI.ConnectionValue("PC")))
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionString))
             {
 
                 if (Parameter_obj == null)
@@ -56,6 +80,26 @@ namespace GeneralFormLibrary1
             }
         }
 
+        /// <summary>
+        /// Test whether connection to database can be made
+        /// </summary>
+        /// <param name="connectionString">Database connection string</param>
+        /// <returns></returns>
+        public static bool IsServerConnected(string connectionString)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    return true;
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
+            }
+        }
 
     }
 }
