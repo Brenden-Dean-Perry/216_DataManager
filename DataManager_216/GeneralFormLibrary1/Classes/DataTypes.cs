@@ -21,5 +21,45 @@ namespace GeneralFormLibrary1
                 return false;
             }
         }
+
+        public static string ConvertSqlDataTypeToCSharpDataType(string SqlDataType)
+        {
+            if(SqlDataType.ToLower() == "int")
+            {
+                return "int";
+            }
+            else if (SqlDataType.ToLower() == "date")
+            {
+                return "DateTime";
+            }
+            else if (SqlDataType.ToLower() == "datetime")
+            {
+                return "DateTime";
+            }
+            else if (SqlDataType.ToLower() == "smalldatetime")
+            {
+                return "DateTime";
+            }
+            else if(SqlDataType.ToLower() == "decimal")
+            {
+                return "decimal";
+            }
+            else if (SqlDataType.ToLower() == "float")
+            {
+                return "float";
+            }
+            else if (SqlDataType.ToLower() == "varchar")
+            {
+                return "string";
+            }
+            else if (SqlDataType.ToLower() == "bit")
+            {
+                return "byte";
+            }
+            else
+            {
+                return "Data type not configured!";
+            }
+        }
     }
 }

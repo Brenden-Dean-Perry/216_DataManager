@@ -49,6 +49,11 @@ namespace DataManager_216
             return LoginSuccessful;
 
         }
+
+        private void frmLogin_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

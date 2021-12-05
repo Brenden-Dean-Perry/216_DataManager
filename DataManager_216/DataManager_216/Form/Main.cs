@@ -21,12 +21,26 @@ namespace DataManager_216
         private void Main_Load(object sender, EventArgs e)
         {
             this.Text = GlobalAppProperties.AppName;
+            webBrowser_Main.Navigate("https://pluto.tv/en/live-tv/bloomberg-tv");
+            webBrowser_Main.ScriptErrorsSuppressed = true;
         }
 
         private void dataViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmDataViewer dataViewer = new frmDataViewer();
             dataViewer.Show();
+        }
+
+        private void aPIViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmAPIViewer aPIViewer = new frmAPIViewer();
+            aPIViewer.Show();
+        }
+
+        private void modelConstructorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmDataModelConstructor modelConstructor = new frmDataModelConstructor();
+            modelConstructor.Show();
         }
     }
 }

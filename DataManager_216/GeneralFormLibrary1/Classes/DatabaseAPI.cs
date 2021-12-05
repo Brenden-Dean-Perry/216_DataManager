@@ -56,6 +56,7 @@ namespace GeneralFormLibrary1
 
             }
         }
+
         /// <summary>
         /// Returns queried data from a database
         /// </summary>
@@ -100,6 +101,64 @@ namespace GeneralFormLibrary1
                 }
             }
         }
+
+        /// <summary>
+        /// Query a particular table and return the implied data model class structure in a string
+        /// </summary>
+        /// <param name="connectionString">Database connection string</param>
+        /// <param name="TableName">Database table name you want to model</param>
+        /// <returns></returns>
+        public static string BuildImpliedDataModel(string connectionString, DataModels.Model_TableName tableName)
+        {
+            string ClassName = String.Empty;
+            StringBuilder sb = new StringBuilder();
+
+            //Add class name
+            sb.Append("public class ");
+            if (tableName.TableName.ToLower().EndsWith("s"))
+            {
+                ClassName = "Model_" + tableName.TableName.Substring(0, tableName.TableName.Length - 1);
+            }
+            else
+            {
+                ClassName = "Model_" + tableName.TableName;
+            }
+            sb.Append(ClassName);
+            sb.Append(System.Environment.NewLine);
+
+            //Class start
+            sb.Append("{ ");
+            sb.Append(System.Environment.NewLine);
+
+            //Add properties
+            string SQLquery = "Select C.name ColumnName, t.Name DataType From sys.columns C Inner Join sys.types t on c.user_type_id = t.user_type_id Where c.object_id = OBJECT_ID(@TableName);";
+            List <DataModels.Model_TableDataStructure> columns = GetData_List<DataModels.Model_TableDataStructure>(connectionString, SQLquery, tableName);
+            foreach(DataModels.Model_TableDataStructure column in columns)
+            {
+                sb.Append("\t");
+                sb.Append("public ");
+                sb.Append(column.ColumnName + " ");
+                sb.Append(DataTypes.ConvertSqlDataTypeToCSharpDataType(column.DataType) + " ");
+                sb.Append("{get; set;} ");
+                sb.Append(System.Environment.NewLine);
+            }
+
+            //Add default constructor
+            sb.Append(System.Environment.NewLine);
+            sb.Append("\t public " + ClassName + "()");
+            sb.Append(System.Environment.NewLine);
+            sb.Append("\t{");
+            sb.Append(System.Environment.NewLine);
+            sb.Append("\t}");
+            sb.Append(System.Environment.NewLine);
+            sb.Append(System.Environment.NewLine);
+
+            //Class end
+            sb.Append("}");
+
+            return sb.ToString();
+        }
+
 
     }
 }

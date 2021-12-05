@@ -54,6 +54,7 @@
     <Compile Include="DataAccess\DataAccess.cs" />
     <Compile Include="DataModels\Model_DataGridViewFilter.cs" />
     <Compile Include="DataModels\Model_SubAssetClass.cs" />
+    <Compile Include="DataModels\Model_TableDataStructure.cs" />
     <Compile Include="DataModels\Model_User.cs" />
     <Compile Include="DataModels\Model_TableName.cs" />
     <Compile Include="Classes\DataTypes.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Classes\StatusAnimation.cs" />
     <Compile Include="CustomObject\SortableBindingList.cs" />
     <Compile Include="Classes\RightClickDropDownMenu.cs" />
+    <Compile Include="Classes\WebAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

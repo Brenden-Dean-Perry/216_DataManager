@@ -31,6 +31,12 @@ namespace GeneralFormLibrary1
             return model;
         }
 
+        public static List<DataModels.Model_TableName> GetDatabaseTableNames_Quant(Dictionary<string, string> dbCredentials)
+        {
+            List<GeneralFormLibrary1.DataModels.Model_TableName> model = GeneralFormLibrary1.DatabaseAPI.GetData_List<GeneralFormLibrary1.DataModels.Model_TableName>(GeneralFormLibrary1.DatabaseAPI.ConnectionString("QuantDB", dbCredentials), "SELECT name[TableName] FROM sysobjects WHERE xtype = 'U' Order by name;");
+            return model;
+        }
+
         public static List<DataModels.Model_User> GetDataList_Quant_Users(Dictionary<string, string> dbCredentials)
         {
             List<GeneralFormLibrary1.DataModels.Model_User> model = GeneralFormLibrary1.DatabaseAPI.GetData_List<GeneralFormLibrary1.DataModels.Model_User>(GeneralFormLibrary1.DatabaseAPI.ConnectionString("QuantDB", dbCredentials),"Select * From Users;");
