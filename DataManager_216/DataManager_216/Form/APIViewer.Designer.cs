@@ -30,6 +30,7 @@ namespace DataManager_216
         private void InitializeComponent()
         {
             this.dataGridView_APIViewer = new System.Windows.Forms.DataGridView();
+            this.btn_APIViewer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_APIViewer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,12 +48,23 @@ namespace DataManager_216
             this.dataGridView_APIViewer.Size = new System.Drawing.Size(1324, 675);
             this.dataGridView_APIViewer.TabIndex = 0;
             // 
+            // btn_APIViewer
+            // 
+            this.btn_APIViewer.Location = new System.Drawing.Point(210, 35);
+            this.btn_APIViewer.Name = "btn_APIViewer";
+            this.btn_APIViewer.Size = new System.Drawing.Size(75, 31);
+            this.btn_APIViewer.TabIndex = 1;
+            this.btn_APIViewer.Text = "Export";
+            this.btn_APIViewer.UseVisualStyleBackColor = true;
+            this.btn_APIViewer.Click += new System.EventHandler(this.btn_APIViewer_Click);
+            // 
             // frmAPIViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.ClientSize = new System.Drawing.Size(1348, 781);
+            this.Controls.Add(this.btn_APIViewer);
             this.Controls.Add(this.dataGridView_APIViewer);
             this.Name = "frmAPIViewer";
             this.Text = "APIViewer";
@@ -65,5 +77,6 @@ namespace DataManager_216
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView_APIViewer;
+        private System.Windows.Forms.Button btn_APIViewer;
     }
 }

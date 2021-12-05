@@ -19,6 +19,5 @@ namespace GeneralFormLibrary1
             System.Diagnostics.Process.Start("https://www.google.com/search?q=" + searchString);
         }
 
-
     }
 }

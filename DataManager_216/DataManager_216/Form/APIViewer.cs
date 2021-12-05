@@ -36,5 +36,10 @@ namespace DataManager_216
                 dropDownMenu.Show(RightClickDropDownMenu.MenuOption.DefaultMenu_URL, e);
             }
         }
+
+        private void btn_APIViewer_Click(object sender, EventArgs e)
+        {
+            GeneralFormLibrary1.FormControls.DataGridViewToList<GeneralFormLibrary1.DataModels.Model_DataSource>(dataGridView_APIViewer, true);
+        }
     }
 }

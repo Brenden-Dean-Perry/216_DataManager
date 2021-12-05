@@ -14,7 +14,7 @@ namespace GeneralFormLibrary1
 {
     public partial class FormControls
     {
-
+        private static string FilterDesignation { get; } = " (F)";
         private delegate void InvokeDelegate();
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace GeneralFormLibrary1
 
         private static void FormatDataGridView_DesignateFilteredColumns(DataGridView dataGridView, List<DataModels.Model_DataGridViewFilter> dataGridViewFilters)
         {
-            string FilterDesignation = " (F)";
+            
             //Remove filter designations
             foreach (DataGridViewColumn column in dataGridView.Columns)
             {
@@ -256,6 +256,76 @@ namespace GeneralFormLibrary1
             }
  
         }
+
+        public static void DataGridViewExportToExcel<T>(DataGridView dataGridView, bool ExportFilteredView = true)
+        {
+            ExcelAPI excel = new ExcelAPI();
+            List<T> list;
+
+            if (ExportFilteredView == true)
+            {
+                //list = DataGridViewToList<T>(dataGridView, true);
+            }
+            else
+            {
+                //list = DataGridViewToList<T>(dataGridView, false);
+            }
+
+            //excel.ExportDataToSheet<T>(list);
+
+        }
+         
+
+        public static List<T> DataGridViewToList<T>(DataGridView dataGridView, bool ExcludeInvisableRows = true) where T: class, new()
+        {
+            List<T> list = new List<T>();
+            T entry = new T();
+            var properties = entry.GetType().GetProperties();
+            List<string> HeaderNames = new List<string>();
+            int propertiesFoundCount = 0;
+            foreach(DataGridViewColumn column in dataGridView.Columns)
+            {
+                HeaderNames.Add(column.HeaderText);
+            }
+
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                if (ExcludeInvisableRows == true && row.Visible == false)
+                {
+                    //Do nothing
+                }
+                else
+                {
+                    entry = new T();
+                    for (int i = 0; i < HeaderNames.Count; i++)
+                    {
+                        foreach (var prop in properties)
+                        {
+                            //Property found
+                            if (prop.Name == HeaderNames[i])
+                            {
+                                MessageBox.Show(prop.Name);
+                                propertiesFoundCount++;
+                                try
+                                {
+                                    prop.SetValue(entry, Convert.ChangeType(row.Cells[i].Value, prop.PropertyType));
+                                }
+                                catch
+                                { }
+                                break;
+                            }
+
+                        }
+                    }
+                    list.Add(entry);
+                }
+              
+            }
+
+            MessageBox.Show(list.Count.ToString());
+            return list;
+        }
+
 
     }
 }
