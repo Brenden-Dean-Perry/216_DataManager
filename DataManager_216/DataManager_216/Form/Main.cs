@@ -21,7 +21,7 @@ namespace DataManager_216
         private void Main_Load(object sender, EventArgs e)
         {
             this.Text = GlobalAppProperties.AppName;
-            webBrowser_Main.Navigate("https://pluto.tv/en/live-tv/bloomberg-tv");
+            webBrowser_Main.Navigate("https://www.google.com");
             webBrowser_Main.ScriptErrorsSuppressed = true;
         }
 

@@ -93,6 +93,7 @@ namespace GeneralFormLibrary1
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AllowUserToDeleteRows = false;
             dataGridView.EnableHeadersVisualStyles = false;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
 
 
             foreach (DataGridViewColumn col in dataGridView.Columns)

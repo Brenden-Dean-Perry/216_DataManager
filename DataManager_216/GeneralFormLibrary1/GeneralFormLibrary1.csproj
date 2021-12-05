@@ -53,6 +53,7 @@
     <Compile Include="Classes\FormControls.cs" />
     <Compile Include="DataAccess\DataAccess.cs" />
     <Compile Include="DataModels\Model_DataGridViewFilter.cs" />
+    <Compile Include="DataModels\Model_DataSource.cs" />
     <Compile Include="DataModels\Model_SubAssetClass.cs" />
     <Compile Include="DataModels\Model_TableDataStructure.cs" />
     <Compile Include="DataModels\Model_User.cs" />

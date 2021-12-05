@@ -137,8 +137,8 @@ namespace GeneralFormLibrary1
             {
                 sb.Append("\t");
                 sb.Append("public ");
-                sb.Append(column.ColumnName + " ");
                 sb.Append(DataTypes.ConvertSqlDataTypeToCSharpDataType(column.DataType) + " ");
+                sb.Append(column.ColumnName + " ");
                 sb.Append("{get; set;} ");
                 sb.Append(System.Environment.NewLine);
             }

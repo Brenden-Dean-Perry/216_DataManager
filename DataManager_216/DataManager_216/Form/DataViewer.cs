@@ -24,7 +24,7 @@ namespace DataManager_216
 
         private void frmDataViewer_Load(object sender, EventArgs e)
         {
-            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = GeneralFormLibrary1.DataAccess.GetDatabaseTableNames_PI();
+            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = GeneralFormLibrary1.DataAccess.GetDatabaseTableNames_Quant(GlobalAppProperties.GetCredentials());
             GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataViewer_TableSelection, tables, "TableName");
             dataGridView_DataViewer.MouseClick += dataGridView_DataViewer_MouseClick;
         }
@@ -35,7 +35,7 @@ namespace DataManager_216
             {
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
                 RightClickDropDownMenu dropDownMenu = new RightClickDropDownMenu(contextMenu, dataGridView_DataViewer, gridViewFilters);
-                dropDownMenu.Show(RightClickDropDownMenu.MenuOption.DefaultMenuWithFilters, e);
+                dropDownMenu.Show(RightClickDropDownMenu.MenuOption.DefaultMenu, e);
             }
         }
 

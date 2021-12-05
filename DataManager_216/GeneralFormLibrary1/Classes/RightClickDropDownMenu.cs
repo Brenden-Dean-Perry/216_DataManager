@@ -32,13 +32,13 @@ namespace GeneralFormLibrary1
         private static string item_LessThanOrEqualTo { get; } = "Less Than Or Equal To";
         private static string item_ClearAllFilters { get; } = "Clear All Filters";
         private static string item_ClearColumnFilters { get; } = "Clear Column Filters";
-
+        private static string item_URLSearch { get; } = "Search in Web browser...";
 
         public enum MenuOption
         {
             DefaultMenu,
             ClearAllFiltersOnly,
-            DefaultMenuWithFilters,
+            DefaultMenu_URL
         }
 
         public RightClickDropDownMenu(ContextMenuStrip contextMenu, DataGridView dataGridView, List<DataModels.Model_DataGridViewFilter> gridViewFilters)
@@ -71,14 +71,13 @@ namespace GeneralFormLibrary1
                 }
             }
 
-            if (rightClickMenu == MenuOption.DefaultMenu)
+            //Add primary options
+            if(rightClickMenu == MenuOption.ClearAllFiltersOnly)
             {
-                menuItems.Add(item_Copy);
-                menuItems.Add(item_Seperator);
-                menuItems.Add(item_ClearColumnFilters);
                 menuItems.Add(item_ClearAllFilters);
+                return menuItems;
             }
-            else if(rightClickMenu == MenuOption.DefaultMenuWithFilters)
+            else
             {
                 menuItems.Add(item_Copy);
                 menuItems.Add(item_Seperator);
@@ -94,13 +93,19 @@ namespace GeneralFormLibrary1
                 }
 
                 menuItems.Add(item_Seperator);
-                menuItems.Add(item_ClearColumnFilters);
-                menuItems.Add(item_ClearAllFilters);
             }
-            else
+
+            //Add intermediate values
+            if(rightClickMenu == MenuOption.DefaultMenu_URL)
             {
-                menuItems.Add(item_ClearAllFilters);
+                menuItems.Add(item_URLSearch);
             }
+
+
+            //Add final items
+            menuItems.Add(item_Seperator);
+            menuItems.Add(item_ClearColumnFilters);
+            menuItems.Add(item_ClearAllFilters);
 
             return menuItems;
         }
@@ -265,6 +270,18 @@ namespace GeneralFormLibrary1
                 dataGridViewFilters = ClearFilters(dataGridViewFilters, currentDataGridView, currentMouseOverColumnIndex);
                 FormControls.UnfilterDataGridView(currentDataGridView);
                 FormControls.FilterDataGridView(currentDataGridView, dataGridViewFilters);
+            }
+            else if (item.Text == item_URLSearch)
+            {
+                currentDataGridView.CurrentCell = currentDataGridView[currentMouseOverColumnIndex, currentMouseOverRowIndex];
+                if (currentDataGridView.CurrentCell.Value.ToString().StartsWith("http") || currentDataGridView.CurrentCell.Value.ToString().StartsWith("www."))
+                {
+                    GeneralFormLibrary1.WebAPI.LaunchURL(currentDataGridView.CurrentCell.Value.ToString());
+                }
+                else
+                {
+                    GeneralFormLibrary1.WebAPI.Search(currentDataGridView.CurrentCell.Value.ToString());
+                }
             }
             else
             {

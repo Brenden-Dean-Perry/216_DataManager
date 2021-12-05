@@ -38,6 +38,8 @@ namespace DataManager_216
             // 
             this.tb_DataModelConstructor.AcceptsReturn = true;
             this.tb_DataModelConstructor.AcceptsTab = true;
+            this.tb_DataModelConstructor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_DataModelConstructor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.tb_DataModelConstructor.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tb_DataModelConstructor.ForeColor = System.Drawing.Color.White;
@@ -45,7 +47,7 @@ namespace DataManager_216
             this.tb_DataModelConstructor.Multiline = true;
             this.tb_DataModelConstructor.Name = "tb_DataModelConstructor";
             this.tb_DataModelConstructor.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tb_DataModelConstructor.Size = new System.Drawing.Size(898, 669);
+            this.tb_DataModelConstructor.Size = new System.Drawing.Size(909, 669);
             this.tb_DataModelConstructor.TabIndex = 0;
             // 
             // comboBox_DataModelConstructor
