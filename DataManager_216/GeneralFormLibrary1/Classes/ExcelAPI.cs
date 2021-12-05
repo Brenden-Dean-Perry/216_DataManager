@@ -15,10 +15,11 @@ namespace GeneralFormLibrary1
     public class ExcelAPI
     {
         _Application excel = new _excel.Application();
-        Workbook workbook;
-        Worksheet worksheet;
+        Workbook wb;
+        Worksheet ws;
 
-        internal void ExportDataToSheet<T>(IList<T> Data, bool Open = true, string SavePath = null, string FileName = null)
+
+        internal void ExportDataToSheet<T>(IList<T> Data, bool Open = true, string SavePath = null, string AppName = null, string FileName = null) where T : class
         {
 
             if (Data.Count == 0)
@@ -27,7 +28,9 @@ namespace GeneralFormLibrary1
                 return;
             }
 
-            Worksheet ws = excel.Sheets[0];
+            this.wb = excel.Workbooks.Add();
+            Worksheet ws = this.wb.Worksheets[1];
+
             int HeaderCount = typeof(T).GetProperties().Count();
             object[] Header = new object[HeaderCount];
             int i = 0;
@@ -46,22 +49,101 @@ namespace GeneralFormLibrary1
             HeaderRange.Borders.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
 
             //Paste cell values
-            i = 0;
-            int j = 0;
+            i = 2;
             object[,] Cells = new object[Data.Count, HeaderCount];
-            foreach(T item in Data)
+            foreach(var item in Data)
             {
+                T entry = item;
+                int j = 1;
                 foreach (var prop in item.GetType().GetProperties())
                 {
-                    Cells[i, j] = prop.GetValue(null).ToString();
+                    if(prop.GetValue(entry, null) != null)
+                    {
+                        ws.Cells[i, j] = prop.GetValue(entry, null).ToString();
+                    }
                     j++;
                 }
                 i++;
             }
 
-            ws.get_Range((_excel.Range)(ws.Cells[2, 1]), (_excel.Range)(ws.Cells[Data.Count + 1, HeaderCount + 1])).Value = Cells;
             ws.Columns.AutoFit();
-        
+            excel.Visible = true;
+
+            string SavePathLocation = string.Empty;
+            if(SavePath != null)
+            {
+                SavePathLocation = SaveAs(SavePath, AppName, FileName, ".xlsx");
+
+                if (!File.Exists(SavePathLocation))
+                {
+                    MessageBox.Show(null, "File failed to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves excel file in a specified location with a unique file name
+        /// </summary>
+        /// <param name="directoryPath">Path where you would like to save the file</param>
+        /// <param name="AppName">Name of your application</param>
+        /// <param name="fileName">File Name</param>
+        /// <param name="fileEnding">File ending. For example, ".txt", ".csv", or ".xlsx" </param>
+        /// < name="fileEnding"></param>
+        /// <returns></returns>
+        public string SaveAs(string directoryPath, string AppName, string fileName, string fileEnding)
+        {
+
+            //Get date
+            DateTime today = DateTime.Today;
+            string dateStr = today.ToString("MM.dd.yyyy");
+
+            //Find available file name to save as
+            for(int i = 0; i < 1000; i++)
+            {
+                StringBuilder completeFilePath = new StringBuilder();
+                completeFilePath.Append(directoryPath);
+
+                //Add backslash if missing
+                if (!directoryPath.EndsWith(@"\"))
+                {
+                    completeFilePath.Append(@"\");
+                }
+
+                completeFilePath.Append(AppName);
+                completeFilePath.Append("_");
+                completeFilePath.Append(fileName);
+                completeFilePath.Append("_");
+                completeFilePath.Append(dateStr);
+                completeFilePath.Append("_(" + i.ToString() + ")");
+                completeFilePath.Append(fileEnding);
+
+                if (!File.Exists(completeFilePath.ToString()))
+                {
+                    wb.SaveAs(completeFilePath.ToString());
+                    return completeFilePath.ToString();
+                }
+                completeFilePath.Clear();
+            }
+
+            return null;
+        }
+
+        public void Close()
+        {
+            wb.Close();
+        }
+
+        public void CreateExcelWorkbook(string SheetName, bool MakeVisable = false)
+        {
+            this.wb = excel.Workbooks.Add();
+
+            if(MakeVisable == true)
+            {
+                excel.Visible = true;
+            }
+
+            this.ws = this.wb.Worksheets[1];
+            this.ws.Name = SheetName;
         }
     }
 }

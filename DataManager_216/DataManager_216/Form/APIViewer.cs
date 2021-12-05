@@ -39,7 +39,10 @@ namespace DataManager_216
 
         private void btn_APIViewer_Click(object sender, EventArgs e)
         {
-            GeneralFormLibrary1.FormControls.DataGridViewToList<GeneralFormLibrary1.DataModels.Model_DataSource>(dataGridView_APIViewer, true);
+            GeneralFormLibrary1.ExcelAPI excel = new ExcelAPI();
+            excel.CreateExcelWorkbook("Test");
+
+            GeneralFormLibrary1.FormControls.DataGridViewExportToExcel<GeneralFormLibrary1.DataModels.Model_DataSource>(dataGridView_APIViewer, GlobalAppProperties.Directroy_Downloads, GlobalAppProperties.AppName, "ApiViewer", true);
         }
     }
 }

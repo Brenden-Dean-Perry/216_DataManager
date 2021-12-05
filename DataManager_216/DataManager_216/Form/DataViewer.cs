@@ -73,21 +73,8 @@ namespace DataManager_216
 
         private async void btn_DataViewer_Export_Click(object sender, EventArgs e)
         {
-
-            //Start status animation
-            var tokenSource = new CancellationTokenSource();
-            StatusAnimation status = new StatusAnimation(this, statusStrip_DataViewer, tokenSource);
-            status.Start();
-
-            //Do task
-            SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> model = await Task.Run(() => GetDataFromQuant());
-            GeneralFormLibrary1.FormControls.AssignListToDataGridView<GeneralFormLibrary1.DataModels.Model_User>(dataGridView_DataViewer, model);
-
-            //Cancel animation
-            status.Cancel();
-
-            await Task.Run(() => Thread.Sleep(3000));
-            GeneralFormLibrary1.FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, "");
+            
+            GeneralFormLibrary1.FormControls.DataGridViewExportToExcel<GeneralFormLibrary1.DataModels.Model_User>(dataGridView_DataViewer, GlobalAppProperties.Directroy_Downloads, GlobalAppProperties.AppName, "DataViewer", false);
         }
 
         private void dataGridView_DataViewer_CellContentClick(object sender, DataGridViewCellEventArgs e)

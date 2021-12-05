@@ -257,21 +257,20 @@ namespace GeneralFormLibrary1
  
         }
 
-        public static void DataGridViewExportToExcel<T>(DataGridView dataGridView, bool ExportFilteredView = true)
+        public static void DataGridViewExportToExcel<T>(DataGridView dataGridView, string saveDirectory, string AppName, string FileName , bool ExportFilteredView = true) where T : class, new()
         {
             ExcelAPI excel = new ExcelAPI();
             List<T> list;
-
             if (ExportFilteredView == true)
             {
-                //list = DataGridViewToList<T>(dataGridView, true);
+                list = DataGridViewToList<T>(dataGridView, true);
             }
             else
             {
-                //list = DataGridViewToList<T>(dataGridView, false);
+                list = DataGridViewToList<T>(dataGridView, false);
             }
 
-            //excel.ExportDataToSheet<T>(list);
+            excel.ExportDataToSheet<T>(list, true, saveDirectory, AppName, FileName);
 
         }
          
@@ -302,16 +301,22 @@ namespace GeneralFormLibrary1
                         foreach (var prop in properties)
                         {
                             //Property found
-                            if (prop.Name == HeaderNames[i])
+                            if (prop.Name == HeaderNames[i] || prop.Name + FilterDesignation == HeaderNames[i])
                             {
-                                MessageBox.Show(prop.Name);
                                 propertiesFoundCount++;
-                                try
+                                if(row.Cells[i].Value != null)
                                 {
-                                    prop.SetValue(entry, Convert.ChangeType(row.Cells[i].Value, prop.PropertyType));
+                                    try
+                                    {
+                                        prop.SetValue(entry, Convert.ChangeType(row.Cells[i].Value, prop.PropertyType));
+                                    }
+                                    catch
+                                    {
+                                        list.Clear();
+                                        MessageBox.Show(null, "Failed to parse values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                       return list;
+                                    }
                                 }
-                                catch
-                                { }
                                 break;
                             }
 
@@ -319,10 +324,8 @@ namespace GeneralFormLibrary1
                     }
                     list.Add(entry);
                 }
-              
             }
 
-            MessageBox.Show(list.Count.ToString());
             return list;
         }
 
