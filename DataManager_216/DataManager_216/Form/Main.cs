@@ -21,8 +21,12 @@ namespace DataManager_216
         private void Main_Load(object sender, EventArgs e)
         {
             this.Text = GlobalAppProperties.AppName;
-            webBrowser_Main.Navigate("https://www.google.com");
-            webBrowser_Main.ScriptErrorsSuppressed = true;
+            LaunchBloombergTvStream();
+        }
+
+        private void LaunchBloombergTvStream()
+        {
+            webBrowser_Main_1.Navigate("https://www.youtube.com/watch?v=dp8PhLsUcFE");
         }
 
         private void dataViewerToolStripMenuItem_Click(object sender, EventArgs e)

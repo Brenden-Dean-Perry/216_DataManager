@@ -257,7 +257,7 @@ namespace GeneralFormLibrary1
  
         }
 
-        public static void DataGridViewExportToExcel<T>(DataGridView dataGridView, string saveDirectory, string AppName, string FileName , bool ExportFilteredView = true) where T : class, new()
+        public static void DataGridViewExportToExcel<T>(DataGridView dataGridView, string AppName, string FileName, string saveDirectory, bool ExportFilteredView = true) where T : class, new()
         {
             ExcelAPI excel = new ExcelAPI();
             List<T> list;
@@ -270,8 +270,7 @@ namespace GeneralFormLibrary1
                 list = DataGridViewToList<T>(dataGridView, false);
             }
 
-            excel.ExportDataToSheet<T>(list, true, saveDirectory, AppName, FileName);
-
+            excel.ExportDataToSheet<T>(list, true, AppName, FileName, saveDirectory);
         }
          
 

@@ -71,10 +71,9 @@ namespace DataManager_216
         }
 
 
-        private async void btn_DataViewer_Export_Click(object sender, EventArgs e)
+        private void btn_DataViewer_Export_Click(object sender, EventArgs e)
         {
-            
-            GeneralFormLibrary1.FormControls.DataGridViewExportToExcel<GeneralFormLibrary1.DataModels.Model_User>(dataGridView_DataViewer, GlobalAppProperties.Directroy_Downloads, GlobalAppProperties.AppName, "DataViewer", false);
+            GeneralFormLibrary1.FormControls.DataGridViewExportToExcel<GeneralFormLibrary1.DataModels.Model_User>(dataGridView_DataViewer, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.Directroy_Downloads, false);
         }
 
         private void dataGridView_DataViewer_CellContentClick(object sender, DataGridViewCellEventArgs e)
