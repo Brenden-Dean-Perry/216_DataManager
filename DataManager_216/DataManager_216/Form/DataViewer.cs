@@ -24,7 +24,8 @@ namespace DataManager_216
 
         private void frmDataViewer_Load(object sender, EventArgs e)
         {
-            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = GeneralFormLibrary1.DataAccess.GetDatabaseTableNames_Quant(GlobalAppProperties.GetCredentials());
+            GeneralFormLibrary1.DataAccess<GeneralFormLibrary1.DataModels.Model_TableName> dataAccess = new DataAccess<GeneralFormLibrary1.DataModels.Model_TableName>(GlobalAppProperties.GetCredentials());
+            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = dataAccess.GetDatabaseTableNames();
             GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataViewer_TableSelection, tables, "TableName");
             dataGridView_DataViewer.MouseClick += dataGridView_DataViewer_MouseClick;
         }
@@ -47,8 +48,8 @@ namespace DataManager_216
             status.Start();
 
             //Do task
-            SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> model = await Task.Run(() => GetData());
-            GeneralFormLibrary1.FormControls.AssignListToDataGridView<GeneralFormLibrary1.DataModels.Model_User>(dataGridView_DataViewer, model);
+            SortableBindingList<GeneralFormLibrary1.DataModels.Model_Country> model = await Task.Run(() => GetData());
+            GeneralFormLibrary1.FormControls.AssignListToDataGridView<GeneralFormLibrary1.DataModels.Model_Country>(dataGridView_DataViewer, model);
 
             //Cancel animation
             status.Cancel();
@@ -58,15 +59,10 @@ namespace DataManager_216
         }
 
 
-        private SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> GetData()
+        private async Task<SortableBindingList<GeneralFormLibrary1.DataModels.Model_Country>> GetData()
         {
-            SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> model = new SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>(GeneralFormLibrary1.DataAccess.GetDataList_PI_Users());
-            return model;
-        }
-
-        private SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> GetDataFromQuant()
-        {
-            SortableBindingList<GeneralFormLibrary1.DataModels.Model_User> model = new SortableBindingList<GeneralFormLibrary1.DataModels.Model_User>(GeneralFormLibrary1.DataAccess.GetDataList_Quant_Users(GlobalAppProperties.GetCredentials()));
+            GeneralFormLibrary1.DataAccess<GeneralFormLibrary1.DataModels.Model_Country> dataAccess = new DataAccess<GeneralFormLibrary1.DataModels.Model_Country>(GlobalAppProperties.GetCredentials());
+            SortableBindingList<GeneralFormLibrary1.DataModels.Model_Country> model = new SortableBindingList<GeneralFormLibrary1.DataModels.Model_Country>(await dataAccess.GetAll());
             return model;
         }
 

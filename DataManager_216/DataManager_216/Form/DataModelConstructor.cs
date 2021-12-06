@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GeneralFormLibrary1.DataModels;
 
 namespace DataManager_216
 {
@@ -19,7 +20,8 @@ namespace DataManager_216
 
         private void frmDataModelConstructor_Load(object sender, EventArgs e)
         {
-            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = GeneralFormLibrary1.DataAccess.GetDatabaseTableNames_Quant(GlobalAppProperties.GetCredentials());
+            GeneralFormLibrary1.DataAccess<GeneralFormLibrary1.DataModels.Model_TableName> dataAccess = new GeneralFormLibrary1.DataAccess<GeneralFormLibrary1.DataModels.Model_TableName>(GlobalAppProperties.GetCredentials());
+            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = dataAccess.GetDatabaseTableNames();
             GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataModelConstructor,tables,"TableName");
         }
 
@@ -29,7 +31,6 @@ namespace DataManager_216
             GeneralFormLibrary1.DataModels.Model_TableName model_TableName = new GeneralFormLibrary1.DataModels.Model_TableName();
             model_TableName.TableName = comboBox_DataModelConstructor.GetItemText(comboBox_DataModelConstructor.SelectedItem).Trim().Replace(" ", ";");
             tb_DataModelConstructor.Text = GeneralFormLibrary1.DatabaseAPI.BuildImpliedDataModel(GeneralFormLibrary1.DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), model_TableName);
-
         }
     }
 }

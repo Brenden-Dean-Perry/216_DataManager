@@ -27,9 +27,7 @@ namespace GeneralFormLibrary1
             else
             {
                 return ConfigurationManager.ConnectionStrings[connectionName].ConnectionString.Replace("/***username***/", credentials["username"]).Replace("/***password***/", credentials["password"]);
-            }
-
-            
+            }     
         }
 
         /// <summary>
@@ -112,6 +110,9 @@ namespace GeneralFormLibrary1
         {
             string ClassName = String.Empty;
             StringBuilder sb = new StringBuilder();
+            //Add table name
+            sb.Append("[Table(\"" + tableName.TableName + "\")]");
+            sb.Append(System.Environment.NewLine);
 
             //Add class name
             sb.Append("public class ");
@@ -135,6 +136,14 @@ namespace GeneralFormLibrary1
             List <DataModels.Model_TableDataStructure> columns = GetData_List<DataModels.Model_TableDataStructure>(connectionString, SQLquery, tableName);
             foreach(DataModels.Model_TableDataStructure column in columns)
             {
+                
+                if(column.ColumnName.ToLower() == "id")
+                {
+                    sb.Append("\t");
+                    sb.Append("[Key]");
+                    sb.Append(System.Environment.NewLine);
+                }
+
                 sb.Append("\t");
                 sb.Append("public ");
                 sb.Append(DataTypes.ConvertSqlDataTypeToCSharpDataType(column.DataType) + " ");
