@@ -57,14 +57,43 @@ namespace GeneralFormLibrary1
 
         public static void AssignListToComboBox<T>(ComboBox comboBox, List<T> list, string displayMember, string valueMember = null)
         {
-            comboBox.DataSource = list;
-            comboBox.DisplayMember = displayMember;
-
-            if (valueMember != null)
+            if(displayMember == null)
             {
-                comboBox.ValueMember = valueMember;
+                foreach (T item in list)
+                {
+                    comboBox.Items.Add(item.ToString());
+                }
             }
+            else
+            {
+                comboBox.DataSource = list;
+                comboBox.DisplayMember = displayMember;
 
+                if (valueMember != null)
+                {
+                    comboBox.ValueMember = valueMember;
+                }
+            }
+        }
+
+        public static string GetPathFromFileDirectory()
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if(System.IO.File.Exists(fileDialog.FileName))
+                {
+                    return fileDialog.FileName;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         public static void AssignListToDataGridView<T>(DataGridView dataGridView, IList<T> list, bool SetToReadOnly = true)

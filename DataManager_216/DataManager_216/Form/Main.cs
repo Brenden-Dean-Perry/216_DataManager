@@ -46,5 +46,11 @@ namespace DataManager_216
             frmDataModelConstructor modelConstructor = new frmDataModelConstructor();
             modelConstructor.Show();
         }
+
+        private void hasherToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmHasher hasher = new frmHasher();
+            hasher.Show();
+        }
     }
 }

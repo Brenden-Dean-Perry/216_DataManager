@@ -38,6 +38,8 @@ namespace DataManager_216
             this.aPIViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modelConstructorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
+            this.cryptographyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hasherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +57,8 @@ namespace DataManager_216
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dataToolStripMenuItem,
-            this.aPIsToolStripMenuItem});
+            this.aPIsToolStripMenuItem,
+            this.cryptographyToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1197, 28);
@@ -116,6 +119,21 @@ namespace DataManager_216
             this.webBrowser_Main_1.Size = new System.Drawing.Size(656, 391);
             this.webBrowser_Main_1.TabIndex = 0;
             // 
+            // cryptographyToolStripMenuItem
+            // 
+            this.cryptographyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hasherToolStripMenuItem});
+            this.cryptographyToolStripMenuItem.Name = "cryptographyToolStripMenuItem";
+            this.cryptographyToolStripMenuItem.Size = new System.Drawing.Size(113, 24);
+            this.cryptographyToolStripMenuItem.Text = "Cryptography";
+            // 
+            // hasherToolStripMenuItem
+            // 
+            this.hasherToolStripMenuItem.Name = "hasherToolStripMenuItem";
+            this.hasherToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.hasherToolStripMenuItem.Text = "Hasher";
+            this.hasherToolStripMenuItem.Click += new System.EventHandler(this.hasherToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -147,6 +165,8 @@ namespace DataManager_216
         private System.Windows.Forms.ToolStripMenuItem aPIViewerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modelConstructorToolStripMenuItem;
         private System.Windows.Forms.WebBrowser webBrowser_Main_1;
+        private System.Windows.Forms.ToolStripMenuItem cryptographyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hasherToolStripMenuItem;
     }
 }
 
