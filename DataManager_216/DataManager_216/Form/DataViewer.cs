@@ -36,7 +36,7 @@ namespace DataManager_216
             {
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
                 RightClickDropDownMenu dropDownMenu = new RightClickDropDownMenu(contextMenu, dataGridView_DataViewer, gridViewFilters);
-                dropDownMenu.Show(RightClickDropDownMenu.MenuOption.DefaultMenu, e);
+                dropDownMenu.Show(CustomRightClickMenu.DefaultMenu, e);
             }
         }
 

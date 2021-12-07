@@ -1,8 +1,6 @@
 ﻿namespace GeneralFormLibrary1
 {
-    public class ComparisonOperator
-    {
-        public enum Operator
+        public enum ComparisonOperator
         {
             Equals,
             DoNotEqual,
@@ -12,6 +10,4 @@
             GreaterThanOrEqualTo,
             Contains
         }
-
-    }
 }

@@ -167,15 +167,15 @@ namespace GeneralFormLibrary1
                     }
                     else
                     {
-                        if (filter.Operator == ComparisonOperator.Operator.Equals && dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().IndexOf(filter.FilterValue.ToString()) >= 0)
+                        if (filter.Operator == ComparisonOperator.Equals && dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().IndexOf(filter.FilterValue.ToString()) >= 0)
                         {
                             //Do nothing keep this visable
                         }
-                        else if (filter.Operator == ComparisonOperator.Operator.DoNotEqual && (dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value == null || dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().IndexOf(filter.FilterValue.ToString()) < 0))
+                        else if (filter.Operator == ComparisonOperator.DoNotEqual && (dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value == null || dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().IndexOf(filter.FilterValue.ToString()) < 0))
                         {
                             //Do nothing keep this visable
                         }
-                        else if (filter.Operator == ComparisonOperator.Operator.Contains && (dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().ToLower().Contains(filter.FilterValue.ToString().ToLower())))
+                        else if (filter.Operator == ComparisonOperator.Contains && (dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().ToLower().Contains(filter.FilterValue.ToString().ToLower())))
                         {
                             //Do nothing keep this visable
                         }
@@ -186,19 +186,19 @@ namespace GeneralFormLibrary1
                             if (Type.GetTypeCode(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.GetType()) == TypeCode.Double && Double.TryParse(filter.FilterValue.ToString(), out double FilterValue_Double) == true && Double.TryParse(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString(), out double CellValue_Double) == true)
                             {
                                 //Allow for >, >=, <, & <= operators here
-                                if (filter.Operator == ComparisonOperator.Operator.GreaterThan && CellValue_Double > FilterValue_Double)
+                                if (filter.Operator == ComparisonOperator.GreaterThan && CellValue_Double > FilterValue_Double)
                                 {
                                     //Do nothing keep this visable
                                 }
-                                else if (filter.Operator == ComparisonOperator.Operator.GreaterThanOrEqualTo && CellValue_Double >= FilterValue_Double)
+                                else if (filter.Operator == ComparisonOperator.GreaterThanOrEqualTo && CellValue_Double >= FilterValue_Double)
                                 {
                                     //Do nothing keep this visable
                                 }
-                                else if (filter.Operator == ComparisonOperator.Operator.LessThan && CellValue_Double < FilterValue_Double)
+                                else if (filter.Operator == ComparisonOperator.LessThan && CellValue_Double < FilterValue_Double)
                                 {
                                     //Do nothing keep this visable
                                 }
-                                else if (filter.Operator == ComparisonOperator.Operator.LessThanOrEqualTo && CellValue_Double <= FilterValue_Double)
+                                else if (filter.Operator == ComparisonOperator.LessThanOrEqualTo && CellValue_Double <= FilterValue_Double)
                                 {
                                     //Do nothing keep this visable
                                 }
@@ -210,19 +210,19 @@ namespace GeneralFormLibrary1
                             else if (Decimal.TryParse(filter.FilterValue.ToString(), out decimal FilterValue_Decimal) == true && Decimal.TryParse(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString(), out decimal CellValue_Decimal) == true)
                             {
                                 //Allow for >, >=, <, & <= operators here
-                                if (filter.Operator == ComparisonOperator.Operator.GreaterThan && CellValue_Decimal > FilterValue_Decimal)
+                                if (filter.Operator == ComparisonOperator.GreaterThan && CellValue_Decimal > FilterValue_Decimal)
                                 {
                                     //Do nothing keep this visable
                                 }
-                                else if (filter.Operator == ComparisonOperator.Operator.GreaterThanOrEqualTo && CellValue_Decimal >= FilterValue_Decimal)
+                                else if (filter.Operator == ComparisonOperator.GreaterThanOrEqualTo && CellValue_Decimal >= FilterValue_Decimal)
                                 {
                                     //Do nothing keep this visable
                                 }
-                                else if (filter.Operator == ComparisonOperator.Operator.LessThan && CellValue_Decimal < FilterValue_Decimal)
+                                else if (filter.Operator == ComparisonOperator.LessThan && CellValue_Decimal < FilterValue_Decimal)
                                 {
                                     //Do nothing keep this visable
                                 }
-                                else if (filter.Operator == ComparisonOperator.Operator.LessThanOrEqualTo && CellValue_Decimal <= FilterValue_Decimal)
+                                else if (filter.Operator == ComparisonOperator.LessThanOrEqualTo && CellValue_Decimal <= FilterValue_Decimal)
                                 {
                                     //Do nothing keep this visable
                                 }

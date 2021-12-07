@@ -12,10 +12,10 @@ namespace GeneralFormLibrary1.DataModels
         public DataGridView DataGridViewObj { get; set; }
         public int ColumnIndexToFilter { get; set; }
         public string FilterValue { get; set; }
-        public ComparisonOperator.Operator Operator { get; set; }
+        public ComparisonOperator Operator { get; set; }
         public TypeCode FilterValueDataType {get; set;}
 
-        public Model_DataGridViewFilter(DataGridView dataGridView, int columnIndexToFiler, ComparisonOperator.Operator comparisonOperator, string filterValue, TypeCode filterValueDataType)
+        public Model_DataGridViewFilter(DataGridView dataGridView, int columnIndexToFiler, ComparisonOperator comparisonOperator, string filterValue, TypeCode filterValueDataType)
         {
             DataGridViewObj = dataGridView;
             ColumnIndexToFilter = columnIndexToFiler;

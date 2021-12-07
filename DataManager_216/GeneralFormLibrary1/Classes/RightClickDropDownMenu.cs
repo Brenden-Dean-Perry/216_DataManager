@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace GeneralFormLibrary1
 {
-    public class RightClickDropDownMenu
+    public partial class RightClickDropDownMenu
     {
         private ContextMenuStrip contextMenuStrip { get; set; }
         private DataGridView currentDataGridView { get; set; }
@@ -34,13 +34,6 @@ namespace GeneralFormLibrary1
         private static string item_ClearColumnFilters { get; } = "Clear Column Filters";
         private static string item_URLSearch { get; } = "Search in Web browser...";
 
-        public enum MenuOption
-        {
-            DefaultMenu,
-            ClearAllFiltersOnly,
-            DefaultMenu_URL
-        }
-
         public RightClickDropDownMenu(ContextMenuStrip contextMenu, DataGridView dataGridView, List<DataModels.Model_DataGridViewFilter> gridViewFilters)
         {
             currentDataGridView = dataGridView;
@@ -48,7 +41,7 @@ namespace GeneralFormLibrary1
             contextMenuStrip = contextMenu;
         }
 
-        public void Show(RightClickDropDownMenu.MenuOption menuOption, MouseEventArgs e)
+        public void Show(CustomRightClickMenu menuOption, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Right)
             {
@@ -58,7 +51,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        private static List<string> GetRightClickMenuItems(MenuOption rightClickMenu, DataGridView dataGridView)
+        private static List<string> GetRightClickMenuItems(CustomRightClickMenu rightClickMenu, DataGridView dataGridView)
         {
             List<string> menuItems = new List<string>();
             bool ValueIsNumeric = false;
@@ -72,7 +65,7 @@ namespace GeneralFormLibrary1
             }
 
             //Add primary options
-            if(rightClickMenu == MenuOption.ClearAllFiltersOnly)
+            if(rightClickMenu == CustomRightClickMenu.ClearAllFiltersOnly)
             {
                 menuItems.Add(item_ClearAllFilters);
                 return menuItems;
@@ -96,7 +89,7 @@ namespace GeneralFormLibrary1
             }
 
             //Add intermediate values
-            if(rightClickMenu == MenuOption.DefaultMenu_URL)
+            if(rightClickMenu == CustomRightClickMenu.DefaultMenu_URL)
             {
                 menuItems.Add(item_URLSearch);
             }
@@ -110,7 +103,7 @@ namespace GeneralFormLibrary1
             return menuItems;
         }
 
-        private void Load_RightClickMenuItems(MenuOption rightClickMenu = MenuOption.DefaultMenu)
+        private void Load_RightClickMenuItems(CustomRightClickMenu rightClickMenu = CustomRightClickMenu.DefaultMenu)
         {
             bool nextItemIsSubMenu = false;
             bool nextItemIsSub_Sub_Menu = false;
@@ -190,7 +183,7 @@ namespace GeneralFormLibrary1
             else if (item.Text == item_Equals)
             {
                 //Add filter to filter list
-                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.Equals, filterValue, filterValueDataType);
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Equals, filterValue, filterValueDataType);
                 dataGridViewFilters.Add(gridViewFilter);
 
                 //Filter Value
@@ -202,7 +195,7 @@ namespace GeneralFormLibrary1
             else if (item.Text == item_DoesNotEqual)
             {
                 //Add filter to filter list
-                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.DoNotEqual, filterValue, filterValueDataType);
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.DoNotEqual, filterValue, filterValueDataType);
                 dataGridViewFilters.Add(gridViewFilter);
 
                 //Filter Value
@@ -214,7 +207,7 @@ namespace GeneralFormLibrary1
             else if (item.Text == item_GreaterThan)
             {
                 //Add filter to filter list
-                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.GreaterThan, filterValue, filterValueDataType);
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.GreaterThan, filterValue, filterValueDataType);
                 dataGridViewFilters.Add(gridViewFilter);
 
                 //Filter Value
@@ -226,7 +219,7 @@ namespace GeneralFormLibrary1
             else if (item.Text == item_GreaterThanOrEqualTo)
             {
                 //Add filter to filter list
-                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.GreaterThanOrEqualTo, filterValue, filterValueDataType);
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.GreaterThanOrEqualTo, filterValue, filterValueDataType);
                 dataGridViewFilters.Add(gridViewFilter);
 
                 //Filter Value
@@ -238,7 +231,7 @@ namespace GeneralFormLibrary1
             else if (item.Text == item_LessThan)
             {
                 //Add filter to filter list
-                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.LessThan, filterValue, filterValueDataType);
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.LessThan, filterValue, filterValueDataType);
                 dataGridViewFilters.Add(gridViewFilter);
 
                 //Filter Value
@@ -250,7 +243,7 @@ namespace GeneralFormLibrary1
             else if (item.Text == item_LessThanOrEqualTo)
             {
                 //Add filter to filter list
-                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.Operator.LessThanOrEqualTo, filterValue, filterValueDataType);
+                DataModels.Model_DataGridViewFilter gridViewFilter = new DataModels.Model_DataGridViewFilter(currentDataGridView, currentMouseOverColumnIndex, ComparisonOperator.LessThanOrEqualTo, filterValue, filterValueDataType);
                 dataGridViewFilters.Add(gridViewFilter);
 
                 //Filter Value
@@ -335,7 +328,7 @@ namespace GeneralFormLibrary1
             {
                 //Clear loaded items, reload with only the clear filter menu and show
                 contextMenuStrip.Items.Clear();
-                this.Load_RightClickMenuItems(MenuOption.ClearAllFiltersOnly);
+                this.Load_RightClickMenuItems(CustomRightClickMenu.ClearAllFiltersOnly);
                 contextMenuStrip.Show(currentDataGridView, new System.Drawing.Point(e.X, e.Y));
                 return;
             }
