@@ -142,7 +142,7 @@ namespace GeneralFormLibrary1
                 {
                     column.HeaderText = column.HeaderText.Substring(0, column.HeaderText.Length - FilterDesignation.Length);
                 }
-
+                
                 if(column.HeaderCell.Style.ForeColor == Color.Red)
                 {
                     column.HeaderCell.Style.ForeColor = Color.Black;
@@ -150,14 +150,13 @@ namespace GeneralFormLibrary1
             }
 
             //Add filter designations
-            foreach (DataModels.Model_DataGridViewFilter filterModel in dataGridViewFilters)
+            List<DataModels.Model_DataGridViewFilter> filtersForThisDGV = dataGridViewFilters.Where(person => person.DataGridViewObj == dataGridView).ToList();
+            List<int> columnIndexes = filtersForThisDGV.Select(x => x.ColumnIndexToFilter).Distinct().ToList();
+            foreach (int columnIndex in columnIndexes)
             {
-                if (filterModel.DataGridViewObj == dataGridView)
-                {
-                    DataGridViewColumn column = dataGridView.Columns[filterModel.ColumnIndexToFilter];
-                    column.HeaderText = column.HeaderText + FilterDesignation;
-                    column.HeaderCell.Style.ForeColor = Color.Red;
-                }
+                DataGridViewColumn column = dataGridView.Columns[columnIndex];
+                column.HeaderText = column.HeaderText + FilterDesignation;
+                column.HeaderCell.Style.ForeColor = Color.Red;
             }
         }
 

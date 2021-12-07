@@ -40,6 +40,11 @@ namespace DataManager_216
             }
         }
 
+        private void dataGridView_DataViewer_Sorted(object sender, EventArgs e)
+        {
+            GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, gridViewFilters);
+        }
+
         private async void btn_DataViewer_Search_Click(object sender, EventArgs e)
         {
             //Start status animation
@@ -76,5 +81,7 @@ namespace DataManager_216
         {
 
         }
+
+        
     }
 }

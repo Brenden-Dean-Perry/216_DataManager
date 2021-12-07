@@ -84,13 +84,12 @@ namespace GeneralFormLibrary1
                     menuItems.Add(item_LessThan);
                     menuItems.Add(item_LessThanOrEqualTo);
                 }
-
-                menuItems.Add(item_Seperator);
             }
 
             //Add intermediate values
             if(rightClickMenu == CustomRightClickMenu.DefaultMenu_URL)
             {
+                menuItems.Add(item_Seperator);
                 menuItems.Add(item_URLSearch);
             }
 

@@ -56,7 +56,6 @@ namespace GeneralFormLibrary1
             {
                 connection.Open();
                 var output = await connection.GetAllAsync<T>();
-                MessageBox.Show(output.Count().ToString());
                 return output.ToList();
             }
         }

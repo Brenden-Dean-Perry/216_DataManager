@@ -60,6 +60,7 @@ namespace DataManager_216
             this.dataGridView_DataViewer.Size = new System.Drawing.Size(1185, 690);
             this.dataGridView_DataViewer.TabIndex = 1;
             this.dataGridView_DataViewer.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_DataViewer_CellContentClick);
+            this.dataGridView_DataViewer.Sorted += new System.EventHandler(this.dataGridView_DataViewer_Sorted);
             // 
             // comboBox_DataViewer_TableSelection
             // 
