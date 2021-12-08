@@ -58,5 +58,11 @@ namespace DataManager_216
             frmAESEncryption aESEncryption = new frmAESEncryption();
             aESEncryption.Show();
         }
+
+        private void asymmeticEncryptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmRSAEncryption rsa = new frmRSAEncryption();
+            rsa.Show();
+        }
     }
 }
