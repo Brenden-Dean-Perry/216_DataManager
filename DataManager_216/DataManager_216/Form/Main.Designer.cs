@@ -40,6 +40,8 @@ namespace DataManager_216
             this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
             this.cryptographyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.symmetricEncryptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.asymmeticEncryptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -122,7 +124,9 @@ namespace DataManager_216
             // cryptographyToolStripMenuItem
             // 
             this.cryptographyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hasherToolStripMenuItem});
+            this.hasherToolStripMenuItem,
+            this.symmetricEncryptionToolStripMenuItem,
+            this.asymmeticEncryptionToolStripMenuItem});
             this.cryptographyToolStripMenuItem.Name = "cryptographyToolStripMenuItem";
             this.cryptographyToolStripMenuItem.Size = new System.Drawing.Size(113, 24);
             this.cryptographyToolStripMenuItem.Text = "Cryptography";
@@ -133,6 +137,18 @@ namespace DataManager_216
             this.hasherToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.hasherToolStripMenuItem.Text = "Hasher";
             this.hasherToolStripMenuItem.Click += new System.EventHandler(this.hasherToolStripMenuItem_Click);
+            // 
+            // symmetricEncryptionToolStripMenuItem
+            // 
+            this.symmetricEncryptionToolStripMenuItem.Name = "symmetricEncryptionToolStripMenuItem";
+            this.symmetricEncryptionToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
+            this.symmetricEncryptionToolStripMenuItem.Text = "Symmetric Encryption";
+            // 
+            // asymmeticEncryptionToolStripMenuItem
+            // 
+            this.asymmeticEncryptionToolStripMenuItem.Name = "asymmeticEncryptionToolStripMenuItem";
+            this.asymmeticEncryptionToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
+            this.asymmeticEncryptionToolStripMenuItem.Text = "Asymmetic Encryption";
             // 
             // frmMain
             // 
@@ -167,6 +183,8 @@ namespace DataManager_216
         private System.Windows.Forms.WebBrowser webBrowser_Main_1;
         private System.Windows.Forms.ToolStripMenuItem cryptographyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hasherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem symmetricEncryptionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem asymmeticEncryptionToolStripMenuItem;
     }
 }
 

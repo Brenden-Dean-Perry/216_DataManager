@@ -40,7 +40,7 @@ namespace DataManager_216
             }
             else
             {
-                tb_Hasher_HashedValue.Text = GeneralFormLibrary1.Cryptography.HashStringReturnHexadecimal(HashAlgorithm.Create(selectedAlgo), tb_Hasher_Text.Text);
+                tb_Hasher_HashedValue.Text = GeneralFormLibrary1.Cryptography.ByteArrayToHexadecimal(GeneralFormLibrary1.Cryptography.HashStringReturnByteArray(HashAlgorithm.Create(selectedAlgo), tb_Hasher_Text.Text));
             }
 
 
@@ -59,7 +59,7 @@ namespace DataManager_216
             {
                 if (System.IO.File.Exists(tb_Hasher_File.Text))
                 {
-                    tb_Hasher_HashedValue.Text = GeneralFormLibrary1.Cryptography.ByteArrayToHexadecimal(GeneralFormLibrary1.Cryptography.HashFile(HashAlgorithm.Create(selectedAlgo), tb_Hasher_File.Text));
+                    tb_Hasher_HashedValue.Text = GeneralFormLibrary1.Cryptography.ByteArrayToHexadecimal(GeneralFormLibrary1.Cryptography.HashFileReturnByteArray(HashAlgorithm.Create(selectedAlgo), tb_Hasher_File.Text));
                 }
             }
         }

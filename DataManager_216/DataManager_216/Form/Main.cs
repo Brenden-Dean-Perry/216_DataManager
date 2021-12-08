@@ -21,7 +21,7 @@ namespace DataManager_216
         private void Main_Load(object sender, EventArgs e)
         {
             this.Text = GlobalAppProperties.AppName;
-            LaunchBloombergTvStream();
+            //LaunchBloombergTvStream();
         }
 
         private void LaunchBloombergTvStream()
