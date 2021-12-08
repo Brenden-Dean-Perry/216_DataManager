@@ -120,7 +120,15 @@ namespace GeneralFormLibrary1
         /// <returns></returns>
         public static string ConvertByteArrayToString(byte[] value)
         {
-            return Encoding.UTF8.GetString(value);
+            if(value is null || value.Length == 0)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return Encoding.UTF8.GetString(value);
+            }
+            
         }
 
         /// <summary>
@@ -267,6 +275,13 @@ namespace GeneralFormLibrary1
             }
         }
 
+        /// <summary>
+        /// Encrypt a byte array using RSA
+        /// </summary>
+        /// <param name="DataToEncrypt">Data to Encrypt</param>
+        /// <param name="RSAKeyInfo">RSA key</param>
+        /// <param name="DoOAEPPadding"></param>
+        /// <returns></returns>
         public static byte[] RSAEncrypt(byte[] DataToEncrypt, RSAParameters RSAKeyInfo, bool DoOAEPPadding)
         {
             try
@@ -292,6 +307,13 @@ namespace GeneralFormLibrary1
             }
         }
 
+        /// <summary>
+        /// Decrypt a byte array using RSA
+        /// </summary>
+        /// <param name="DataToDecrypt">Data to decrypt</param>
+        /// <param name="RSAKeyInfo">RSA key</param>
+        /// <param name="DoOAEPPadding"></param>
+        /// <returns></returns>
         public static byte[] RSADecrypt(byte[] DataToDecrypt, RSAParameters RSAKeyInfo, bool DoOAEPPadding)
         {
             try
@@ -316,6 +338,65 @@ namespace GeneralFormLibrary1
                 return null;
             }
         }
+
+        /// <summary>
+        /// Gets RSA keys in XML format
+        /// </summary>
+        /// <param name="includePrivateParamaters">True will include private key info. False will only return public key</param>
+        /// <returns></returns>
+        public static string GenerateKeyInXMLFormat_RSA(bool includePrivateParamaters)
+        {
+            string key = string.Empty;
+            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+            {
+
+                try
+                {
+                     key = RSA.ToXmlString(includePrivateParamaters);
+                }
+                finally
+                {
+                    //Your computer stores a log of all keys you have ever generated. You need to set to false to avoid filling your disk
+                    RSA.PersistKeyInCsp = false;
+                }
+            }
+
+            return key;
+        }
+
+        /// <summary>
+        /// Loads RSA key value from XML format
+        /// </summary>
+        /// <param name="xml_key"></param>
+        /// <param name="includePrivateParamaters"></param>
+        /// <returns></returns>
+        public static RSAParameters LoadKeyFromXMLFormat_RSA(string xml_key, bool includePrivateParamaters)
+        {
+            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+            {
+                try
+                {
+                    RSA.FromXmlString(xml_key);
+
+                    if (xml_key == RSA.ToXmlString(true))
+                    {
+                        MessageBox.Show("Key imported successfully");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Key failed to import");
+                    }
+                }
+                finally
+                {
+                    //Your computer stores a log of all keys you have ever generated. You need to set to false to avoid filling your disk
+                    RSA.PersistKeyInCsp = false;
+                }
+
+                return RSA.ExportParameters(includePrivateParamaters);
+            }
+        }
+
     }
 
 

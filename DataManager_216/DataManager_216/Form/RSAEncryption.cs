@@ -15,8 +15,6 @@ namespace DataManager_216
     {
         private RSAParameters _privateKey;
         private RSAParameters _publicKey;
-        private string _privateKeyString;
-        private string _publicKeyString;
         public frmRSAEncryption()
         {
             InitializeComponent();
@@ -24,27 +22,24 @@ namespace DataManager_216
 
         private void btn_RSA_GenerateKeys_Click(object sender, EventArgs e)
         {
-            using(RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
-            {
+            tb_RSA_PrivateKey.Text = GeneralFormLibrary1.Cryptography.GenerateKeyInXMLFormat_RSA(true);
+        }
 
-                try
-                {
-                    // Do something with the key...
-                    _publicKey = RSA.ExportParameters(false);
-                    _privateKey = RSA.ExportParameters(true);
-                    _publicKeyString = RSA.ToXmlString(false);
-                    _privateKeyString = RSA.ToXmlString(true);
-                }
-                finally
-                {
-                    //Your computer stores a log of all keys you have ever generated. You need to set to false to avoid filling your disk
-                    RSA.PersistKeyInCsp = false;
-                }
+        private void btn_RSA_LoadKeys_Click(object sender, EventArgs e)
+        {
+            _privateKey = GeneralFormLibrary1.Cryptography.LoadKeyFromXMLFormat_RSA(tb_RSA_PrivateKey.Text, true);
+        }
 
-                tb_RSA_PrivateKey.Text = _privateKeyString;
-                tb_RSA_PublicKey.Text = _publicKeyString;
+        private void btn_RSA_Encrypt_Click(object sender, EventArgs e)
+        {
+            byte[] message = GeneralFormLibrary1.Cryptography.ConvertStringToByteArray(tb_RSA_Message.Text);
+            tb_RSA_CipherText.Text = GeneralFormLibrary1.Cryptography.ConvertByteArrayToHexadecimalString(GeneralFormLibrary1.Cryptography.RSAEncrypt(message, _publicKey, false));
+        }
 
-            }
+        private void btn_RSA_Decrypt_Click(object sender, EventArgs e)
+        {
+            byte[] encryptedMessage = GeneralFormLibrary1.Cryptography.ConvertHexadecimalStringToByteArray(tb_RSA_CipherText.Text);
+            tb_RSA_DecryptedMessage.Text = GeneralFormLibrary1.Cryptography.ConvertByteArrayToString(GeneralFormLibrary1.Cryptography.RSADecrypt(encryptedMessage, _privateKey, false));
         }
     }
 }
