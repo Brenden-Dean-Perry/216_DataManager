@@ -52,5 +52,11 @@ namespace DataManager_216
             frmHasher hasher = new frmHasher();
             hasher.Show();
         }
+
+        private void symmetricEncryptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmAESEncryption aESEncryption = new frmAESEncryption();
+            aESEncryption.Show();
+        }
     }
 }

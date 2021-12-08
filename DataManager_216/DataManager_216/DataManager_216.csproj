@@ -131,6 +131,12 @@
     <Compile Include="Form\Template.Designer.cs">
       <DependentUpon>Template.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\AESEncryption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\AESEncryption.Designer.cs">
+      <DependentUpon>AESEncryption.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form\DataModelConstructor.resx">
       <DependentUpon>DataModelConstructor.cs</DependentUpon>
     </EmbeddedResource>
@@ -148,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Hasher.resx">
       <DependentUpon>Hasher.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\AESEncryption.resx">
+      <DependentUpon>AESEncryption.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -141,8 +141,9 @@ namespace DataManager_216
             // symmetricEncryptionToolStripMenuItem
             // 
             this.symmetricEncryptionToolStripMenuItem.Name = "symmetricEncryptionToolStripMenuItem";
-            this.symmetricEncryptionToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
-            this.symmetricEncryptionToolStripMenuItem.Text = "Symmetric Encryption";
+            this.symmetricEncryptionToolStripMenuItem.Size = new System.Drawing.Size(276, 26);
+            this.symmetricEncryptionToolStripMenuItem.Text = "Symmetric Encryption - AES";
+            this.symmetricEncryptionToolStripMenuItem.Click += new System.EventHandler(this.symmetricEncryptionToolStripMenuItem_Click);
             // 
             // asymmeticEncryptionToolStripMenuItem
             // 
