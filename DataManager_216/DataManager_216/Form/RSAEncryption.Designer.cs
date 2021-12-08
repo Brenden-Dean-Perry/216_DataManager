@@ -1,7 +1,7 @@
 ﻿
 namespace DataManager_216
 {
-    partial class Template
+    partial class RSAEncryption
     {
         /// <summary>
         /// Required designer variable.
@@ -29,35 +29,20 @@ namespace DataManager_216
         /// </summary>
         private void InitializeComponent()
         {
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.SuspendLayout();
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 782);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1141, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // Template
+            // RSAEncryption
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.ClientSize = new System.Drawing.Size(1141, 804);
-            this.Controls.Add(this.statusStrip1);
-            this.Name = "Template";
-            this.Text = "Template";
-            this.Load += new System.EventHandler(this.Template_Load);
+            this.ClientSize = new System.Drawing.Size(1407, 934);
+            this.Name = "RSAEncryption";
+            this.Text = "RSAEncryption";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.StatusStrip statusStrip1;
     }
 }

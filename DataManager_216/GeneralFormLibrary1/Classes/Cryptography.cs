@@ -80,7 +80,7 @@ namespace GeneralFormLibrary1
         /// </summary>
         /// <param name="array">Byte array to convert</param>
         /// <returns></returns>
-        public static string ByteArrayToHexadecimal(byte[] array)
+        public static string ConvertByteArrayToHexadecimalString(byte[] array)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < array.Length; i++)
@@ -91,13 +91,26 @@ namespace GeneralFormLibrary1
         }
 
         /// <summary>
+        /// Converts a hexadecimal string into a byte array
+        /// </summary>
+        /// <param name="hex">Hexadecimal string value</param>
+        /// <returns></returns>
+        public static byte[] ConvertHexadecimalStringToByteArray(string hexString)
+        {
+            return Enumerable.Range(0, hexString.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hexString.Substring(x, 2), 16))
+                             .ToArray();
+        }
+
+        /// <summary>
         /// Converts a string into a byte array
         /// </summary>
         /// <param name="value">String to convert to byte array</param>
         /// <returns></returns>
-        public static byte[] StringToByteArray(string value)
+        public static byte[] ConvertStringToByteArray(string value)
         {
-            return Encoding.ASCII.GetBytes(value);
+            return Encoding.UTF8.GetBytes(value);
         }
 
         /// <summary>
@@ -105,9 +118,9 @@ namespace GeneralFormLibrary1
         /// </summary>
         /// <param name="value">Byte array to convert</param>
         /// <returns></returns>
-        public static string ByteArrayToString(byte[] value)
+        public static string ConvertByteArrayToString(byte[] value)
         {
-            return Encoding.ASCII.GetString(value);
+            return Encoding.UTF8.GetString(value);
         }
 
         /// <summary>
@@ -117,7 +130,7 @@ namespace GeneralFormLibrary1
         /// <param name="Key">The shared secret password</param>
         /// <param name="IV">Initialization vector used to inject randomness into the encyption algorithim. Warning: this should be different with each message you send. Do not reuse IVs!</param>
         /// <returns></returns>
-        public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
+        public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV, int KeySizeInBits = 256)
         {
             // Check arguments.
             if (plainText == null || plainText.Length <= 0)
@@ -131,6 +144,9 @@ namespace GeneralFormLibrary1
             // Create an Aes object with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
+                aesAlg.KeySize = KeySizeInBits;
+                aesAlg.Mode = CipherMode.ECB;
+                aesAlg.Padding = PaddingMode.ISO10126;
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
@@ -162,7 +178,7 @@ namespace GeneralFormLibrary1
         /// <param name="Key">The shared secret password</param>
         /// <param name="IV">Initialization vector used to inject randomness into the encyption algorithim.</param>
         /// <returns></returns>
-        public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
+        public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV, int KeySizeInBits)
         {
             // Check arguments.
             if (cipherText == null || cipherText.Length <= 0)
@@ -178,6 +194,9 @@ namespace GeneralFormLibrary1
             // Create an Aes object with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
+                aesAlg.KeySize = KeySizeInBits;
+                aesAlg.Mode = CipherMode.ECB;
+                aesAlg.Padding = PaddingMode.ISO10126;
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
@@ -192,8 +211,7 @@ namespace GeneralFormLibrary1
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                         {
 
-                            // Read the decrypted bytes from the decrypting stream
-                            // and place them in a string.
+                            // Read the decrypted bytes from the decrypting stream and place them in a string.
                             plaintext = srDecrypt.ReadToEnd();
                         }
                     }
@@ -201,5 +219,105 @@ namespace GeneralFormLibrary1
             }
             return plaintext;
         }
+
+        /// <summary>
+        /// Generate random key and returns the byte array
+        /// </summary>
+        /// <param name="KeySizeInBits">Key Size in bits</param>
+        /// <returns></returns>
+        public static byte[] GenerateRandomKeyByteArray_Aes(int KeySizeInBits)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                KeySizes[] ks = aesAlg.LegalKeySizes;
+                int minSize = 0;
+                int maxSize = 0;
+                foreach(KeySizes k in ks)
+                {
+                    minSize = k.MinSize;
+                    maxSize = k.MaxSize;
+                }
+
+                if (aesAlg.ValidKeySize(KeySizeInBits))
+                {
+                    aesAlg.KeySize = KeySizeInBits;
+                }
+                else
+                {
+                    MessageBox.Show(null, "Invalid key size. Min: " + minSize.ToString() + " | Max: " + maxSize.ToString() , "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    byte[] byt = new byte[0];
+                    return byt;
+                }    
+
+                aesAlg.GenerateKey();
+                return aesAlg.Key;
+            }
+        }
+
+        /// <summary>
+        /// Generates random Initialization vector and returns byte array
+        /// </summary>
+        /// <returns></returns>
+        public static byte[] GenerateRandomIVByteArray_Aes()
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.GenerateIV();
+                return aesAlg.IV;
+            }
+        }
+
+        public static byte[] RSAEncrypt(byte[] DataToEncrypt, RSAParameters RSAKeyInfo, bool DoOAEPPadding)
+        {
+            try
+            {
+                byte[] encryptedData;
+                //Create a new instance of RSACryptoServiceProvider.
+                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+                {
+
+                    //Import the RSA Key information. This only needs to include the public key information.
+                    RSA.ImportParameters(RSAKeyInfo);
+
+                    //Encrypt the passed byte array and specify OAEP padding OAEP padding is only available on Microsoft Windows XP or later.  
+                    encryptedData = RSA.Encrypt(DataToEncrypt, DoOAEPPadding);
+                }
+                return encryptedData;
+            }
+            //Catch and display a CryptographicException to the console.
+            catch (CryptographicException e)
+            {
+                MessageBox.Show(e.Message);
+                return null;
+            }
+        }
+
+        public static byte[] RSADecrypt(byte[] DataToDecrypt, RSAParameters RSAKeyInfo, bool DoOAEPPadding)
+        {
+            try
+            {
+                byte[] decryptedData;
+                //Create a new instance of RSACryptoServiceProvider.
+                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+                {
+                    //Import the RSA Key information. This needs
+                    //to include the private key information.
+                    RSA.ImportParameters(RSAKeyInfo);
+
+                    //Decrypt the passed byte array and specify OAEP padding OAEP padding is only available on Microsoft Windows XP or later.  
+                    decryptedData = RSA.Decrypt(DataToDecrypt, DoOAEPPadding);
+                }
+                return decryptedData;
+            }
+            //Catch and display a CryptographicException to the console.
+            catch (CryptographicException e)
+            {
+                MessageBox.Show(e.ToString());
+                return null;
+            }
+        }
     }
+
+
+}
 }

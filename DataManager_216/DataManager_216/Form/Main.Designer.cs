@@ -148,8 +148,8 @@ namespace DataManager_216
             // asymmeticEncryptionToolStripMenuItem
             // 
             this.asymmeticEncryptionToolStripMenuItem.Name = "asymmeticEncryptionToolStripMenuItem";
-            this.asymmeticEncryptionToolStripMenuItem.Size = new System.Drawing.Size(239, 26);
-            this.asymmeticEncryptionToolStripMenuItem.Text = "Asymmetic Encryption";
+            this.asymmeticEncryptionToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
+            this.asymmeticEncryptionToolStripMenuItem.Text = "Asymmetic Encryption - RSA";
             // 
             // frmMain
             // 

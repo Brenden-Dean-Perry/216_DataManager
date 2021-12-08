@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace DataManager_216
 {
-    public partial class Template : Form
+    public partial class RSAEncryption : Form
     {
-        public Template()
+        public RSAEncryption()
         {
             InitializeComponent();
-        }
-
-        private void Template_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
