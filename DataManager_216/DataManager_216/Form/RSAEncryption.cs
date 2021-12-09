@@ -22,12 +22,27 @@ namespace DataManager_216
 
         private void btn_RSA_GenerateKeys_Click(object sender, EventArgs e)
         {
-            tb_RSA_PrivateKey.Text = GeneralFormLibrary1.Cryptography.GenerateKeyInXMLFormat_RSA(true);
+            GeneralFormLibrary1.Cryptography crypto = new GeneralFormLibrary1.Cryptography();
+            crypto.GenerateKeys_RSA(512);
+            tb_RSA_PrivateKey.Text = crypto.GetKeyInXMLFormat_RSA(true);
+            tb_RSA_PublicKey.Text = crypto.GetKeyInXMLFormat_RSA(false);
         }
 
         private void btn_RSA_LoadKeys_Click(object sender, EventArgs e)
         {
-            _privateKey = GeneralFormLibrary1.Cryptography.LoadKeyFromXMLFormat_RSA(tb_RSA_PrivateKey.Text, true);
+            GeneralFormLibrary1.Cryptography crypto = new GeneralFormLibrary1.Cryptography();
+            tb_RSA_PublicKey.Text = tb_RSA_PublicKey.Text.Trim();
+            tb_RSA_PrivateKey.Text = tb_RSA_PrivateKey.Text.Trim();
+
+            if (!String.IsNullOrEmpty(tb_RSA_PublicKey.Text))
+            {
+                _publicKey = crypto.LoadKeyFromXMLFormat_RSA(tb_RSA_PublicKey.Text, false);
+            }
+
+            if (!String.IsNullOrEmpty(tb_RSA_PrivateKey.Text))
+            {
+                _privateKey = crypto.LoadKeyFromXMLFormat_RSA(tb_RSA_PrivateKey.Text, true);
+            }
         }
 
         private void btn_RSA_Encrypt_Click(object sender, EventArgs e)

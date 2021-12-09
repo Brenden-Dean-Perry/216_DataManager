@@ -10,8 +10,10 @@ using System.Reflection;
 
 namespace GeneralFormLibrary1
 {
-    public static class Cryptography
+    public class Cryptography
     {
+        RSACryptoServiceProvider RSAConnection { get; set; }
+
         /// <summary>
         /// Hashes a file and returns the byte array of the hash output
         /// </summary>
@@ -340,61 +342,105 @@ namespace GeneralFormLibrary1
         }
 
         /// <summary>
-        /// Gets RSA keys in XML format
+        /// Generate instance of random RSA keys
+        /// </summary>
+        /// <param name="keySizeInBits">Specified key size in bits</param>
+        public void GenerateKeys_RSA(int keySizeInBits)
+        {
+            RSAConnection = null;
+            RSAConnection.Dispose();
+
+            RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
+            try
+            {
+                KeySizes[] ks = RSA.LegalKeySizes;
+                int minSize = 0;
+                int maxSize = 0;
+                foreach (KeySizes k in ks)
+                {
+                    minSize = k.MinSize;
+                    maxSize = k.MaxSize;
+                }
+
+                if (keySizeInBits >= minSize && keySizeInBits <= maxSize)
+                {
+                    if(keySizeInBits % 8 == 0)
+                    {
+                        RSA.KeySize = keySizeInBits;
+                    }
+                    else
+                    {
+                        MessageBox.Show(null, "Invalid key size. Must be divisiable by 8", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show(null, "Invalid key size. Min: " + minSize.ToString() + " | Max: " + maxSize.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                RSAConnection = RSA;
+            }
+            finally
+            {
+                //Your computer stores a log of all keys you have ever generated. You need to set to false to avoid filling your disk
+                RSAConnection.PersistKeyInCsp = false;
+            }
+        }
+
+        /// <summary>
+        /// Gets RSA key in XML format from instance of class
         /// </summary>
         /// <param name="includePrivateParamaters">True will include private key info. False will only return public key</param>
         /// <returns></returns>
-        public static string GenerateKeyInXMLFormat_RSA(bool includePrivateParamaters)
+        public string GetKeyInXMLFormat_RSA(bool includePrivateParamaters)
         {
             string key = string.Empty;
-            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+            try
             {
-
-                try
-                {
-                     key = RSA.ToXmlString(includePrivateParamaters);
-                }
-                finally
-                {
-                    //Your computer stores a log of all keys you have ever generated. You need to set to false to avoid filling your disk
-                    RSA.PersistKeyInCsp = false;
-                }
+                key = RSAConnection.ToXmlString(includePrivateParamaters);
+            }
+            finally
+            {
+                //Your computer stores a log of all keys you have ever generated. You need to set to false to avoid filling your disk
+                RSAConnection.PersistKeyInCsp = false;
             }
 
             return key;
         }
 
         /// <summary>
-        /// Loads RSA key value from XML format
+        /// Loads RSA key values into class instance from XML format
         /// </summary>
-        /// <param name="xml_key"></param>
-        /// <param name="includePrivateParamaters"></param>
+        /// <param name="xml_key">Key in XLM format</param>
+        /// <param name="includePrivateParamaters">True will include private key info. False will only return public key</param>
         /// <returns></returns>
-        public static RSAParameters LoadKeyFromXMLFormat_RSA(string xml_key, bool includePrivateParamaters)
+        public RSAParameters LoadKeyFromXMLFormat_RSA(string xml_key, bool includePrivateParamaters)
         {
-            using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+            RSAConnection = null;
+            RSAConnection.Dispose();
+            RSAConnection = new RSACryptoServiceProvider();
+
+            try
             {
-                try
-                {
-                    RSA.FromXmlString(xml_key);
+                RSAConnection.FromXmlString(xml_key);
 
-                    if (xml_key == RSA.ToXmlString(true))
-                    {
-                        MessageBox.Show("Key imported successfully");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Key failed to import");
-                    }
-                }
-                finally
+                if (xml_key == RSAConnection.ToXmlString(includePrivateParamaters))
                 {
-                    //Your computer stores a log of all keys you have ever generated. You need to set to false to avoid filling your disk
-                    RSA.PersistKeyInCsp = false;
+                    MessageBox.Show("Key imported successfully");
                 }
-
-                return RSA.ExportParameters(includePrivateParamaters);
+                else
+                {
+                    MessageBox.Show("Key failed to import");
+                }
             }
+            finally
+            {
+                //Your computer stores a log of all keys you have ever generated. You need to set to false to avoid filling your disk
+                RSAConnection.PersistKeyInCsp = false;
+            }
+
+            return RSAConnection.ExportParameters(includePrivateParamaters);
         }
 
     }
