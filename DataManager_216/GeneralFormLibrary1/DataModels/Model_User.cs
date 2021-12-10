@@ -14,13 +14,22 @@ namespace GeneralFormLibrary1.DataModels
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
+        public string SystemName { get; set; }
 
         public Model_User()
         {
 
         }
-        
-        
+
+        public Model_User(string firstName, string lastName, string email, string systemName)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            SystemName = systemName;
+        }
+
     }
 }
 

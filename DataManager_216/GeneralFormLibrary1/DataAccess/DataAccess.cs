@@ -30,12 +30,32 @@ namespace GeneralFormLibrary1
             }
         }
 
+        public async Task<int> Add(List<T> entity)
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
+            {
+                connection.Open();
+                var output = await connection.InsertAsync<List<T>>(entity);
+                return output;
+            }
+        }
+
         public async Task<bool> Delete(T entity)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
                 connection.Open();
                 var output = await connection.DeleteAsync<T>(entity);
+                return output;
+            }
+        }
+
+        public async Task<bool> Delete(List<T> entity)
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
+            {
+                connection.Open();
+                var output = await connection.DeleteAsync<List<T>>(entity);
                 return output;
             }
         }
@@ -67,6 +87,17 @@ namespace GeneralFormLibrary1
 
                 connection.Open();
                 var output = await connection.UpdateAsync<T>(entity);
+                return output;
+            }
+        }
+
+        public async Task<bool> Update(List<T> entity)
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
+            {
+
+                connection.Open();
+                var output = await connection.UpdateAsync<List<T>>(entity);
                 return output;
             }
         }

@@ -33,7 +33,7 @@ namespace DataManager_216
             this.dataGridView_DataViewer = new System.Windows.Forms.DataGridView();
             this.comboBox_DataViewer_TableSelection = new System.Windows.Forms.ComboBox();
             this.btn_DataViewer_Search = new System.Windows.Forms.Button();
-            this.btn_DataViewer_Export = new System.Windows.Forms.Button();
+            this.checkBox_DataViewer_AllowEdit = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_DataViewer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,6 +48,7 @@ namespace DataManager_216
             // 
             // dataGridView_DataViewer
             // 
+            this.dataGridView_DataViewer.AllowUserToOrderColumns = true;
             this.dataGridView_DataViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -60,7 +61,9 @@ namespace DataManager_216
             this.dataGridView_DataViewer.Size = new System.Drawing.Size(1185, 690);
             this.dataGridView_DataViewer.TabIndex = 1;
             this.dataGridView_DataViewer.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_DataViewer_CellContentClick);
+            this.dataGridView_DataViewer.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_DataViewer_RowLeave);
             this.dataGridView_DataViewer.Sorted += new System.EventHandler(this.dataGridView_DataViewer_Sorted);
+            this.dataGridView_DataViewer.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridView_DataViewer_UserAddedRow);
             // 
             // comboBox_DataViewer_TableSelection
             // 
@@ -81,15 +84,18 @@ namespace DataManager_216
             this.btn_DataViewer_Search.UseVisualStyleBackColor = true;
             this.btn_DataViewer_Search.Click += new System.EventHandler(this.btn_DataViewer_Search_Click);
             // 
-            // btn_DataViewer_Export
+            // checkBox_DataViewer_AllowEdit
             // 
-            this.btn_DataViewer_Export.Location = new System.Drawing.Point(418, 13);
-            this.btn_DataViewer_Export.Name = "btn_DataViewer_Export";
-            this.btn_DataViewer_Export.Size = new System.Drawing.Size(75, 30);
-            this.btn_DataViewer_Export.TabIndex = 4;
-            this.btn_DataViewer_Export.Text = "Export";
-            this.btn_DataViewer_Export.UseVisualStyleBackColor = true;
-            this.btn_DataViewer_Export.Click += new System.EventHandler(this.btn_DataViewer_Export_Click);
+            this.checkBox_DataViewer_AllowEdit.AutoSize = true;
+            this.checkBox_DataViewer_AllowEdit.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_DataViewer_AllowEdit.ForeColor = System.Drawing.Color.White;
+            this.checkBox_DataViewer_AllowEdit.Location = new System.Drawing.Point(428, 16);
+            this.checkBox_DataViewer_AllowEdit.Name = "checkBox_DataViewer_AllowEdit";
+            this.checkBox_DataViewer_AllowEdit.Size = new System.Drawing.Size(104, 24);
+            this.checkBox_DataViewer_AllowEdit.TabIndex = 4;
+            this.checkBox_DataViewer_AllowEdit.Text = "Allow Edit";
+            this.checkBox_DataViewer_AllowEdit.UseVisualStyleBackColor = true;
+            this.checkBox_DataViewer_AllowEdit.CheckedChanged += new System.EventHandler(this.checkBox_DataViewer_AllowEdit_CheckedChanged);
             // 
             // frmDataViewer
             // 
@@ -97,7 +103,7 @@ namespace DataManager_216
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.ClientSize = new System.Drawing.Size(1209, 784);
-            this.Controls.Add(this.btn_DataViewer_Export);
+            this.Controls.Add(this.checkBox_DataViewer_AllowEdit);
             this.Controls.Add(this.btn_DataViewer_Search);
             this.Controls.Add(this.comboBox_DataViewer_TableSelection);
             this.Controls.Add(this.dataGridView_DataViewer);
@@ -117,6 +123,6 @@ namespace DataManager_216
         private System.Windows.Forms.DataGridView dataGridView_DataViewer;
         private System.Windows.Forms.ComboBox comboBox_DataViewer_TableSelection;
         private System.Windows.Forms.Button btn_DataViewer_Search;
-        private System.Windows.Forms.Button btn_DataViewer_Export;
+        private System.Windows.Forms.CheckBox checkBox_DataViewer_AllowEdit;
     }
 }

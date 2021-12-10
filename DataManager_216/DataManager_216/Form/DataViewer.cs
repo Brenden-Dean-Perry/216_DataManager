@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 using GeneralFormLibrary1;
+using GeneralFormLibrary1.DataModels;
 
 namespace DataManager_216
 {
@@ -16,7 +17,8 @@ namespace DataManager_216
     {
         private delegate void InvokeDelegate();
         private List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter> gridViewFilters = new List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter>();
-
+        private bool RowNeedsInsert {get; set;}
+        private int PriorRowIndex { get; set; }
         public frmDataViewer()
         {
             InitializeComponent();
@@ -24,6 +26,7 @@ namespace DataManager_216
 
         private void frmDataViewer_Load(object sender, EventArgs e)
         {
+            checkBox_DataViewer_AllowEdit.Checked = false;
             GeneralFormLibrary1.DataAccess<GeneralFormLibrary1.DataModels.Model_TableName> dataAccess = new DataAccess<GeneralFormLibrary1.DataModels.Model_TableName>(GlobalAppProperties.GetCredentials());
             List<GeneralFormLibrary1.DataModels.Model_TableName> tables = dataAccess.GetDatabaseTableNames();
             GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataViewer_TableSelection, tables, "TableName");
@@ -35,8 +38,8 @@ namespace DataManager_216
             if(e.Button == MouseButtons.Right)
             {
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
-                RightClickDropDownMenu dropDownMenu = new RightClickDropDownMenu(contextMenu, dataGridView_DataViewer, gridViewFilters);
-                dropDownMenu.Show(CustomRightClickMenu.DefaultMenu, e);
+                RightClickDropDownMenu<Model_User> dropDownMenu = new RightClickDropDownMenu<Model_User>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer",GlobalAppProperties.GetCredentials());
+                dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
             }
         }
 
@@ -53,8 +56,8 @@ namespace DataManager_216
             status.Start();
 
             //Do task
-            SortableBindingList<GeneralFormLibrary1.DataModels.Model_Country> model = await Task.Run(() => GetData());
-            GeneralFormLibrary1.FormControls.AssignListToDataGridView<GeneralFormLibrary1.DataModels.Model_Country>(dataGridView_DataViewer, model);
+            SortableBindingList<Model_User> model = await Task.Run(() => GetData());
+            GeneralFormLibrary1.FormControls.AssignListToDataGridView<Model_User>(dataGridView_DataViewer, model, true);
 
             //Cancel animation
             status.Cancel();
@@ -64,17 +67,11 @@ namespace DataManager_216
         }
 
 
-        private async Task<SortableBindingList<GeneralFormLibrary1.DataModels.Model_Country>> GetData()
+        private async Task<SortableBindingList<Model_User>> GetData()
         {
-            GeneralFormLibrary1.DataAccess<GeneralFormLibrary1.DataModels.Model_Country> dataAccess = new DataAccess<GeneralFormLibrary1.DataModels.Model_Country>(GlobalAppProperties.GetCredentials());
-            SortableBindingList<GeneralFormLibrary1.DataModels.Model_Country> model = new SortableBindingList<GeneralFormLibrary1.DataModels.Model_Country>(await dataAccess.GetAll());
+            GeneralFormLibrary1.DataAccess<Model_User> dataAccess = new DataAccess<Model_User>(GlobalAppProperties.GetCredentials());
+            SortableBindingList<Model_User> model = new SortableBindingList<Model_User>(await dataAccess.GetAll());
             return model;
-        }
-
-
-        private void btn_DataViewer_Export_Click(object sender, EventArgs e)
-        {
-            GeneralFormLibrary1.FormControls.DataGridViewExportToExcel<GeneralFormLibrary1.DataModels.Model_User>(dataGridView_DataViewer, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.Directroy_Downloads, false);
         }
 
         private void dataGridView_DataViewer_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -82,6 +79,58 @@ namespace DataManager_216
 
         }
 
-        
+        private void dataGridView_DataViewer_UserAddedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            RowNeedsInsert = true;
+        }
+
+        private async void dataGridView_DataViewer_RowLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                //Store reference to inserted row index
+                PriorRowIndex = dataGridView_DataViewer.CurrentRow.Index;
+
+                //Snap to the next rows first cell to ensure all values are accepted into the datagridview
+                dataGridView_DataViewer.CurrentCell = dataGridView_DataViewer.Rows[PriorRowIndex].Cells[0];
+            }
+            catch
+            {
+                PriorRowIndex = -2;
+            }
+
+            if (RowNeedsInsert)
+            {
+                Model_User newItem = GeneralFormLibrary1.FormControls.DataGridViewToObject<Model_User>(dataGridView_DataViewer, PriorRowIndex);
+                GeneralFormLibrary1.DataAccess<Model_User> dataAccess = new DataAccess<Model_User>(GlobalAppProperties.GetCredentials());
+                int recordID = await dataAccess.Add(newItem);
+
+                if(recordID > 0)
+                {
+                    MessageBox.Show("Record inserted");
+                }
+                else
+                {
+                    MessageBox.Show("Record failed to insert");
+                }
+
+                RowNeedsInsert = false;
+            }
+        }
+
+        private void checkBox_DataViewer_AllowEdit_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBox_DataViewer_AllowEdit.Checked == true)
+            {
+                //Unlock
+                GeneralFormLibrary1.FormControls.DataGridViewMakeUneditable(dataGridView_DataViewer, false, false);
+            }
+            else
+            {
+                //Lock
+                dataGridView_DataViewer.AllowUserToAddRows = false;
+                GeneralFormLibrary1.FormControls.DataGridViewMakeUneditable(dataGridView_DataViewer, true, true);
+            }
+        }
     }
 }

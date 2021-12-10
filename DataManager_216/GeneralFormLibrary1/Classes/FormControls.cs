@@ -116,7 +116,6 @@ namespace GeneralFormLibrary1
             //Format and settings
             dataGridView.RowHeadersWidth = 25;
             SetDoubleBuffered(dataGridView);
-            dataGridView.AllowUserToAddRows = false;
             dataGridView.AllowUserToResizeRows = true;
             dataGridView.AllowUserToResizeColumns = true;
             dataGridView.AllowUserToOrderColumns = true;
@@ -124,6 +123,14 @@ namespace GeneralFormLibrary1
             dataGridView.EnableHeadersVisualStyles = false;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
 
+            DataGridViewMakeUneditable(dataGridView, SetToReadOnly);
+
+        }
+
+        public static void DataGridViewMakeUneditable(DataGridView dataGridView, bool SetToReadOnly = true, bool PreventUsersToAddRows = true)
+        {
+            //Format and settings
+            dataGridView.AllowUserToAddRows = !(PreventUsersToAddRows);
 
             foreach (DataGridViewColumn col in dataGridView.Columns)
             {
@@ -285,22 +292,17 @@ namespace GeneralFormLibrary1
  
         }
 
-        public static void DataGridViewExportToExcel<T>(DataGridView dataGridView, string AppName, string FileName, string saveDirectory, bool ExportFilteredView = true) where T : class, new()
+        public static void DataGridViewExportToExcel(DataGridView dataGridView, string AppName, string FileName, string saveDirectory, bool ExportFilteredView = true)
         {
             ExcelAPI excel = new ExcelAPI();
-            List<T> list;
-            if (ExportFilteredView == true)
-            {
-                list = DataGridViewToList<T>(dataGridView, true);
-            }
-            else
-            {
-                list = DataGridViewToList<T>(dataGridView, false);
-            }
+            excel.ExportDataToSheet(dataGridView, true, AppName, FileName, saveDirectory, ExportFilteredView);
+        }
 
+        public static void ListExportToExcel<T>(IList<T> list, string AppName, string FileName, string saveDirectory) where T : class, new()
+        {
+            ExcelAPI excel = new ExcelAPI();
             excel.ExportDataToSheet<T>(list, true, AppName, FileName, saveDirectory);
         }
-         
 
         public static List<T> DataGridViewToList<T>(DataGridView dataGridView, bool ExcludeInvisableRows = true) where T: class, new()
         {
@@ -313,6 +315,9 @@ namespace GeneralFormLibrary1
             {
                 HeaderNames.Add(column.HeaderText);
             }
+
+            bool CanUsersAddNewRow = dataGridView.AllowUserToAddRows;
+            dataGridView.AllowUserToAddRows = false;
 
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
@@ -341,7 +346,10 @@ namespace GeneralFormLibrary1
                                     {
                                         list.Clear();
                                         MessageBox.Show(null, "Failed to parse values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                       return list;
+                                        
+                                        //Reset editable property and return list
+                                        dataGridView.AllowUserToAddRows = CanUsersAddNewRow;
+                                        return list;
                                     }
                                 }
                                 break;
@@ -353,9 +361,55 @@ namespace GeneralFormLibrary1
                 }
             }
 
+            //Reset editable property and return list
+            dataGridView.AllowUserToAddRows = CanUsersAddNewRow;
             return list;
         }
 
+        public static T DataGridViewToObject<T>(DataGridView dataGridView, int GridViewRowIndex) where T : class, new()
+        {
+            T entry = new T();
+            var properties = entry.GetType().GetProperties();
+            List<string> HeaderNames = new List<string>();
+            int propertiesFoundCount = 0;
+            foreach (DataGridViewColumn column in dataGridView.Columns)
+            {
+                HeaderNames.Add(column.HeaderText);
+            }
+
+            entry = new T();
+            for (int i = 0; i < HeaderNames.Count; i++)
+            {
+                foreach (var prop in properties)
+                {
+                    //Property found
+                    if (prop.Name == HeaderNames[i] || prop.Name + FilterDesignation == HeaderNames[i])
+                    {
+                        propertiesFoundCount++;
+                        if (dataGridView.Rows[GridViewRowIndex].Cells[i].Value != null)
+                        {
+                            try
+                            {
+                                prop.SetValue(entry, Convert.ChangeType(dataGridView.Rows[GridViewRowIndex].Cells[i].Value, prop.PropertyType));
+                            }
+                            catch
+                            {
+
+                                MessageBox.Show(null, "Failed to parse values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                T entry2 = new T();
+                                entry2 = new T();
+                                return entry2;
+                            }
+                        }
+                        break;
+                    }
+
+                }
+            }
+
+            //Reset editable property and return list
+            return entry;
+        }
 
     }
 }

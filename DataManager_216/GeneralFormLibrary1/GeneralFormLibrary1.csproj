@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Cryptography.cs" />
+    <Compile Include="Classes\DataModelAPI.cs" />
     <Compile Include="Enums\CustomRightClickMenu.cs" />
     <Compile Include="Enums\ComparisonOperator.cs" />
     <Compile Include="Classes\DatabaseAPI.cs" />

@@ -34,17 +34,14 @@ namespace DataManager_216
             if (e.Button == MouseButtons.Right)
             {
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
-                RightClickDropDownMenu dropDownMenu = new RightClickDropDownMenu(contextMenu, dataGridView_APIViewer, gridViewFilters);
+                RightClickDropDownMenu<Model_DataSource> dropDownMenu = new RightClickDropDownMenu<Model_DataSource>(contextMenu, dataGridView_APIViewer, gridViewFilters, GlobalAppProperties.AppName, "APIViewer", GlobalAppProperties.GetCredentials());
                 dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL, e);
             }
         }
 
-        private void btn_APIViewer_Click(object sender, EventArgs e)
+        private void dataGridView_APIViewer_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            GeneralFormLibrary1.ExcelAPI excel = new ExcelAPI();
-            excel.CreateExcelWorkbook("Test");
 
-            FormControls.DataGridViewExportToExcel<Model_DataSource>(dataGridView_APIViewer, GlobalAppProperties.Directroy_Downloads, GlobalAppProperties.AppName, "ApiViewer", true);
         }
     }
 }

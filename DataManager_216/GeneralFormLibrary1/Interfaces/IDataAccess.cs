@@ -14,8 +14,14 @@ namespace GeneralFormLibrary1
 
         Task<bool> Delete(T entity);
 
+        Task<bool> Delete(List<T> entity);
+
         Task<int> Add(T entity);
 
+        Task<int> Add(List<T> entity);
+
         Task<bool> Update(T entity);
+
+        Task<bool> Update(List<T> entity);
     }
 }

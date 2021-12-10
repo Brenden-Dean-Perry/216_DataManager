@@ -7,16 +7,22 @@ using System.Windows.Forms;
 
 namespace GeneralFormLibrary1
 {
-    public partial class RightClickDropDownMenu
+    public partial class RightClickDropDownMenu<T> where T: class, new()
     {
         private ContextMenuStrip contextMenuStrip { get; set; }
         private DataGridView currentDataGridView { get; set; }
         private int currentMouseOverRowIndex { get; set; }
         private int currentMouseOverColumnIndex { get; set; }
+
+        private Dictionary<string,string> Credentials { get; set; }
+        private string AppName {get; set;}
+        private string NameForExcelExport { get; set; }
+        private string TableNameForExport { get; set; }
         Dictionary<string, string> specialValueDictionary { get; set; } = new Dictionary<string, string>();
         private string filterValue { get; set; }
         private TypeCode filterValueDataType { get; set; }
         private List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter> dataGridViewFilters { get; set; }
+        public static string Directroy_Downloads { get; } = @"C:\Users\" + Environment.UserName + @"\Downloads";
 
         //Menu items
         private static string item_Seperator { get; } = "-";
@@ -33,12 +39,18 @@ namespace GeneralFormLibrary1
         private static string item_ClearAllFilters { get; } = "Clear All Filters";
         private static string item_ClearColumnFilters { get; } = "Clear Column Filters";
         private static string item_URLSearch { get; } = "Search in Web browser...";
+        private static string item_Export { get; } = "Export Grid to Excel";
+        private static string item_DeleteEntry { get; } = "Delete Record From Database";
+        private static string item_Action { get; } = "Action";
 
-        public RightClickDropDownMenu(ContextMenuStrip contextMenu, DataGridView dataGridView, List<DataModels.Model_DataGridViewFilter> gridViewFilters)
+        public RightClickDropDownMenu(ContextMenuStrip contextMenu, DataGridView dataGridView, List<DataModels.Model_DataGridViewFilter> gridViewFilters, string appName, string tableNameForExport, Dictionary<string, string> credentials) 
         {
             currentDataGridView = dataGridView;
             dataGridViewFilters = gridViewFilters;
             contextMenuStrip = contextMenu;
+            AppName = appName;
+            TableNameForExport = tableNameForExport;
+            Credentials = credentials;
         }
 
         public void Show(CustomRightClickMenu menuOption, MouseEventArgs e)
@@ -87,14 +99,24 @@ namespace GeneralFormLibrary1
             }
 
             //Add intermediate values
-            if(rightClickMenu == CustomRightClickMenu.DefaultMenu_URL)
+            if(rightClickMenu == CustomRightClickMenu.DefaultMenu_URL || rightClickMenu == CustomRightClickMenu.DefaultMenu_URL_Delete)
             {
                 menuItems.Add(item_Seperator);
                 menuItems.Add(item_URLSearch);
             }
 
+            if(rightClickMenu == CustomRightClickMenu.DefaultMenu_Delete || rightClickMenu == CustomRightClickMenu.DefaultMenu_URL_Delete)
+            {
+                menuItems.Add(item_Seperator);
+                menuItems.Add(item_Action);
+                menuItems.Add(item_SubMenuStart);
+                menuItems.Add(item_DeleteEntry);
+                menuItems.Add(item_SubMenuEnd);
+            }
 
             //Add final items
+            menuItems.Add(item_Seperator);
+            menuItems.Add(item_Export);
             menuItems.Add(item_Seperator);
             menuItems.Add(item_ClearColumnFilters);
             menuItems.Add(item_ClearAllFilters);
@@ -137,6 +159,20 @@ namespace GeneralFormLibrary1
                             ((contextMenuStrip.Items[itemIndex] as ToolStripMenuItem).DropDownItems[itemIndex_SubMenu] as ToolStripMenuItem).DropDownItems.Add(item, null, Item_Click);
                         }
                     }
+                    else if (item == item_Seperator)
+                    {
+                        (contextMenuStrip.Items[itemIndex] as ToolStripMenuItem).DropDownItems.Add(item);
+                        itemIndex_SubMenu++;
+                    }
+                    else if(item == item_SubMenuStart)
+                    {
+                        nextItemIsSub_Sub_Menu = true;
+                    }
+                    else
+                    {
+                        (contextMenuStrip.Items[itemIndex] as ToolStripMenuItem).DropDownItems.Add(item, null, Item_Click);
+                        itemIndex_SubMenu++;
+                    }
                 }
                 else if(item == item_SubMenuStart)
                 {
@@ -162,7 +198,7 @@ namespace GeneralFormLibrary1
 
                     if(sb.ToString() == "")
                     {
-                        MessageBox.Show(null, "Error while building drop down. You cannot add a drop down item to a line seperator item.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(null, "Error while building drop down. You cannot add a drop down item to a line seperator item.", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         contextMenuStrip.Items.Clear();
                         return;
                     }
@@ -170,7 +206,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        private void Item_Click(object sender, EventArgs e)
+        private async void Item_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
 
@@ -275,9 +311,30 @@ namespace GeneralFormLibrary1
                     GeneralFormLibrary1.WebAPI.Search(currentDataGridView.CurrentCell.Value.ToString());
                 }
             }
+            else if (item.Text == item_Export)
+            {
+                GeneralFormLibrary1.FormControls.DataGridViewExportToExcel(currentDataGridView, AppName, TableNameForExport, Directroy_Downloads, true);
+            }
+            else if (item.Text == item_Action)
+            {
+                //Do nothing
+            }
+            else if (item.Text == item_DeleteEntry)
+            {
+                T model = FormControls.DataGridViewToObject<T>(currentDataGridView, currentMouseOverRowIndex);
+                DataAccess<T> dataAccess = new DataAccess<T>(Credentials);
+                if(await dataAccess.Delete(model) == true)
+                {
+                    MessageBox.Show(null, "Record deleted from database", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(null, "Record failed to be deleted from database", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             else
             {
-                MessageBox.Show(null, "A corresponding method has not yet been configured for this item.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(null, "A corresponding method has not yet been configured for this item.", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

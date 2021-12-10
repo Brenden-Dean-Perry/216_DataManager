@@ -81,16 +81,77 @@ namespace GeneralFormLibrary1
             }
         }
 
-        /// <summary>
-        /// Saves excel file in a specified location with a unique file name
-        /// </summary>
-        /// <param name="directoryPath">Path where you would like to save the file</param>
-        /// <param name="AppName">Name of your application</param>
-        /// <param name="fileName">File Name</param>
-        /// <param name="fileEnding">File ending. For example, ".txt", ".csv", or ".xlsx" </param>
-        /// < name="fileEnding"></param>
-        /// <returns></returns>
-        public string SaveAs(string directoryPath, string AppName, string fileName, string fileEnding)
+        internal void ExportDataToSheet(DataGridView dataGridView, bool Open = true, string AppName = null, string FileName = null, string SavePath = null, bool ExportFilteredView = true)
+        {
+            if (dataGridView.Rows.Count == 0)
+            {
+                MessageBox.Show(null, "No data to be exported.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            this.wb = excel.Workbooks.Add();
+            Worksheet ws = this.wb.Worksheets[1];
+            int i = 0;
+            for (i = 1; i < dataGridView.Columns.Count + 1; i++)
+            {
+                ws.Cells[1, i] = dataGridView.Columns[i - 1].HeaderText;
+            }
+
+            
+            //Paste Header & format
+            _excel.Range HeaderRange = ws.get_Range((_excel.Range)(ws.Cells[1, 1]), (_excel.Range)(ws.Cells[1, dataGridView.Columns.Count]));
+            HeaderRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.FromArgb(192, 192, 192));
+            HeaderRange.Font.Bold = true;
+            HeaderRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+            HeaderRange.Borders.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black);
+
+            //Paste cell values
+            int validRows = 0;
+            for (i = 0; i < dataGridView.Rows.Count - 1; i++)
+            {
+                if(ExportFilteredView == false || dataGridView.Rows[i].Visible == true)
+                {
+                    validRows++;
+                    for (int j = 0; j < dataGridView.Columns.Count; j++)
+                    {
+                        if (dataGridView.Rows[i].Cells[j].Value != null)
+                        {
+                            ws.Cells[validRows + 1, j + 1] = dataGridView.Rows[i].Cells[j].Value.ToString();
+                        }
+                        else
+                        {
+                            ws.Cells[validRows + 1, j + 1] = "";
+                        }
+                    }
+                }
+            }
+
+            ws.Columns.AutoFit();
+            excel.Visible = true;
+
+            string SavePathLocation = string.Empty;
+            if (SavePath != null)
+            {
+                SavePathLocation = SaveAs(SavePath, AppName, FileName, ".xlsx");
+
+                if (!File.Exists(SavePathLocation))
+                {
+                    MessageBox.Show(null, "File failed to save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
+            /// <summary>
+            /// Saves excel file in a specified location with a unique file name
+            /// </summary>
+            /// <param name="directoryPath">Path where you would like to save the file</param>
+            /// <param name="AppName">Name of your application</param>
+            /// <param name="fileName">File Name</param>
+            /// <param name="fileEnding">File ending. For example, ".txt", ".csv", or ".xlsx" </param>
+            /// < name="fileEnding"></param>
+            /// <returns></returns>
+            public string SaveAs(string directoryPath, string AppName, string fileName, string fileEnding)
         {
 
             //Get date

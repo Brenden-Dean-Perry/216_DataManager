@@ -13,7 +13,7 @@ namespace DataManager_216
         public static string Username { get; set; }
         public static string Password { get; set; }
 
-        public static string Directroy_Downloads { get; } = @"C:\Users\brend\Downloads";
+        public static string Directroy_Downloads { get; } = @"C:\Users\"+Environment.UserName+ @"\Downloads";
 
         public static Dictionary<string, string> GetCredentials()
         {
