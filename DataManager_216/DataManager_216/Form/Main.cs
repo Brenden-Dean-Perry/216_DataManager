@@ -64,5 +64,10 @@ namespace DataManager_216
             frmRSAEncryption rsa = new frmRSAEncryption();
             rsa.Show();
         }
+
+        private void testToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(GeneralFormLibrary1.DataModelAPI.TableName<GeneralFormLibrary1.DataModels.Model_User>());
+        }
     }
 }

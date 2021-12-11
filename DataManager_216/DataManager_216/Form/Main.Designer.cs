@@ -34,14 +34,16 @@ namespace DataManager_216
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataImporterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modelConstructorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aPIsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aPIViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modelConstructorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
             this.cryptographyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.symmetricEncryptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.asymmeticEncryptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,7 +62,8 @@ namespace DataManager_216
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dataToolStripMenuItem,
             this.aPIsToolStripMenuItem,
-            this.cryptographyToolStripMenuItem});
+            this.cryptographyToolStripMenuItem,
+            this.testToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1197, 28);
@@ -90,6 +93,13 @@ namespace DataManager_216
             this.dataImporterToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
             this.dataImporterToolStripMenuItem.Text = "Data Importer";
             // 
+            // modelConstructorToolStripMenuItem
+            // 
+            this.modelConstructorToolStripMenuItem.Name = "modelConstructorToolStripMenuItem";
+            this.modelConstructorToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
+            this.modelConstructorToolStripMenuItem.Text = "Data Model Constructor";
+            this.modelConstructorToolStripMenuItem.Click += new System.EventHandler(this.modelConstructorToolStripMenuItem_Click);
+            // 
             // aPIsToolStripMenuItem
             // 
             this.aPIsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -101,25 +111,9 @@ namespace DataManager_216
             // aPIViewerToolStripMenuItem
             // 
             this.aPIViewerToolStripMenuItem.Name = "aPIViewerToolStripMenuItem";
-            this.aPIViewerToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.aPIViewerToolStripMenuItem.Size = new System.Drawing.Size(163, 26);
             this.aPIViewerToolStripMenuItem.Text = "API Viewer";
             this.aPIViewerToolStripMenuItem.Click += new System.EventHandler(this.aPIViewerToolStripMenuItem_Click);
-            // 
-            // modelConstructorToolStripMenuItem
-            // 
-            this.modelConstructorToolStripMenuItem.Name = "modelConstructorToolStripMenuItem";
-            this.modelConstructorToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
-            this.modelConstructorToolStripMenuItem.Text = "Data Model Constructor";
-            this.modelConstructorToolStripMenuItem.Click += new System.EventHandler(this.modelConstructorToolStripMenuItem_Click);
-            // 
-            // webBrowser_Main_1
-            // 
-            this.webBrowser_Main_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser_Main_1.Location = new System.Drawing.Point(541, 31);
-            this.webBrowser_Main_1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser_Main_1.Name = "webBrowser_Main_1";
-            this.webBrowser_Main_1.Size = new System.Drawing.Size(656, 391);
-            this.webBrowser_Main_1.TabIndex = 0;
             // 
             // cryptographyToolStripMenuItem
             // 
@@ -134,14 +128,14 @@ namespace DataManager_216
             // hasherToolStripMenuItem
             // 
             this.hasherToolStripMenuItem.Name = "hasherToolStripMenuItem";
-            this.hasherToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.hasherToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
             this.hasherToolStripMenuItem.Text = "Hasher";
             this.hasherToolStripMenuItem.Click += new System.EventHandler(this.hasherToolStripMenuItem_Click);
             // 
             // symmetricEncryptionToolStripMenuItem
             // 
             this.symmetricEncryptionToolStripMenuItem.Name = "symmetricEncryptionToolStripMenuItem";
-            this.symmetricEncryptionToolStripMenuItem.Size = new System.Drawing.Size(276, 26);
+            this.symmetricEncryptionToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
             this.symmetricEncryptionToolStripMenuItem.Text = "Symmetric Encryption - AES";
             this.symmetricEncryptionToolStripMenuItem.Click += new System.EventHandler(this.symmetricEncryptionToolStripMenuItem_Click);
             // 
@@ -151,6 +145,30 @@ namespace DataManager_216
             this.asymmeticEncryptionToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
             this.asymmeticEncryptionToolStripMenuItem.Text = "Asymmetic Encryption - RSA";
             this.asymmeticEncryptionToolStripMenuItem.Click += new System.EventHandler(this.asymmeticEncryptionToolStripMenuItem_Click);
+            // 
+            // webBrowser_Main_1
+            // 
+            this.webBrowser_Main_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.webBrowser_Main_1.Location = new System.Drawing.Point(541, 31);
+            this.webBrowser_Main_1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser_Main_1.Name = "webBrowser_Main_1";
+            this.webBrowser_Main_1.Size = new System.Drawing.Size(656, 391);
+            this.webBrowser_Main_1.TabIndex = 0;
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testToolStripMenuItem1});
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
+            this.testToolStripMenuItem.Text = "Test";
+            // 
+            // testToolStripMenuItem1
+            // 
+            this.testToolStripMenuItem1.Name = "testToolStripMenuItem1";
+            this.testToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.testToolStripMenuItem1.Text = "Test";
+            this.testToolStripMenuItem1.Click += new System.EventHandler(this.testToolStripMenuItem1_Click);
             // 
             // frmMain
             // 
@@ -187,6 +205,8 @@ namespace DataManager_216
         private System.Windows.Forms.ToolStripMenuItem hasherToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem symmetricEncryptionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem asymmeticEncryptionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem1;
     }
 }
 

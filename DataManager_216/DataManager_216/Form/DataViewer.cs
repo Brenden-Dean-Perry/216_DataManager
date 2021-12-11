@@ -17,8 +17,9 @@ namespace DataManager_216
     {
         private delegate void InvokeDelegate();
         private List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter> gridViewFilters = new List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter>();
-        private bool RowNeedsInsert {get; set;}
-        private int PriorRowIndex { get; set; }
+        private bool RowNeedsInsert { get; set; } = false;
+        private int PriorRowIndex { get; set; } = -2;
+        private string ComboBoxItemSelected { get; set; }
         public frmDataViewer()
         {
             InitializeComponent();
@@ -27,19 +28,74 @@ namespace DataManager_216
         private void frmDataViewer_Load(object sender, EventArgs e)
         {
             checkBox_DataViewer_AllowEdit.Checked = false;
-            GeneralFormLibrary1.DataAccess<GeneralFormLibrary1.DataModels.Model_TableName> dataAccess = new DataAccess<GeneralFormLibrary1.DataModels.Model_TableName>(GlobalAppProperties.GetCredentials());
-            List<GeneralFormLibrary1.DataModels.Model_TableName> tables = dataAccess.GetDatabaseTableNames();
+
+            //Build table list
+            List<Model_TableName> tables = new List<Model_TableName>();
+            string[] tableNames = {"Users", "DataSource", "Country", "Currency", "Contract", "Entity", "EntityType", "AssetType", "UnderlyingAsset"};
+
+            foreach (string name in tableNames)
+            {
+                Model_TableName table = new Model_TableName(name);
+                tables.Add(table);
+            }
+            
             GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataViewer_TableSelection, tables, "TableName");
             dataGridView_DataViewer.MouseClick += dataGridView_DataViewer_MouseClick;
         }
+
 
         private void dataGridView_DataViewer_MouseClick(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Right)
             {
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
-                RightClickDropDownMenu<Model_User> dropDownMenu = new RightClickDropDownMenu<Model_User>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer",GlobalAppProperties.GetCredentials());
-                dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+
+                if (ComboBoxItemSelected == "Users")
+                {
+                    RightClickDropDownMenu<Model_User> dropDownMenu = new RightClickDropDownMenu<Model_User>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "Country")
+                {
+                    RightClickDropDownMenu<Model_Country> dropDownMenu = new RightClickDropDownMenu<Model_Country>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "Currency")
+                {
+                    RightClickDropDownMenu<Model_Currency> dropDownMenu = new RightClickDropDownMenu<Model_Currency>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "Entity")
+                {
+                    RightClickDropDownMenu<Model_Entity> dropDownMenu = new RightClickDropDownMenu<Model_Entity>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "EntityType")
+                {
+                    RightClickDropDownMenu<Model_EntityType> dropDownMenu = new RightClickDropDownMenu<Model_EntityType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "AssetType")
+                {
+                    RightClickDropDownMenu<Model_AssetType> dropDownMenu = new RightClickDropDownMenu<Model_AssetType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "UnderlyingAsset")
+                {
+                    RightClickDropDownMenu<Model_UnderlyingAsset> dropDownMenu = new RightClickDropDownMenu<Model_UnderlyingAsset>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "Contract")
+                {
+                    RightClickDropDownMenu<Model_Contract> dropDownMenu = new RightClickDropDownMenu<Model_Contract>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else
+                {
+                    RightClickDropDownMenu<object> dropDownMenu = new RightClickDropDownMenu<object>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL, e);
+                }
+
             }
         }
 
@@ -48,31 +104,75 @@ namespace DataManager_216
             GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_DataViewer, gridViewFilters);
         }
 
+
+
         private async void btn_DataViewer_Search_Click(object sender, EventArgs e)
         {
+            //Lock the combobox
+            ComboBoxItemSelected = null;
+            comboBox_DataViewer_TableSelection.Enabled = false;
+            ComboBoxItemSelected = comboBox_DataViewer_TableSelection.GetItemText(comboBox_DataViewer_TableSelection.SelectedItem);
+
             //Start status animation
             var tokenSource = new CancellationTokenSource();
             StatusAnimation status = new StatusAnimation(this, statusStrip_DataViewer, tokenSource);
             status.Start();
 
             //Do task
-            SortableBindingList<Model_User> model = await Task.Run(() => GetData());
-            GeneralFormLibrary1.FormControls.AssignListToDataGridView<Model_User>(dataGridView_DataViewer, model, true);
-
+            if(ComboBoxItemSelected == "Users")
+            {
+                SortableBindingList<Model_User> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_User>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_User>(dataGridView_DataViewer, model, true);
+            }
+            else if(ComboBoxItemSelected == "Country")
+            {
+                SortableBindingList<Model_Country> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_Country>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_Country>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "Currency")
+            {
+                SortableBindingList<Model_Currency> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_Currency>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_Currency>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "Entity")
+            {
+                SortableBindingList<Model_Entity> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_Entity>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_Entity>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "EntityType")
+            {
+                SortableBindingList<Model_EntityType> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_EntityType>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_EntityType>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "AssetType")
+            {
+                SortableBindingList<Model_AssetType> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_AssetType>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_AssetType>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "UnderlyingAsset")
+            {
+                SortableBindingList<Model_UnderlyingAsset> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_UnderlyingAsset>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_UnderlyingAsset>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "Contract")
+            {
+                SortableBindingList<Model_Contract> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_Contract>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_Contract>(dataGridView_DataViewer, model, true);
+            }
+            else
+            {
+                SortableBindingList<string> model = null;
+            }
+            
             //Cancel animation
             status.Cancel();
 
             await Task.Run(() => Thread.Sleep(3000));
-            GeneralFormLibrary1.FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, "");
+            FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, "");
         }
 
 
-        private async Task<SortableBindingList<Model_User>> GetData()
-        {
-            GeneralFormLibrary1.DataAccess<Model_User> dataAccess = new DataAccess<Model_User>(GlobalAppProperties.GetCredentials());
-            SortableBindingList<Model_User> model = new SortableBindingList<Model_User>(await dataAccess.GetAll());
-            return model;
-        }
+
 
         private void dataGridView_DataViewer_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -86,6 +186,7 @@ namespace DataManager_216
 
         private async void dataGridView_DataViewer_RowLeave(object sender, DataGridViewCellEventArgs e)
         {
+
             try
             {
                 //Store reference to inserted row index
@@ -101,21 +202,48 @@ namespace DataManager_216
 
             if (RowNeedsInsert)
             {
-                Model_User newItem = GeneralFormLibrary1.FormControls.DataGridViewToObject<Model_User>(dataGridView_DataViewer, PriorRowIndex);
-                GeneralFormLibrary1.DataAccess<Model_User> dataAccess = new DataAccess<Model_User>(GlobalAppProperties.GetCredentials());
-                int recordID = await dataAccess.Add(newItem);
-
-                if(recordID > 0)
+                int recordID = 0;
+                RowNeedsInsert = false;
+                if (ComboBoxItemSelected == "Users")
                 {
-                    MessageBox.Show("Record inserted");
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_User>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "Country")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Country>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "Currency")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Currency>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "Entity")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Entity>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "EntityType")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_EntityType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "AssetType")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_AssetType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "UnderlyingAsset")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_UnderlyingAsset>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "Contract")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Contract>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else
                 {
-                    MessageBox.Show("Record failed to insert");
+                    MessageBox.Show(null, "Invalid ComboBox item selected", GlobalAppProperties.AppName);
+                    return;
                 }
 
-                RowNeedsInsert = false;
             }
+
         }
 
         private void checkBox_DataViewer_AllowEdit_CheckedChanged(object sender, EventArgs e)
@@ -132,5 +260,12 @@ namespace DataManager_216
                 GeneralFormLibrary1.FormControls.DataGridViewMakeUneditable(dataGridView_DataViewer, true, true);
             }
         }
+
+        private void btn_DataViewer_Clear_Click(object sender, EventArgs e)
+        {
+            dataGridView_DataViewer.DataSource = null;
+            comboBox_DataViewer_TableSelection.Enabled = true;
+        }
+
     }
 }

@@ -14,5 +14,10 @@ namespace GeneralFormLibrary1.DataModels
         {
 
         }
+
+        public Model_TableName(string tableName)
+        {
+            TableName = tableName;
+        }
     }
 }

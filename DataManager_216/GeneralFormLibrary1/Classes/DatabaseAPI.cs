@@ -143,6 +143,12 @@ namespace GeneralFormLibrary1
                     sb.Append("[Key]");
                     sb.Append(System.Environment.NewLine);
                 }
+                else if (column.ColumnName.ToLower() == "createdate" || column.ColumnName.ToLower() == "changedate" || column.ColumnName.ToLower() == "createuser" || column.ColumnName.ToLower() == "changeuser")
+                {
+                    sb.Append("\t");
+                    sb.Append("[Write(false)]");
+                    sb.Append(System.Environment.NewLine);
+                }
 
                 sb.Append("\t");
                 sb.Append("public ");

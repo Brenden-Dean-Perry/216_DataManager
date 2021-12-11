@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper.Contrib.Extensions;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace GeneralFormLibrary1
 {
     public static class DataModelAPI
     {
-        internal static string TableName<T>()
+        
+        public static string TableName<T>()
         {
             // Check if we've already set our custom table mapper to TableNameMapper.
             if (SqlMapperExtensions.TableNameMapper != null)
@@ -25,5 +27,7 @@ namespace GeneralFormLibrary1
 
             return getTableNameMethod.Invoke(null, new object[] { typeof(T) }) as string;
         }
+
+       
     }
 }

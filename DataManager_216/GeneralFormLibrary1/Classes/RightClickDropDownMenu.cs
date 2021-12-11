@@ -322,14 +322,22 @@ namespace GeneralFormLibrary1
             else if (item.Text == item_DeleteEntry)
             {
                 T model = FormControls.DataGridViewToObject<T>(currentDataGridView, currentMouseOverRowIndex);
-                DataAccess<T> dataAccess = new DataAccess<T>(Credentials);
-                if(await dataAccess.Delete(model) == true)
+                dynamic dynamicModel = model;
+                //int Id = dynamicModel.Id;
+                int Id = 1;
+                DialogResult result = MessageBox.Show(null, "You are about to delete a record (Id: " + Id.ToString() + ") from database. Are you sure you want to continue?"  , AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if(result == DialogResult.Yes)
                 {
-                    MessageBox.Show(null, "Record deleted from database", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show(null, "Record failed to be deleted from database", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DataAccess<T> dataAccess = new DataAccess<T>(Credentials);
+                    if (await dataAccess.Delete(model) == true)
+                    {
+                        MessageBox.Show(null, "Record deleted from database", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show(null, "Record failed to be deleted from database", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             else

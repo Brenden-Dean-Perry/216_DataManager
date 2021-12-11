@@ -34,6 +34,7 @@ namespace DataManager_216
             this.comboBox_DataViewer_TableSelection = new System.Windows.Forms.ComboBox();
             this.btn_DataViewer_Search = new System.Windows.Forms.Button();
             this.checkBox_DataViewer_AllowEdit = new System.Windows.Forms.CheckBox();
+            this.btn_DataViewer_Clear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_DataViewer)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,7 +77,7 @@ namespace DataManager_216
             // 
             // btn_DataViewer_Search
             // 
-            this.btn_DataViewer_Search.Location = new System.Drawing.Point(337, 13);
+            this.btn_DataViewer_Search.Location = new System.Drawing.Point(337, 9);
             this.btn_DataViewer_Search.Name = "btn_DataViewer_Search";
             this.btn_DataViewer_Search.Size = new System.Drawing.Size(75, 30);
             this.btn_DataViewer_Search.TabIndex = 3;
@@ -89,7 +90,7 @@ namespace DataManager_216
             this.checkBox_DataViewer_AllowEdit.AutoSize = true;
             this.checkBox_DataViewer_AllowEdit.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_DataViewer_AllowEdit.ForeColor = System.Drawing.Color.White;
-            this.checkBox_DataViewer_AllowEdit.Location = new System.Drawing.Point(428, 16);
+            this.checkBox_DataViewer_AllowEdit.Location = new System.Drawing.Point(499, 12);
             this.checkBox_DataViewer_AllowEdit.Name = "checkBox_DataViewer_AllowEdit";
             this.checkBox_DataViewer_AllowEdit.Size = new System.Drawing.Size(104, 24);
             this.checkBox_DataViewer_AllowEdit.TabIndex = 4;
@@ -97,12 +98,23 @@ namespace DataManager_216
             this.checkBox_DataViewer_AllowEdit.UseVisualStyleBackColor = true;
             this.checkBox_DataViewer_AllowEdit.CheckedChanged += new System.EventHandler(this.checkBox_DataViewer_AllowEdit_CheckedChanged);
             // 
+            // btn_DataViewer_Clear
+            // 
+            this.btn_DataViewer_Clear.Location = new System.Drawing.Point(418, 9);
+            this.btn_DataViewer_Clear.Name = "btn_DataViewer_Clear";
+            this.btn_DataViewer_Clear.Size = new System.Drawing.Size(75, 30);
+            this.btn_DataViewer_Clear.TabIndex = 5;
+            this.btn_DataViewer_Clear.Text = "Clear";
+            this.btn_DataViewer_Clear.UseVisualStyleBackColor = true;
+            this.btn_DataViewer_Clear.Click += new System.EventHandler(this.btn_DataViewer_Clear_Click);
+            // 
             // frmDataViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.ClientSize = new System.Drawing.Size(1209, 784);
+            this.Controls.Add(this.btn_DataViewer_Clear);
             this.Controls.Add(this.checkBox_DataViewer_AllowEdit);
             this.Controls.Add(this.btn_DataViewer_Search);
             this.Controls.Add(this.comboBox_DataViewer_TableSelection);
@@ -124,5 +136,6 @@ namespace DataManager_216
         private System.Windows.Forms.ComboBox comboBox_DataViewer_TableSelection;
         private System.Windows.Forms.Button btn_DataViewer_Search;
         private System.Windows.Forms.CheckBox checkBox_DataViewer_AllowEdit;
+        private System.Windows.Forms.Button btn_DataViewer_Clear;
     }
 }
