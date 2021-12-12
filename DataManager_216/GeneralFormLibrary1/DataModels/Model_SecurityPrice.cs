@@ -11,7 +11,7 @@ namespace GeneralFormLibrary1.DataModels
 	public class Model_SecurityPrice
 	{
 		[Key]
-		public int Id { get; set; }
+		public long Id { get; set; }
 		public int SecurityId { get; set; }
 		public int SecurityPriceTypeId { get; set; }
 		public DateTime DateTime { get; set; }

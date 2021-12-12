@@ -9,6 +9,8 @@ namespace GeneralFormLibrary1
 {
     public class FormControl_DataAccess
     {
+        public event EventHandler UpdateData;
+
         public static async Task<SortableBindingList<T>> GetSortableBindingListOfData<T>(Dictionary<string, string> credentials) where T : class
         {
             GeneralFormLibrary1.DataAccess<T> dataAccess = new DataAccess<T>(credentials);
@@ -16,7 +18,7 @@ namespace GeneralFormLibrary1
             return model;
         }
 
-        public static async Task<int> AddNewRecordFromDataGridView<T>(Dictionary<string, string> credentials, DataGridView dataGridView, int RowIndex, string AppName) where T : class, new()
+        public async Task<int> AddNewRecordFromDataGridView<T>(Dictionary<string, string> credentials, DataGridView dataGridView, int RowIndex, string AppName) where T : class, new()
         {
 
             T newItem = new T();
@@ -26,6 +28,13 @@ namespace GeneralFormLibrary1
             try
             {
                 id = await dataAccess.Add(newItem);
+
+                //Fire event
+                if (UpdateData != null)
+                {
+                    UpdateData(this, EventArgs.Empty);
+                }
+
             }
             catch
             { }

@@ -11,7 +11,7 @@ namespace GeneralFormLibrary1.DataModels
 	public class Model_SecurityVolume
 	{
 		[Key]
-		public int Id { get; set; }
+		public long Id { get; set; }
 		public int SecurityId { get; set; }
 		public DateTime DateTime { get; set; }
 		public decimal Value { get; set; }

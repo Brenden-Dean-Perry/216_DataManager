@@ -122,6 +122,8 @@ namespace DataManager_216
         private async void btn_DataViewer_Search_Click(object sender, EventArgs e)
         {
             //Lock the combobox
+            bool IsUnlockedForEditing = checkBox_DataViewer_AllowEdit.Checked;
+
             ComboBoxItemSelected = null;
             comboBox_DataViewer_TableSelection.Enabled = false;
             checkBox_DataViewer_AllowEdit.Checked = false;
@@ -202,8 +204,12 @@ namespace DataManager_216
             //Cancel animation
             status.Cancel();
 
+            //Re-set allow edit option after update
+            checkBox_DataViewer_AllowEdit.Checked = IsUnlockedForEditing;
+
             await Task.Run(() => Thread.Sleep(3000));
             FormControls.UpdateToolStripItemLabel(statusStrip_DataViewer, "");
+
         }
 
 
@@ -235,57 +241,60 @@ namespace DataManager_216
                 PriorRowIndex = -2;
             }
 
+            FormControl_DataAccess form_DataAccess = new FormControl_DataAccess();
+            //Subscribe to the update data event
+            form_DataAccess.UpdateData += btn_DataViewer_Search_Click;
             if (RowNeedsInsert)
             {
                 int recordID = 0;
                 RowNeedsInsert = false;
                 if (ComboBoxItemSelected == "Users")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_User>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_User>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "Country")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Country>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_Country>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "Currency")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Currency>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_Currency>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "Entity")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Entity>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_Entity>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "EntityType")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_EntityType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_EntityType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "AssetType")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_AssetType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_AssetType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "UnderlyingAsset")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_UnderlyingAsset>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_UnderlyingAsset>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "Contract")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Contract>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_Contract>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "Security")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Security>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_Security>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "SecurityPrice")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_SecurityPrice>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityPrice>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "SecurityPriceType")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_SecurityPriceType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityPriceType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else if (ComboBoxItemSelected == "SecurityVolume")
                 {
-                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_SecurityVolume>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityVolume>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else
                 {

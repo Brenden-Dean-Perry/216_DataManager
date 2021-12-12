@@ -70,10 +70,12 @@ namespace GeneralFormLibrary1
 
             if(dataGridView.CurrentCell != null)
             {
-                if (DataTypes.TypeCodeIsNumeric(Type.GetTypeCode(dataGridView.CurrentCell.Value.GetType())))
+
+                if (dataGridView.CurrentCell.Value != null && DataTypes.TypeCodeIsNumeric(Type.GetTypeCode(dataGridView.CurrentCell.Value.GetType())))
                 {
                     ValueIsNumeric = true;
                 }
+                
             }
 
             //Add primary options
@@ -323,8 +325,7 @@ namespace GeneralFormLibrary1
             {
                 T model = FormControls.DataGridViewToObject<T>(currentDataGridView, currentMouseOverRowIndex);
                 dynamic dynamicModel = model;
-                //int Id = dynamicModel.Id;
-                int Id = 1;
+                int Id = dynamicModel.Id;
                 DialogResult result = MessageBox.Show(null, "You are about to delete a record (Id: " + Id.ToString() + ") from database. Are you sure you want to continue?"  , AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if(result == DialogResult.Yes)
@@ -397,7 +398,7 @@ namespace GeneralFormLibrary1
                 return;
             }
 
-            if (currentDataGridView.GetCellCount(DataGridViewElementStates.Selected) > 0 )
+            if (currentDataGridView.GetCellCount(DataGridViewElementStates.Selected) > 0)
             {
                 //Show context menu at click point
                 contextMenuStrip.Show(currentDataGridView, new System.Drawing.Point(e.X, e.Y));

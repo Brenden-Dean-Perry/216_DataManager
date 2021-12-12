@@ -28,6 +28,10 @@ namespace GeneralFormLibrary1
             {
                 return "int";
             }
+            if (SqlDataType.ToLower() == "bigint")
+            {
+                return "long";
+            }
             else if (SqlDataType.ToLower() == "date")
             {
                 return "DateTime";
