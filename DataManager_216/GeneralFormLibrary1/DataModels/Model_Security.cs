@@ -14,7 +14,7 @@ namespace GeneralFormLibrary1.DataModels
 		public int Id { get; set; }
 		public string Ticker { get; set; }
 		public int ContractId { get; set; }
-		public DateTime Expiration { get; set; }
+		public DateTime? Expiration { get; set; }
 		[Write(false)]
 		public string CreateUser { get; set; }
 		[Write(false)]

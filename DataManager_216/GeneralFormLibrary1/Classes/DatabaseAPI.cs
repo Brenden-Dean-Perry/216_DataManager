@@ -132,7 +132,7 @@ namespace GeneralFormLibrary1
             sb.Append(System.Environment.NewLine);
 
             //Add properties
-            string SQLquery = "Select C.name ColumnName, t.Name DataType From sys.columns C Inner Join sys.types t on c.user_type_id = t.user_type_id Where c.object_id = OBJECT_ID(@TableName);";
+            string SQLquery = "Select C.name ColumnName, t.Name DataType, C.is_nullable IsNullable From sys.columns C Inner Join sys.types t on c.user_type_id = t.user_type_id Where c.object_id = OBJECT_ID(@TableName);";
             List <DataModels.Model_TableDataStructure> columns = GetData_List<DataModels.Model_TableDataStructure>(connectionString, SQLquery, tableName);
             foreach(DataModels.Model_TableDataStructure column in columns)
             {
@@ -152,7 +152,16 @@ namespace GeneralFormLibrary1
 
                 sb.Append("\t");
                 sb.Append("public ");
-                sb.Append(DataTypes.ConvertSqlDataTypeToCSharpDataType(column.DataType) + " ");
+
+                if (DataTypes.ConvertSqlDataTypeToCSharpDataType(column.DataType).ToLower().Contains("date") || column.IsNullable)
+                {
+                    sb.Append(DataTypes.ConvertSqlDataTypeToCSharpDataType(column.DataType) + "? ");
+                }
+                else
+                {
+                    sb.Append(DataTypes.ConvertSqlDataTypeToCSharpDataType(column.DataType) + " ");
+                }
+
                 sb.Append(column.ColumnName + " ");
                 sb.Append("{get; set;} ");
                 sb.Append(System.Environment.NewLine);

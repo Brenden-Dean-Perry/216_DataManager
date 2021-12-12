@@ -33,12 +33,12 @@ namespace GeneralFormLibrary1
 
             if (id > 0)
             {
-                MessageBox.Show(null, "Record failed to insert", AppName);
-                
+                //Inserted
+                //MessageBox.Show(null, "Record inserted", AppName);
             }
             else
             {
-                MessageBox.Show(null, "Record inserted", AppName);
+                MessageBox.Show(null, "Record failed to insert", AppName);
             }
             return id;
         }

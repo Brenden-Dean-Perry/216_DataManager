@@ -340,12 +340,13 @@ namespace GeneralFormLibrary1
                                 {
                                     try
                                     {
-                                        prop.SetValue(entry, Convert.ChangeType(row.Cells[i].Value, prop.PropertyType));
+                                        Type type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                                        prop.SetValue(entry, Convert.ChangeType(row.Cells[i].Value, type));
                                     }
                                     catch
                                     {
                                         list.Clear();
-                                        MessageBox.Show(null, "Failed to parse values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        MessageBox.Show(null, "Failed to parse values. Property Name: " + prop.Name + " | Property Data Type: " + prop.PropertyType.Name + " | Property Value: " + row.Cells[i].Value.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         
                                         //Reset editable property and return list
                                         dataGridView.AllowUserToAddRows = CanUsersAddNewRow;
@@ -390,12 +391,12 @@ namespace GeneralFormLibrary1
                         {
                             try
                             {
-                                prop.SetValue(entry, Convert.ChangeType(dataGridView.Rows[GridViewRowIndex].Cells[i].Value, prop.PropertyType));
+                                Type type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                                prop.SetValue(entry, Convert.ChangeType(dataGridView.Rows[GridViewRowIndex].Cells[i].Value, type));
                             }
                             catch
                             {
-
-                                MessageBox.Show(null, "Failed to parse values", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show(null, "Failed to parse values. Property Name: " + prop.Name + " | Property Data Type: "+ prop.PropertyType.Name + " | Property Value: " + dataGridView.Rows[GridViewRowIndex].Cells[i].Value.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 T entry2 = new T();
                                 entry2 = new T();
                                 return entry2;

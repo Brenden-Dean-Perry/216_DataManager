@@ -14,8 +14,8 @@ namespace GeneralFormLibrary1.DataModels
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string AltName { get; set; }
-		public int CountryId { get; set; }
-		public int EntityId { get; set; }
+		public int? CountryId { get; set; }
+		public int? EntityId { get; set; }
 		public int EntityTypeId { get; set; }
 		public string Notes { get; set; }
 		[Write(false)]

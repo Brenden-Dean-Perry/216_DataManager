@@ -15,9 +15,8 @@ namespace GeneralFormLibrary1.DataModels
 		public string Name { get; set; }
 		public string ContractCode { get; set; }
 		public int UnderlyingAssetId { get; set; }
-		public int LotSize { get; set; }
-		public int CurrencyId { get; set; }
-		public int ExposureCurrencyId { get; set; }
+		public decimal LotSize { get; set; }
+		public int QuotedCurrencyId { get; set; }
 		public int Multiplier { get; set; }
 		public decimal PriceMultiplier { get; set; }
 		public byte AllowShort { get; set; }

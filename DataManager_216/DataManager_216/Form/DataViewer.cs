@@ -30,15 +30,8 @@ namespace DataManager_216
             checkBox_DataViewer_AllowEdit.Checked = false;
 
             //Build table list
-            List<Model_TableName> tables = new List<Model_TableName>();
-            string[] tableNames = {"Users", "DataSource", "Country", "Currency", "Contract", "Entity", "EntityType", "AssetType", "UnderlyingAsset"};
-
-            foreach (string name in tableNames)
-            {
-                Model_TableName table = new Model_TableName(name);
-                tables.Add(table);
-            }
-            
+            DataAccess<Model_TableName> dataAccess = new DataAccess<Model_TableName>(GlobalAppProperties.GetCredentials());
+            List<Model_TableName> tables = dataAccess.GetDatabaseTableNames();
             GeneralFormLibrary1.FormControls.AssignListToComboBox<GeneralFormLibrary1.DataModels.Model_TableName>(comboBox_DataViewer_TableSelection, tables, "TableName");
             dataGridView_DataViewer.MouseClick += dataGridView_DataViewer_MouseClick;
         }
@@ -90,6 +83,26 @@ namespace DataManager_216
                     RightClickDropDownMenu<Model_Contract> dropDownMenu = new RightClickDropDownMenu<Model_Contract>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
+                else if (ComboBoxItemSelected == "Security")
+                {
+                    RightClickDropDownMenu<Model_Security> dropDownMenu = new RightClickDropDownMenu<Model_Security>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "SecurityPrice")
+                {
+                    RightClickDropDownMenu<Model_SecurityPrice> dropDownMenu = new RightClickDropDownMenu<Model_SecurityPrice>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "SecurityPriceType")
+                {
+                    RightClickDropDownMenu<Model_SecurityPriceType> dropDownMenu = new RightClickDropDownMenu<Model_SecurityPriceType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "SecurityVolume")
+                {
+                    RightClickDropDownMenu<Model_SecurityVolume> dropDownMenu = new RightClickDropDownMenu<Model_SecurityVolume>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
                 else
                 {
                     RightClickDropDownMenu<object> dropDownMenu = new RightClickDropDownMenu<object>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
@@ -111,6 +124,7 @@ namespace DataManager_216
             //Lock the combobox
             ComboBoxItemSelected = null;
             comboBox_DataViewer_TableSelection.Enabled = false;
+            checkBox_DataViewer_AllowEdit.Checked = false;
             ComboBoxItemSelected = comboBox_DataViewer_TableSelection.GetItemText(comboBox_DataViewer_TableSelection.SelectedItem);
 
             //Start status animation
@@ -159,9 +173,30 @@ namespace DataManager_216
                 SortableBindingList<Model_Contract> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_Contract>(GlobalAppProperties.GetCredentials()));
                 FormControls.AssignListToDataGridView<Model_Contract>(dataGridView_DataViewer, model, true);
             }
+            else if (ComboBoxItemSelected == "Security")
+            {
+                SortableBindingList<Model_Security> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_Security>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_Security>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "SecurityPrice")
+            {
+                SortableBindingList<Model_SecurityPrice> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecurityPrice>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_SecurityPrice>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "SecurityPriceType")
+            {
+                SortableBindingList<Model_SecurityPriceType> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecurityPriceType>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_SecurityPriceType>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "SecurityVolume")
+            {
+                SortableBindingList<Model_SecurityVolume> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecurityVolume>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_SecurityVolume>(dataGridView_DataViewer, model, true);
+            }
             else
             {
                 SortableBindingList<string> model = null;
+                FormControls.AssignListToDataGridView<string>(dataGridView_DataViewer, model, true);
             }
             
             //Cancel animation
@@ -235,6 +270,22 @@ namespace DataManager_216
                 else if (ComboBoxItemSelected == "Contract")
                 {
                     recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Contract>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "Security")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_Security>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "SecurityPrice")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_SecurityPrice>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "SecurityPriceType")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_SecurityPriceType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "SecurityVolume")
+                {
+                    recordID = await FormControl_DataAccess.AddNewRecordFromDataGridView<Model_SecurityVolume>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else
                 {

@@ -10,6 +10,7 @@ namespace GeneralFormLibrary1.DataModels
     {
         public string ColumnName { get; set; }
         public string DataType { get; set; }
+        public bool IsNullable { get; set;}
 
         public Model_TableDataStructure()
         {

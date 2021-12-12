@@ -13,11 +13,8 @@ namespace GeneralFormLibrary1.DataModels
 		[Key]
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public string AltName { get; set; }
-		public int CountryId { get; set; }
 		public int EntityId { get; set; }
-		public int EntityTypeId { get; set; }
-		public string Notes { get; set; }
+		public int AssetTypeId { get; set; }
 		[Write(false)]
 		public string CreateUser { get; set; }
 		[Write(false)]
