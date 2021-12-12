@@ -19,6 +19,7 @@ namespace GeneralFormLibrary1.DataModels
 		public int CurrencyId { get; set; }
 		public int ExposureCurrencyId { get; set; }
 		public int Multiplier { get; set; }
+		public decimal PriceMultiplier { get; set; }
 		public byte AllowShort { get; set; }
 		public byte AllowTrade { get; set; }
 		[Write(false)]

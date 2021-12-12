@@ -63,7 +63,11 @@
     <Compile Include="DataModels\Model_Currency.cs" />
     <Compile Include="DataModels\Model_Entity.cs" />
     <Compile Include="DataModels\Model_EntityType.cs" />
+    <Compile Include="DataModels\Model_SecurityPrice.cs" />
+    <Compile Include="DataModels\Model_SecurityPriceType.cs" />
+    <Compile Include="DataModels\Model_SecurityVolume.cs" />
     <Compile Include="DataModels\Model_UnderlyingAsset.cs" />
+    <Compile Include="DataModels\Model_Security.cs" />
     <Compile Include="Enums\CustomRightClickMenu.cs" />
     <Compile Include="Enums\ComparisonOperator.cs" />
     <Compile Include="Classes\DatabaseAPI.cs" />
