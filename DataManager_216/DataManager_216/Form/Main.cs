@@ -69,5 +69,13 @@ namespace DataManager_216
         {
             MessageBox.Show(GeneralFormLibrary1.DataModelAPI.TableName<GeneralFormLibrary1.DataModels.Model_User>());
         }
+
+        private void alphaVantageAPIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("start");
+            AlphaVantageAPI api = new AlphaVantageAPI("demo");
+            api.GetTimeSeries(@"https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=ETH&market=USD&interval=5min&outputsize=full&apikey=");
+            MessageBox.Show("end");
+        }
     }
 }

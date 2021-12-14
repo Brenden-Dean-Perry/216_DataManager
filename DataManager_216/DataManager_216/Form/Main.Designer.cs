@@ -41,9 +41,10 @@ namespace DataManager_216
             this.hasherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.symmetricEncryptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.asymmeticEncryptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
+            this.alphaVantageAPIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -146,19 +147,11 @@ namespace DataManager_216
             this.asymmeticEncryptionToolStripMenuItem.Text = "Asymmetic Encryption - RSA";
             this.asymmeticEncryptionToolStripMenuItem.Click += new System.EventHandler(this.asymmeticEncryptionToolStripMenuItem_Click);
             // 
-            // webBrowser_Main_1
-            // 
-            this.webBrowser_Main_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser_Main_1.Location = new System.Drawing.Point(541, 31);
-            this.webBrowser_Main_1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser_Main_1.Name = "webBrowser_Main_1";
-            this.webBrowser_Main_1.Size = new System.Drawing.Size(656, 391);
-            this.webBrowser_Main_1.TabIndex = 0;
-            // 
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.testToolStripMenuItem1});
+            this.testToolStripMenuItem1,
+            this.alphaVantageAPIToolStripMenuItem});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.testToolStripMenuItem.Text = "Test";
@@ -169,6 +162,22 @@ namespace DataManager_216
             this.testToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
             this.testToolStripMenuItem1.Text = "Test";
             this.testToolStripMenuItem1.Click += new System.EventHandler(this.testToolStripMenuItem1_Click);
+            // 
+            // webBrowser_Main_1
+            // 
+            this.webBrowser_Main_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.webBrowser_Main_1.Location = new System.Drawing.Point(541, 31);
+            this.webBrowser_Main_1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser_Main_1.Name = "webBrowser_Main_1";
+            this.webBrowser_Main_1.Size = new System.Drawing.Size(656, 391);
+            this.webBrowser_Main_1.TabIndex = 0;
+            // 
+            // alphaVantageAPIToolStripMenuItem
+            // 
+            this.alphaVantageAPIToolStripMenuItem.Name = "alphaVantageAPIToolStripMenuItem";
+            this.alphaVantageAPIToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.alphaVantageAPIToolStripMenuItem.Text = "Alpha Vantage API";
+            this.alphaVantageAPIToolStripMenuItem.Click += new System.EventHandler(this.alphaVantageAPIToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -207,6 +216,7 @@ namespace DataManager_216
         private System.Windows.Forms.ToolStripMenuItem asymmeticEncryptionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem alphaVantageAPIToolStripMenuItem;
     }
 }
 

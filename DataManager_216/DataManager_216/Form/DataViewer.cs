@@ -39,73 +39,80 @@ namespace DataManager_216
 
         private void dataGridView_DataViewer_MouseClick(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Right)
+            string ExportFileName = "DataViewer_" + ComboBoxItemSelected + "_";
+
+            if (e.Button == MouseButtons.Right)
             {
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
 
                 if (ComboBoxItemSelected == "Users")
                 {
-                    RightClickDropDownMenu<Model_User> dropDownMenu = new RightClickDropDownMenu<Model_User>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_User> dropDownMenu = new RightClickDropDownMenu<Model_User>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "Country")
                 {
-                    RightClickDropDownMenu<Model_Country> dropDownMenu = new RightClickDropDownMenu<Model_Country>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_Country> dropDownMenu = new RightClickDropDownMenu<Model_Country>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "Currency")
                 {
-                    RightClickDropDownMenu<Model_Currency> dropDownMenu = new RightClickDropDownMenu<Model_Currency>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_Currency> dropDownMenu = new RightClickDropDownMenu<Model_Currency>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "Entity")
                 {
-                    RightClickDropDownMenu<Model_Entity> dropDownMenu = new RightClickDropDownMenu<Model_Entity>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_Entity> dropDownMenu = new RightClickDropDownMenu<Model_Entity>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "EntityType")
                 {
-                    RightClickDropDownMenu<Model_EntityType> dropDownMenu = new RightClickDropDownMenu<Model_EntityType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_EntityType> dropDownMenu = new RightClickDropDownMenu<Model_EntityType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "AssetType")
                 {
-                    RightClickDropDownMenu<Model_AssetType> dropDownMenu = new RightClickDropDownMenu<Model_AssetType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_AssetType> dropDownMenu = new RightClickDropDownMenu<Model_AssetType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "UnderlyingAsset")
                 {
-                    RightClickDropDownMenu<Model_UnderlyingAsset> dropDownMenu = new RightClickDropDownMenu<Model_UnderlyingAsset>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_UnderlyingAsset> dropDownMenu = new RightClickDropDownMenu<Model_UnderlyingAsset>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "Contract")
                 {
-                    RightClickDropDownMenu<Model_Contract> dropDownMenu = new RightClickDropDownMenu<Model_Contract>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_Contract> dropDownMenu = new RightClickDropDownMenu<Model_Contract>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "Security")
                 {
-                    RightClickDropDownMenu<Model_Security> dropDownMenu = new RightClickDropDownMenu<Model_Security>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_Security> dropDownMenu = new RightClickDropDownMenu<Model_Security>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "SecurityPrice")
                 {
-                    RightClickDropDownMenu<Model_SecurityPrice> dropDownMenu = new RightClickDropDownMenu<Model_SecurityPrice>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_SecurityPrice> dropDownMenu = new RightClickDropDownMenu<Model_SecurityPrice>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "SecurityPriceType")
                 {
-                    RightClickDropDownMenu<Model_SecurityPriceType> dropDownMenu = new RightClickDropDownMenu<Model_SecurityPriceType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_SecurityPriceType> dropDownMenu = new RightClickDropDownMenu<Model_SecurityPriceType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else if (ComboBoxItemSelected == "SecurityVolume")
                 {
-                    RightClickDropDownMenu<Model_SecurityVolume> dropDownMenu = new RightClickDropDownMenu<Model_SecurityVolume>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<Model_SecurityVolume> dropDownMenu = new RightClickDropDownMenu<Model_SecurityVolume>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "DataSource")
+                {
+                    RightClickDropDownMenu<Model_DataSource> dropDownMenu = new RightClickDropDownMenu<Model_DataSource>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
                 else
                 {
-                    RightClickDropDownMenu<object> dropDownMenu = new RightClickDropDownMenu<object>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, "DataViewer", GlobalAppProperties.GetCredentials());
+                    RightClickDropDownMenu<object> dropDownMenu = new RightClickDropDownMenu<object>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL, e);
                 }
 
@@ -194,6 +201,11 @@ namespace DataManager_216
             {
                 SortableBindingList<Model_SecurityVolume> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecurityVolume>(GlobalAppProperties.GetCredentials()));
                 FormControls.AssignListToDataGridView<Model_SecurityVolume>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "DataSource")
+            {
+                SortableBindingList<Model_DataSource> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_DataSource>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_DataSource>(dataGridView_DataViewer, model, true);
             }
             else
             {
@@ -295,6 +307,10 @@ namespace DataManager_216
                 else if (ComboBoxItemSelected == "SecurityVolume")
                 {
                     recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityVolume>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "DataSource")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_DataSource>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else
                 {
