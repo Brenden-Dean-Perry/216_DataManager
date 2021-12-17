@@ -17,7 +17,7 @@ namespace GeneralFormLibrary1
         {
             APIKey = apiKey;
         }
-        
+
 
         public Dictionary<string, string> GetMetaData(string APIQueryURL)
         {

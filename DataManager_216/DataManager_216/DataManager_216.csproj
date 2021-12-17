@@ -85,6 +85,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form\APIDataImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\APIDataImporter.Designer.cs">
+      <DependentUpon>APIDataImporter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\DataModelConstructor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +143,9 @@
     <Compile Include="Form\RSAEncryption.Designer.cs">
       <DependentUpon>RSAEncryption.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form\APIDataImporter.resx">
+      <DependentUpon>APIDataImporter.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\DataModelConstructor.resx">
       <DependentUpon>DataModelConstructor.cs</DependentUpon>
     </EmbeddedResource>

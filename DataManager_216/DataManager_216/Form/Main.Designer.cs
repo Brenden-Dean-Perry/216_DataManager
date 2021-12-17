@@ -45,6 +45,7 @@ namespace DataManager_216
             this.testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
             this.alphaVantageAPIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aPIDataImporterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,7 +105,8 @@ namespace DataManager_216
             // aPIsToolStripMenuItem
             // 
             this.aPIsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aPIViewerToolStripMenuItem});
+            this.aPIViewerToolStripMenuItem,
+            this.aPIDataImporterToolStripMenuItem});
             this.aPIsToolStripMenuItem.Name = "aPIsToolStripMenuItem";
             this.aPIsToolStripMenuItem.Size = new System.Drawing.Size(45, 24);
             this.aPIsToolStripMenuItem.Text = "API";
@@ -179,6 +181,12 @@ namespace DataManager_216
             this.alphaVantageAPIToolStripMenuItem.Text = "Alpha Vantage API";
             this.alphaVantageAPIToolStripMenuItem.Click += new System.EventHandler(this.alphaVantageAPIToolStripMenuItem_Click);
             // 
+            // aPIDataImporterToolStripMenuItem
+            // 
+            this.aPIDataImporterToolStripMenuItem.Name = "aPIDataImporterToolStripMenuItem";
+            this.aPIDataImporterToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.aPIDataImporterToolStripMenuItem.Text = "API Data Importer";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -217,6 +225,7 @@ namespace DataManager_216
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem alphaVantageAPIToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aPIDataImporterToolStripMenuItem;
     }
 }
 
