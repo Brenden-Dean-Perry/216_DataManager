@@ -7,16 +7,12 @@ using Dapper.Contrib.Extensions;
 
 namespace GeneralFormLibrary1.DataModels
 {
-	[Table("SecurityPrice")]
-	public class Model_SecurityPrice
+	[Table("DataImportOccuranceType")]
+	public class Model_DataImportOccuranceType
 	{
 		[Key]
-		public long Id { get; set; }
-		public int SecurityId { get; set; }
-		public int SecurityPriceTypeId { get; set; }
-		public DateTime? Date { get; set; }
-		public decimal Value { get; set; }
-		public int DataSourceId { get; set; }
+		public int Id { get; set; }
+		public string Name { get; set; }
 		[Write(false)]
 		public string CreateUser { get; set; }
 		[Write(false)]
@@ -26,7 +22,7 @@ namespace GeneralFormLibrary1.DataModels
 		[Write(false)]
 		public DateTime? ChangeDate { get; set; }
 
-		public Model_SecurityPrice()
+		public Model_DataImportOccuranceType()
 		{
 		}
 

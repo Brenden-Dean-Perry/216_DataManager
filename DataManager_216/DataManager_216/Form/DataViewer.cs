@@ -110,6 +110,31 @@ namespace DataManager_216
                     RightClickDropDownMenu<Model_DataSource> dropDownMenu = new RightClickDropDownMenu<Model_DataSource>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
+                else if (ComboBoxItemSelected == "DataImportJob")
+                {
+                    RightClickDropDownMenu<Model_DataImportJob> dropDownMenu = new RightClickDropDownMenu<Model_DataImportJob>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "DataImportJobType")
+                {
+                    RightClickDropDownMenu<Model_DataImportJobType> dropDownMenu = new RightClickDropDownMenu<Model_DataImportJobType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "DataImportJobTypeOccuranceType")
+                {
+                    RightClickDropDownMenu<Model_DataImportOccuranceType> dropDownMenu = new RightClickDropDownMenu<Model_DataImportOccuranceType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "SecurityPriceIntraday")
+                {
+                    RightClickDropDownMenu<Model_SecurityPriceIntraday> dropDownMenu = new RightClickDropDownMenu<Model_SecurityPriceIntraday>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "SecurityVolumeIntraday")
+                {
+                    RightClickDropDownMenu<Model_SecurityVolumeIntraday> dropDownMenu = new RightClickDropDownMenu<Model_SecurityVolumeIntraday>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
                 else
                 {
                     RightClickDropDownMenu<object> dropDownMenu = new RightClickDropDownMenu<object>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
@@ -206,6 +231,31 @@ namespace DataManager_216
             {
                 SortableBindingList<Model_DataSource> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_DataSource>(GlobalAppProperties.GetCredentials()));
                 FormControls.AssignListToDataGridView<Model_DataSource>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "DataImportJob")
+            {
+                SortableBindingList<Model_DataImportJob> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_DataImportJob>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_DataImportJob>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "DataImportJobType")
+            {
+                SortableBindingList<Model_DataImportJobType> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_DataImportJobType>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_DataImportJobType>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "DataImportOccuranceType")
+            {
+                SortableBindingList<Model_DataImportOccuranceType> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_DataImportOccuranceType>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_DataImportOccuranceType>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "SecurityPriceIntraday")
+            {
+                SortableBindingList<Model_SecurityPriceIntraday> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecurityPriceIntraday>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_SecurityPriceIntraday>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "SecurityVolumeIntraday")
+            {
+                SortableBindingList<Model_SecurityVolumeIntraday> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecurityVolumeIntraday>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_SecurityVolumeIntraday>(dataGridView_DataViewer, model, true);
             }
             else
             {
@@ -311,6 +361,26 @@ namespace DataManager_216
                 else if (ComboBoxItemSelected == "DataSource")
                 {
                     recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_DataSource>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "DataImportJob")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_DataImportJob>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "DataImportJobType")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_DataImportJobType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "DataImportOccuranceType")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_DataImportOccuranceType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "SecurityPriceIntraday")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityPriceIntraday>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "SecurityVolumeIntraday ")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityVolumeIntraday>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else
                 {

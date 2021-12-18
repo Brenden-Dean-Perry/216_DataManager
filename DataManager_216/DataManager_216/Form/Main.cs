@@ -73,9 +73,16 @@ namespace DataManager_216
         private void alphaVantageAPIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("start");
-            AlphaVantageAPI api = new AlphaVantageAPI("demo");
-            api.GetTimeSeries(@"https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=ETH&market=USD&interval=5min&outputsize=full&apikey=");
+            AlphaVantageAPI api = new AlphaVantageAPI();
+            api.GetTimeSeries(@"https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=ETH&market=USD&interval=5min&outputsize=full&apikey=demo", "Time Series (Digital Currency Daily)");
             MessageBox.Show("end");
+        }
+
+        private void dataCollectorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataCollector dataCollector = new DataCollector(GlobalAppProperties.GetCredentials());
+            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily);
+
         }
     }
 }

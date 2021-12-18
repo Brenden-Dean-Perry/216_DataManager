@@ -37,15 +37,16 @@ namespace DataManager_216
             this.modelConstructorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aPIsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aPIViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aPIDataImporterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cryptographyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.symmetricEncryptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.asymmeticEncryptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
             this.alphaVantageAPIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aPIDataImporterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
+            this.dataCollectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,9 +115,15 @@ namespace DataManager_216
             // aPIViewerToolStripMenuItem
             // 
             this.aPIViewerToolStripMenuItem.Name = "aPIViewerToolStripMenuItem";
-            this.aPIViewerToolStripMenuItem.Size = new System.Drawing.Size(163, 26);
+            this.aPIViewerToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
             this.aPIViewerToolStripMenuItem.Text = "API Viewer";
             this.aPIViewerToolStripMenuItem.Click += new System.EventHandler(this.aPIViewerToolStripMenuItem_Click);
+            // 
+            // aPIDataImporterToolStripMenuItem
+            // 
+            this.aPIDataImporterToolStripMenuItem.Name = "aPIDataImporterToolStripMenuItem";
+            this.aPIDataImporterToolStripMenuItem.Size = new System.Drawing.Size(212, 26);
+            this.aPIDataImporterToolStripMenuItem.Text = "API Data Importer";
             // 
             // cryptographyToolStripMenuItem
             // 
@@ -153,7 +160,8 @@ namespace DataManager_216
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.testToolStripMenuItem1,
-            this.alphaVantageAPIToolStripMenuItem});
+            this.alphaVantageAPIToolStripMenuItem,
+            this.dataCollectorToolStripMenuItem});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.testToolStripMenuItem.Text = "Test";
@@ -165,6 +173,13 @@ namespace DataManager_216
             this.testToolStripMenuItem1.Text = "Test";
             this.testToolStripMenuItem1.Click += new System.EventHandler(this.testToolStripMenuItem1_Click);
             // 
+            // alphaVantageAPIToolStripMenuItem
+            // 
+            this.alphaVantageAPIToolStripMenuItem.Name = "alphaVantageAPIToolStripMenuItem";
+            this.alphaVantageAPIToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.alphaVantageAPIToolStripMenuItem.Text = "Alpha Vantage API";
+            this.alphaVantageAPIToolStripMenuItem.Click += new System.EventHandler(this.alphaVantageAPIToolStripMenuItem_Click);
+            // 
             // webBrowser_Main_1
             // 
             this.webBrowser_Main_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -174,18 +189,12 @@ namespace DataManager_216
             this.webBrowser_Main_1.Size = new System.Drawing.Size(656, 391);
             this.webBrowser_Main_1.TabIndex = 0;
             // 
-            // alphaVantageAPIToolStripMenuItem
+            // dataCollectorToolStripMenuItem
             // 
-            this.alphaVantageAPIToolStripMenuItem.Name = "alphaVantageAPIToolStripMenuItem";
-            this.alphaVantageAPIToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.alphaVantageAPIToolStripMenuItem.Text = "Alpha Vantage API";
-            this.alphaVantageAPIToolStripMenuItem.Click += new System.EventHandler(this.alphaVantageAPIToolStripMenuItem_Click);
-            // 
-            // aPIDataImporterToolStripMenuItem
-            // 
-            this.aPIDataImporterToolStripMenuItem.Name = "aPIDataImporterToolStripMenuItem";
-            this.aPIDataImporterToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.aPIDataImporterToolStripMenuItem.Text = "API Data Importer";
+            this.dataCollectorToolStripMenuItem.Name = "dataCollectorToolStripMenuItem";
+            this.dataCollectorToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.dataCollectorToolStripMenuItem.Text = "Data Collector";
+            this.dataCollectorToolStripMenuItem.Click += new System.EventHandler(this.dataCollectorToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -226,6 +235,7 @@ namespace DataManager_216
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem alphaVantageAPIToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aPIDataImporterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataCollectorToolStripMenuItem;
     }
 }
 
