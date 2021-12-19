@@ -49,20 +49,29 @@ namespace GeneralFormLibrary1
                     DataAccess<DataModels.Model_Security> da2 = new DataAccess<DataModels.Model_Security>(DBcredentials);
                     DataModels.Model_Security Sec = await da2.Get(SecurityId);
                     string APIQuery = jobType.Query.Replace("(***TICKER***)", Sec.Ticker).Replace("(***KEY***)",dataSources.Where(x => x.Id == jobType.DataSourceId).FirstOrDefault().Key);
+                    MessageBox.Show(APIQuery);
 
                     //Alpha Vantage
                     if (jobType.DataSourceId == 1)
                     {
-                        UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery);
+                        await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery);
+                        int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
+                        System.Threading.Thread.Sleep(120000/requestsPerMinute);
                     }
                 }
             }
         }
 
-        private async void UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuerydemo)
+        private async Task UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuerydemo)
         {
             AlphaVantageAPI api = new AlphaVantageAPI();
             Dictionary<string, Dictionary<string, string>> timeSeriesData = api.GetTimeSeries(APIQuerydemo, "Time Series (Digital Currency Daily)");
+
+            if(timeSeriesData.Count <= 0)
+            {
+                MessageBox.Show("API request returned no data.");
+                return; //Error in API request
+            }
 
             //Build list to upload
             List<DataModels.Model_SecurityPrice> securityPrices = new List<DataModels.Model_SecurityPrice>();
@@ -71,7 +80,7 @@ namespace GeneralFormLibrary1
             foreach (KeyValuePair<string, Dictionary<string, string>> priceObj in timeSeriesData)
             {
                 //Ignore today's prices
-                if (DateTime.Parse(priceObj.Key).ToString("d") != dateTime.ToString("d"))
+                if (DateTime.Parse(priceObj.Key) < dateTime)
                 {
                     bool openFound = false;
                     bool highFound = false;
@@ -158,46 +167,49 @@ namespace GeneralFormLibrary1
         public List<DataModels.Model_SecurityPrice> SecurityPriceListToFinalListForInsert(List<DataModels.Model_SecurityPrice> list)
         {
             //Get query parameters
-            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
-            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
             List<int> SecurityPriceTypeIds = list.Select(x => x.SecurityPriceTypeId).Distinct<int>().ToList();
             List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
 
             //Build query
-            string query = "Select * From SecurityPrice Where SecurityId in (" + string.Join(",", SecurityIds)+ ") And Date >= '" + startDate + "' And Date <= '" + endDate + "' And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
+            string query = "Select * From SecurityPrice Where SecurityId in (" + string.Join(",", SecurityIds)+ ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "' And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
 
             //Get data to compare from DB
             List<DataModels.Model_SecurityPrice> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPrice>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecurityPrice> finalList = new List<Model_SecurityPrice>();
+            int count = 0;
             foreach (DataModels.Model_SecurityPrice price in list)
             {
                 //If match found in DB
                 int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.SecurityPriceTypeId == price.SecurityPriceTypeId) && (x.Date == price.Date));
-                if (DBListIndex > 0)
+                if (DBListIndex >= 0)
                 {
                     //Do nothing. Price already exists or needs to be updated
                 }
                 else
                 {
                     //Was not found and we need to insert
+                    count++;
                     finalList.Add(price);
                 }
             }
 
+            MessageBox.Show(count.ToString() + " count of missing sec prices");
             return finalList;
         }
 
         public List<DataModels.Model_SecurityVolume> SecurityVolumeListToFinalListForInsert(List<DataModels.Model_SecurityVolume> list)
         {
             //Get query parameters
-            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
-            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
             List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
 
             //Build query
-            string query = "Select * From SecurityVolume Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate + "' And Date <= '" + endDate + "';";
+            string query = "Select * From SecurityVolume Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "';";
 
             //Get data to compare from DB
             List<DataModels.Model_SecurityVolume> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityVolume>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
@@ -208,7 +220,7 @@ namespace GeneralFormLibrary1
             {
                 //If match found in DB
                 int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.Date == price.Date));
-                if (DBListIndex > 0)
+                if (DBListIndex >= 0)
                 {
                     //Do nothing. Price already exists or needs to be updated
                 }
@@ -219,19 +231,20 @@ namespace GeneralFormLibrary1
                 }
             }
 
+            MessageBox.Show(finalList.Count.ToString() + " Volume data count");
             return finalList;
         }
 
         public List<DataModels.Model_SecurityPrice> SecurityListToSecurityListForUpdate(List<DataModels.Model_SecurityPrice> list)
         {
             //Get query parameters
-            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
-            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
             List<int> SecurityPriceTypeIds = list.Select(x => x.SecurityPriceTypeId).Distinct<int>().ToList();
             List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
 
             //Build query
-            string query = "Select * From SecurityPrice Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate + "' And Date <= '" + endDate + "' And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
+            string query = "Select * From SecurityPrice Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "' And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
 
             //Get data to compare from DB
             List<DataModels.Model_SecurityPrice> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPrice>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
@@ -242,7 +255,7 @@ namespace GeneralFormLibrary1
             {
                 //If match found in DB
                 int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.SecurityPriceTypeId == price.SecurityPriceTypeId) && (x.Date == price.Date));
-                if (DBListIndex > 0)
+                if (DBListIndex >= 0)
                 {
                     //Price already exists
                     if (price.Value != DBList[DBListIndex].Value)

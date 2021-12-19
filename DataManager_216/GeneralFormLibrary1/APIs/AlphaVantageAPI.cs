@@ -54,13 +54,18 @@ namespace GeneralFormLibrary1
             System.IO.Stream recieverStream = webResponse.GetResponseStream();
             System.IO.StreamReader reader = new System.IO.StreamReader(recieverStream);
             string response = reader.ReadToEnd();
+            //Build dictionary of time series data
+            Dictionary<string, Dictionary<string, string>> timeSeriesDataDict = new Dictionary<string, Dictionary<string, string>>();
+            if (response.ToLower().Contains("error message"))
+            {
+                return timeSeriesDataDict;
+            }
+
             Newtonsoft.Json.Linq.JObject jobj = Newtonsoft.Json.Linq.JObject.Parse(response);
 
             //Store time series data
             Newtonsoft.Json.Linq.JObject timeSeriesData = Newtonsoft.Json.Linq.JObject.Parse(jobj[APITimeSeriesObjectHeader].ToString());
 
-            //Build dictionary of time series data
-            Dictionary<string, Dictionary<string, string>> timeSeriesDataDict = new Dictionary<string, Dictionary<string, string>>();
             foreach (System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> item in timeSeriesData)
             {
                 Newtonsoft.Json.Linq.JObject timeSeriesData_Day = Newtonsoft.Json.Linq.JObject.Parse(item.Value.ToString());
