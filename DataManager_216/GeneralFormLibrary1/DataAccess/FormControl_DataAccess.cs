@@ -27,7 +27,7 @@ namespace GeneralFormLibrary1
             int id = -1;
             try
             {
-                id = await dataAccess.Add(newItem);
+                id = await dataAccess.Insert(newItem);
 
                 //Fire event
                 if (UpdateData != null)

@@ -16,9 +16,9 @@ namespace GeneralFormLibrary1
 
         Task<bool> Delete(List<T> entity);
 
-        Task<int> Add(T entity);
+        Task<int> Insert(T entity);
 
-        Task<int> Add(List<T> entity);
+        Task<int> Insert(List<T> entity);
 
         Task<bool> Update(T entity);
 

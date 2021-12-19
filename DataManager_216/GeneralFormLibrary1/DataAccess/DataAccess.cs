@@ -20,7 +20,7 @@ namespace GeneralFormLibrary1
             DBConnection = DatabaseAPI.ConnectionString("QuantDB", credentials);
         }
 
-        public async Task<int> Add(T entity)
+        public async Task<int> Insert(T entity)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
@@ -30,7 +30,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public async Task<int> Add(List<T> entity)
+        public async Task<int> Insert(List<T> entity)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
