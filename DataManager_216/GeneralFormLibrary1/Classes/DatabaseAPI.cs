@@ -38,7 +38,7 @@ namespace GeneralFormLibrary1
         /// <param name="SQLquery">SQL query. Make sure you include a "Use" statement</param>
         /// <param name="Parameter_obj">Parameter object</param>
         /// <returns></returns>
-        internal static List<T> GetData_List<T>(string ConnectionString, string SQLquery, object Parameter_obj = null)
+        public static List<T> GetData_List<T>(string ConnectionString, string SQLquery, object Parameter_obj = null)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionString))
             {

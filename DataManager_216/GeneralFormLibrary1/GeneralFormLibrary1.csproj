@@ -138,6 +138,7 @@
     <Folder Include="DataModels\API_DataModels\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SQL\Main_DataImportReport.sql" />
     <Content Include="SQL\Main_SecurityPriceAndVolumeReport.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

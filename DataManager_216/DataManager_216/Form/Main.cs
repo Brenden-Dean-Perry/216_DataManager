@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralFormLibrary1;
+using GeneralFormLibrary1.DataModels.Query_DataModels;
 
 namespace DataManager_216
 {
@@ -22,6 +23,9 @@ namespace DataManager_216
         {
             this.Text = GlobalAppProperties.AppName;
             //LaunchBloombergTvStream();
+            string query = System.IO.File.ReadAllText(GlobalAppProperties.GetSqlFilePath() + "Main_SecurityPriceAndVolumeReport.sql");
+            SortableBindingList<Model_SecurityPriceAndVolumeReport> list = new SortableBindingList<Model_SecurityPriceAndVolumeReport>(DatabaseAPI.GetData_List<Model_SecurityPriceAndVolumeReport>(DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), query));
+            FormControls.AssignListToDataGridView<Model_SecurityPriceAndVolumeReport>(dataGridView_Main_SecurityPriceReport, list);
         }
 
         private void LaunchBloombergTvStream()

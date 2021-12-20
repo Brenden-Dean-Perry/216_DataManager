@@ -51,16 +51,14 @@ namespace GeneralFormLibrary1
                     string APIQuery = jobType.Query.Replace("(***TICKER***)", Sec.Ticker).Replace("(***KEY***)",dataSources.Where(x => x.Id == jobType.DataSourceId).FirstOrDefault().Key);
 
                     //Alpha Vantage crypto daily
-                    /*
                     if (jobType.Id == 1)
                     {
                         await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series (Digital Currency Daily)", " (usd)");
                         int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
                         await Task.Run(() => System.Threading.Thread.Sleep(60000/requestsPerMinute));
                     }
-                    */
                     //Alpha Vantage fx daily
-                    if (jobType.Id == 3)
+                    else if (jobType.Id == 3)
                     {
                         Clipboard.SetText(APIQuery);
                         await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series FX (Daily)", "");
@@ -81,11 +79,6 @@ namespace GeneralFormLibrary1
                MessageBox.Show("API request returned no data.");
                return; //Error in API request
             }
-            else
-            {
-                MessageBox.Show(timeSeriesData.Count.ToString() + " Time series count");
-            }
-
 
             //Build list to upload
             List<DataModels.Model_SecurityPrice> securityPrices = new List<DataModels.Model_SecurityPrice>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DataManager_216
 {
@@ -24,5 +25,18 @@ namespace DataManager_216
             return credentials;
         }
 
+        public static string GetSqlFilePath()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"GeneralFormLibrary1\SQL\";
+            MessageBox.Show(path);
+            if (System.IO.Directory.Exists(path))
+            {
+                return path;
+            }
+            else
+            {
+                return @"C:\Users\brend\OneDrive\Desktop\GitHub\216_DataManager\DataManager_216\GeneralFormLibrary1\SQL\";
+            }
+        }
     }
 }
