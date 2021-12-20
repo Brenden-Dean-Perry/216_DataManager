@@ -107,6 +107,7 @@
     <Compile Include="DataModels\Model_SecurityVolumeIntraday.cs" />
     <Compile Include="DataModels\Model_UnderlyingAsset.cs" />
     <Compile Include="DataModels\Model_Security.cs" />
+    <Compile Include="DataModels\Query_DataModels\Model_SecurityPriceAndVolumeReport.cs" />
     <Compile Include="Enums\Enum_CustomRightClickMenu.cs" />
     <Compile Include="Enums\Enum_ComparisonOperator.cs" />
     <Compile Include="Classes\DatabaseAPI.cs" />
@@ -135,6 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataModels\API_DataModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SQL\Main_SecurityPriceAndVolumeReport.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Text.Json.6.0.1\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.1\build\System.Text.Json.targets')" />

@@ -39,39 +39,53 @@ namespace GeneralFormLibrary1
 
             foreach (DataModels.Model_DataImportJob job in ImportJobs)
             {
-                if(job.ActiveState == 1)
-                {
-                    int DataJobImportJobTypeId = job.DataImportJobTypeId;
-                    int SecurityId = job.SecurityId;
-                    DataAccess<DataModels.Model_DataImportJobType> da = new DataAccess<DataModels.Model_DataImportJobType>(DBcredentials);
-                    DataModels.Model_DataImportJobType jobType = await da.Get(DataJobImportJobTypeId);
+                int DataJobImportJobTypeId = job.DataImportJobTypeId;
+                DataAccess<DataModels.Model_DataImportJobType> da = new DataAccess<DataModels.Model_DataImportJobType>(DBcredentials);
+                DataModels.Model_DataImportJobType jobType = await da.Get(DataJobImportJobTypeId);
 
+                if (job.ActiveState == 1 && jobType.DataSourceId == 1)
+                {
+                    int SecurityId = job.SecurityId;
                     DataAccess<DataModels.Model_Security> da2 = new DataAccess<DataModels.Model_Security>(DBcredentials);
                     DataModels.Model_Security Sec = await da2.Get(SecurityId);
                     string APIQuery = jobType.Query.Replace("(***TICKER***)", Sec.Ticker).Replace("(***KEY***)",dataSources.Where(x => x.Id == jobType.DataSourceId).FirstOrDefault().Key);
-                    MessageBox.Show(APIQuery);
 
-                    //Alpha Vantage
-                    if (jobType.DataSourceId == 1)
+                    //Alpha Vantage crypto daily
+                    /*
+                    if (jobType.Id == 1)
                     {
-                        await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery);
+                        await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series (Digital Currency Daily)", " (usd)");
                         int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
-                        System.Threading.Thread.Sleep(120000/requestsPerMinute);
+                        await Task.Run(() => System.Threading.Thread.Sleep(60000/requestsPerMinute));
+                    }
+                    */
+                    //Alpha Vantage fx daily
+                    if (jobType.Id == 3)
+                    {
+                        Clipboard.SetText(APIQuery);
+                        await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series FX (Daily)", "");
+                        int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
+                        await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
                     }
                 }
             }
         }
 
-        private async Task UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuerydemo)
+        private async Task UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuery, string ObjectHeaderString, string ExtraKeyEndingString = null)
         {
             AlphaVantageAPI api = new AlphaVantageAPI();
-            Dictionary<string, Dictionary<string, string>> timeSeriesData = api.GetTimeSeries(APIQuerydemo, "Time Series (Digital Currency Daily)");
+            Dictionary<string, Dictionary<string, string>> timeSeriesData = api.GetTimeSeries(APIQuery, ObjectHeaderString);
 
             if(timeSeriesData.Count <= 0)
             {
-                MessageBox.Show("API request returned no data.");
-                return; //Error in API request
+               MessageBox.Show("API request returned no data.");
+               return; //Error in API request
             }
+            else
+            {
+                MessageBox.Show(timeSeriesData.Count.ToString() + " Time series count");
+            }
+
 
             //Build list to upload
             List<DataModels.Model_SecurityPrice> securityPrices = new List<DataModels.Model_SecurityPrice>();
@@ -102,24 +116,23 @@ namespace GeneralFormLibrary1
                         }
                         else
                         {
-
                             DataModels.Model_SecurityPrice secPrice = new DataModels.Model_SecurityPrice();
-                            if (closeFound == false && price.Key.ToLower().Contains("close (usd)") )
+                            if (closeFound == false && price.Key.ToLower().Contains("close" + ExtraKeyEndingString) )
                             {
                                 closeFound = true;
                                 secPrice.SecurityPriceTypeId = 1;
                             }
-                            else if (openFound == false && price.Key.ToLower().Contains("open (usd)"))
+                            else if (openFound == false && price.Key.ToLower().Contains("open" + ExtraKeyEndingString))
                             {
                                 openFound = true;
                                 secPrice.SecurityPriceTypeId = 2;
                             }
-                            else if (highFound == false && price.Key.ToLower().Contains("high (usd)"))
+                            else if (highFound == false && price.Key.ToLower().Contains("high" + ExtraKeyEndingString))
                             {
                                 highFound = true;
                                 secPrice.SecurityPriceTypeId = 3;
                             }
-                            else if (lowFound == false && price.Key.ToLower().Contains("low (usd)"))
+                            else if (lowFound == false && price.Key.ToLower().Contains("low" + ExtraKeyEndingString))
                             {
                                 lowFound = true;
                                 secPrice.SecurityPriceTypeId = 4;
@@ -140,35 +153,46 @@ namespace GeneralFormLibrary1
                 }
             }
 
-            List<DataModels.Model_SecurityPrice> finalSecPricesForInsert = SecurityPriceListToFinalListForInsert(securityPrices);
-            List<DataModels.Model_SecurityPrice> finalSecPricesForUpdate = SecurityListToSecurityListForUpdate(securityPrices);
-            List<DataModels.Model_SecurityVolume> finalSecVolumesForInsert = SecurityVolumeListToFinalListForInsert(securityVolumes);
-            MessageBox.Show("Price that need to be updated: " + finalSecPricesForUpdate.Count.ToString() + " prices");
+            List<DataModels.Model_SecurityPrice> finalSecPricesForInsert = new List<Model_SecurityPrice>();
+            List<DataModels.Model_SecurityPrice> finalSecPricesForUpdate = new List<Model_SecurityPrice>();
+            List<DataModels.Model_SecurityVolume> finalSecVolumesForInsert = new List<Model_SecurityVolume>();
+            if (securityPrices. Count > 0)
+            {
+                finalSecPricesForInsert = SecurityPriceListToFinalListForInsert(securityPrices);
+                finalSecPricesForUpdate = SecurityListToSecurityListForUpdate(securityPrices);
+            }
+            
+            if(securityVolumes.Count > 0)
+            {
+                finalSecVolumesForInsert = SecurityVolumeListToFinalListForInsert(securityVolumes);
+            }
+            
+            //MessageBox.Show("Price that need to be updated: " + finalSecPricesForUpdate.Count.ToString() + " prices");
 
             //Insert data
             if (finalSecPricesForInsert.Count > 0)
             {
-                MessageBox.Show("About to insert " + finalSecPricesForInsert.Count.ToString() +  " prices");
+                //MessageBox.Show("About to insert " + finalSecPricesForInsert.Count.ToString() +  " prices");
                 DataAccess<DataModels.Model_SecurityPrice> daSecPrice = new DataAccess<DataModels.Model_SecurityPrice>(DBcredentials);
                 int recordsInserted = await daSecPrice.Insert(finalSecPricesForInsert);
-                MessageBox.Show(recordsInserted.ToString() + " price records inserted");
+                //MessageBox.Show(recordsInserted.ToString() + " price records inserted");
             }
 
             //Insert data
             if (finalSecVolumesForInsert.Count > 0)
             {
-                MessageBox.Show("About to insert " +  finalSecVolumesForInsert.Count.ToString() + " volume");
+                //MessageBox.Show("About to insert " +  finalSecVolumesForInsert.Count.ToString() + " volume");
                 DataAccess<DataModels.Model_SecurityVolume> daSecVolume = new DataAccess<DataModels.Model_SecurityVolume>(DBcredentials);
                 int recordsInserted = await daSecVolume.Insert(finalSecVolumesForInsert);
-                MessageBox.Show(recordsInserted.ToString() + " volume records inserted");
+                //MessageBox.Show(recordsInserted.ToString() + " volume records inserted");
             }
         }
 
         public List<DataModels.Model_SecurityPrice> SecurityPriceListToFinalListForInsert(List<DataModels.Model_SecurityPrice> list)
         {
             //Get query parameters
-            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
-            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).LastOrDefault().Date;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).FirstOrDefault().Date;
             List<int> SecurityPriceTypeIds = list.Select(x => x.SecurityPriceTypeId).Distinct<int>().ToList();
             List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
 
@@ -197,15 +221,14 @@ namespace GeneralFormLibrary1
                 }
             }
 
-            MessageBox.Show(count.ToString() + " count of missing sec prices");
             return finalList;
         }
 
         public List<DataModels.Model_SecurityVolume> SecurityVolumeListToFinalListForInsert(List<DataModels.Model_SecurityVolume> list)
         {
             //Get query parameters
-            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
-            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).LastOrDefault().Date;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).FirstOrDefault().Date;
             List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
 
             //Build query
@@ -231,15 +254,14 @@ namespace GeneralFormLibrary1
                 }
             }
 
-            MessageBox.Show(finalList.Count.ToString() + " Volume data count");
             return finalList;
         }
 
         public List<DataModels.Model_SecurityPrice> SecurityListToSecurityListForUpdate(List<DataModels.Model_SecurityPrice> list)
         {
             //Get query parameters
-            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).Last().Date;
-            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).First().Date;
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).LastOrDefault().Date;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).FirstOrDefault().Date;
             List<int> SecurityPriceTypeIds = list.Select(x => x.SecurityPriceTypeId).Distinct<int>().ToList();
             List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
 
