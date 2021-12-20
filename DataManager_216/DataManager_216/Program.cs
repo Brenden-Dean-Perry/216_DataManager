@@ -21,7 +21,6 @@ namespace DataManager_216
             string ApplicationName = "DataManager_216";
             ApplicationUpdater.UpdateThisApp(ApplicationName);
             Application.Run(new frmLogin());
-            Application.Run(new frmMain());
         }
     }
 }

@@ -27,7 +27,7 @@ namespace GeneralFormLibrary1.DataModels.Query_DataModels
 
         public DateTime? MinDate_Volume_Intraday { get; set; }
 
-        public DateTime? MaxDate_Volume_Intrday { get; set; }
+        public DateTime? MaxDate_Volume_Intraday { get; set; }
 
         public Model_SecurityPriceAndVolumeReport()
         {

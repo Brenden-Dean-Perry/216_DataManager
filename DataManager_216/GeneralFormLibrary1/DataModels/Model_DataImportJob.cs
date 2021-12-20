@@ -16,6 +16,9 @@ namespace GeneralFormLibrary1.DataModels
 		public byte ActiveState { get; set; }
 		public int DataImportJobTypeId { get; set; }
 		public int DataImportOccuranceTypeId { get; set; }
+		public DateTime? LastRunDateTime { get; set; }
+		public int PriceUpdatesNeeded { get; set; }
+
 		[Write(false)]
 		public string CreateUser { get; set; }
 		[Write(false)]

@@ -45,18 +45,19 @@ namespace DataManager_216
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.alphaVantageAPIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
             this.dataCollectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.webBrowser_Main_1 = new System.Windows.Forms.WebBrowser();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView_Main_DataImportReport = new System.Windows.Forms.DataGridView();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView_Main_SecurityPriceReport = new System.Windows.Forms.DataGridView();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Main_DataImportReport)).BeginInit();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Main_SecurityPriceReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,6 +74,7 @@ namespace DataManager_216
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshToolStripMenuItem,
             this.dataToolStripMenuItem,
             this.aPIsToolStripMenuItem,
             this.cryptographyToolStripMenuItem,
@@ -90,7 +92,7 @@ namespace DataManager_216
             this.dataImporterToolStripMenuItem,
             this.modelConstructorToolStripMenuItem});
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
-            this.dataToolStripMenuItem.Size = new System.Drawing.Size(55, 26);
+            this.dataToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.dataToolStripMenuItem.Text = "Data";
             // 
             // dataViewerToolStripMenuItem
@@ -119,7 +121,7 @@ namespace DataManager_216
             this.aPIViewerToolStripMenuItem,
             this.aPIDataImporterToolStripMenuItem});
             this.aPIsToolStripMenuItem.Name = "aPIsToolStripMenuItem";
-            this.aPIsToolStripMenuItem.Size = new System.Drawing.Size(45, 26);
+            this.aPIsToolStripMenuItem.Size = new System.Drawing.Size(45, 24);
             this.aPIsToolStripMenuItem.Text = "API";
             // 
             // aPIViewerToolStripMenuItem
@@ -142,7 +144,7 @@ namespace DataManager_216
             this.symmetricEncryptionToolStripMenuItem,
             this.asymmeticEncryptionToolStripMenuItem});
             this.cryptographyToolStripMenuItem.Name = "cryptographyToolStripMenuItem";
-            this.cryptographyToolStripMenuItem.Size = new System.Drawing.Size(113, 26);
+            this.cryptographyToolStripMenuItem.Size = new System.Drawing.Size(113, 24);
             this.cryptographyToolStripMenuItem.Text = "Cryptography";
             // 
             // hasherToolStripMenuItem
@@ -173,22 +175,29 @@ namespace DataManager_216
             this.alphaVantageAPIToolStripMenuItem,
             this.dataCollectorToolStripMenuItem});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(49, 26);
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.testToolStripMenuItem.Text = "Test";
             // 
             // testToolStripMenuItem1
             // 
             this.testToolStripMenuItem1.Name = "testToolStripMenuItem1";
-            this.testToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
+            this.testToolStripMenuItem1.Size = new System.Drawing.Size(215, 26);
             this.testToolStripMenuItem1.Text = "Test";
             this.testToolStripMenuItem1.Click += new System.EventHandler(this.testToolStripMenuItem1_Click);
             // 
             // alphaVantageAPIToolStripMenuItem
             // 
             this.alphaVantageAPIToolStripMenuItem.Name = "alphaVantageAPIToolStripMenuItem";
-            this.alphaVantageAPIToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.alphaVantageAPIToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
             this.alphaVantageAPIToolStripMenuItem.Text = "Alpha Vantage API";
             this.alphaVantageAPIToolStripMenuItem.Click += new System.EventHandler(this.alphaVantageAPIToolStripMenuItem_Click);
+            // 
+            // dataCollectorToolStripMenuItem
+            // 
+            this.dataCollectorToolStripMenuItem.Name = "dataCollectorToolStripMenuItem";
+            this.dataCollectorToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.dataCollectorToolStripMenuItem.Text = "Data Collector";
+            this.dataCollectorToolStripMenuItem.Click += new System.EventHandler(this.dataCollectorToolStripMenuItem_Click);
             // 
             // webBrowser_Main_1
             // 
@@ -198,13 +207,6 @@ namespace DataManager_216
             this.webBrowser_Main_1.Name = "webBrowser_Main_1";
             this.webBrowser_Main_1.Size = new System.Drawing.Size(656, 391);
             this.webBrowser_Main_1.TabIndex = 0;
-            // 
-            // dataCollectorToolStripMenuItem
-            // 
-            this.dataCollectorToolStripMenuItem.Name = "dataCollectorToolStripMenuItem";
-            this.dataCollectorToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.dataCollectorToolStripMenuItem.Text = "Data Collector";
-            this.dataCollectorToolStripMenuItem.Click += new System.EventHandler(this.dataCollectorToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -231,17 +233,6 @@ namespace DataManager_216
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Data Import Report";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.tabPage2.Controls.Add(this.dataGridView_Main_SecurityPriceReport);
-            this.tabPage2.Location = new System.Drawing.Point(4, 28);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1189, 354);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Security Price Report";
-            // 
             // dataGridView_Main_DataImportReport
             // 
             this.dataGridView_Main_DataImportReport.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -256,6 +247,17 @@ namespace DataManager_216
             this.dataGridView_Main_DataImportReport.Size = new System.Drawing.Size(1183, 348);
             this.dataGridView_Main_DataImportReport.TabIndex = 0;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.tabPage2.Controls.Add(this.dataGridView_Main_SecurityPriceReport);
+            this.tabPage2.Location = new System.Drawing.Point(4, 28);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1189, 354);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Security Price Report";
+            // 
             // dataGridView_Main_SecurityPriceReport
             // 
             this.dataGridView_Main_SecurityPriceReport.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -269,6 +271,14 @@ namespace DataManager_216
             this.dataGridView_Main_SecurityPriceReport.RowTemplate.Height = 24;
             this.dataGridView_Main_SecurityPriceReport.Size = new System.Drawing.Size(1183, 348);
             this.dataGridView_Main_SecurityPriceReport.TabIndex = 0;
+            this.dataGridView_Main_SecurityPriceReport.Sorted += new System.EventHandler(this.dataGridView_Main_SecurityPriceReport_Sorted);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(72, 24);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -283,13 +293,14 @@ namespace DataManager_216
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.Text = "216";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Main_DataImportReport)).EndInit();
+            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Main_SecurityPriceReport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -321,6 +332,7 @@ namespace DataManager_216
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.DataGridView dataGridView_Main_DataImportReport;
         private System.Windows.Forms.DataGridView dataGridView_Main_SecurityPriceReport;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
     }
 }
 

@@ -35,7 +35,10 @@ namespace DataManager_216
             await Task.Run(() => System.Threading.Thread.Sleep(700));
             if(LoginInfoValid() == true)
             {
-                this.Close();
+                //this.Close();
+                this.Hide();
+                frmMain frmMain = new frmMain(this);
+                frmMain.Show();
             }
             else
             {

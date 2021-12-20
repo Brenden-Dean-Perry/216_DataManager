@@ -107,7 +107,7 @@ namespace GeneralFormLibrary1
 
             //Paste cell values
             int validRows = 0;
-            for (i = 0; i < dataGridView.Rows.Count - 1; i++)
+            for (i = 0; i < dataGridView.Rows.Count; i++)
             {
                 if(ExportFilteredView == false || dataGridView.Rows[i].Visible == true)
                 {

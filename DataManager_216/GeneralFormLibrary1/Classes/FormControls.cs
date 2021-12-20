@@ -412,5 +412,41 @@ namespace GeneralFormLibrary1
             return entry;
         }
 
+        public static void ColorDataGridViewRowThatContains(DataGridView dataGridView, int columnIndexOfValueToMatch, string matchValue, Color color, bool OverridePriorColors = true)
+        {
+            foreach(DataGridViewRow row in dataGridView.Rows)
+            {
+                if(row.Cells[columnIndexOfValueToMatch].Value.ToString() == matchValue)
+                {
+                    row.DefaultCellStyle.BackColor = color;
+                }
+                else
+                {
+                    if(OverridePriorColors == true)
+                    {
+                        row.DefaultCellStyle.BackColor = SystemColors.Window;
+                    }
+                }
+            }
+        }
+
+        public static void ColorDataGridViewCellThatContains(DataGridView dataGridView, int columnIndexOfValueToMatch, string matchValue, Color color, int columnIndexToColor, bool OverridePriorColors = true)
+        {
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                if (row.Cells[columnIndexOfValueToMatch].Value.ToString() == matchValue)
+                {
+                    row.Cells[columnIndexToColor].Style.BackColor = color;
+                }
+                else
+                {
+                    if (OverridePriorColors == true)
+                    {
+                        row.Cells[columnIndexToColor].Style.BackColor = row.DefaultCellStyle.BackColor;
+                    }
+                }
+            }
+        }
+
     }
 }

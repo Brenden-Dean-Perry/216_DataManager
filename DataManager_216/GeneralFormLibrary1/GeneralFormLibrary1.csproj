@@ -107,6 +107,7 @@
     <Compile Include="DataModels\Model_SecurityVolumeIntraday.cs" />
     <Compile Include="DataModels\Model_UnderlyingAsset.cs" />
     <Compile Include="DataModels\Model_Security.cs" />
+    <Compile Include="DataModels\Query_DataModels\Model_DataImportReport.cs" />
     <Compile Include="DataModels\Query_DataModels\Model_SecurityPriceAndVolumeReport.cs" />
     <Compile Include="Enums\Enum_CustomRightClickMenu.cs" />
     <Compile Include="Enums\Enum_ComparisonOperator.cs" />

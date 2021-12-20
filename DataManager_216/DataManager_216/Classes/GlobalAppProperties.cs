@@ -28,7 +28,6 @@ namespace DataManager_216
         public static string GetSqlFilePath()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + @"GeneralFormLibrary1\SQL\";
-            MessageBox.Show(path);
             if (System.IO.Directory.Exists(path))
             {
                 return path;

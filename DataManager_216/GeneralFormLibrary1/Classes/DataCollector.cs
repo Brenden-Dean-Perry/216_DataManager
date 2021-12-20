@@ -42,34 +42,56 @@ namespace GeneralFormLibrary1
                 int DataJobImportJobTypeId = job.DataImportJobTypeId;
                 DataAccess<DataModels.Model_DataImportJobType> da = new DataAccess<DataModels.Model_DataImportJobType>(DBcredentials);
                 DataModels.Model_DataImportJobType jobType = await da.Get(DataJobImportJobTypeId);
-
-                if (job.ActiveState == 1 && jobType.DataSourceId == 1)
+                int PricesNeedUpdating = 0;
+                if (job.ActiveState == 1 && (!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date))
                 {
-                    int SecurityId = job.SecurityId;
-                    DataAccess<DataModels.Model_Security> da2 = new DataAccess<DataModels.Model_Security>(DBcredentials);
-                    DataModels.Model_Security Sec = await da2.Get(SecurityId);
-                    string APIQuery = jobType.Query.Replace("(***TICKER***)", Sec.Ticker).Replace("(***KEY***)",dataSources.Where(x => x.Id == jobType.DataSourceId).FirstOrDefault().Key);
+                    if (jobType.DataSourceId == 1)
+                    {
+                        int SecurityId = job.SecurityId;
+                        DataAccess<DataModels.Model_Security> da2 = new DataAccess<DataModels.Model_Security>(DBcredentials);
+                        DataModels.Model_Security Sec = await da2.Get(SecurityId);
+                        string APIQuery = jobType.Query.Replace("(***TICKER***)", Sec.Ticker).Replace("(***KEY***)", dataSources.Where(x => x.Id == jobType.DataSourceId).FirstOrDefault().Key);
 
-                    //Alpha Vantage crypto daily
-                    if (jobType.Id == 1)
-                    {
-                        await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series (Digital Currency Daily)", " (usd)");
-                        int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
-                        await Task.Run(() => System.Threading.Thread.Sleep(60000/requestsPerMinute));
+                        //Alpha Vantage crypto daily
+                        if (jobType.Id == 1)
+                        {
+                            PricesNeedUpdating = await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series (Digital Currency Daily)", " (usd)");
+                            int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
+                            await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                        }
+                        //Alpha Vantage fx intraday (5min)
+                        if (jobType.Id == 2)
+                        {
+                            PricesNeedUpdating = await UploadAlphaVantageIntradayData(dateTime, SecurityId, jobType, APIQuery, "Time Series Crypto (5min)");
+                            int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
+                            await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                        }
+                        //Alpha Vantage fx daily
+                        else if (jobType.Id == 3)
+                        {
+                            PricesNeedUpdating = await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series FX (Daily)");
+                            int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
+                            await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                        }
+                        else if (jobType.Id == 4)
+                        {
+                            PricesNeedUpdating = await UploadAlphaVantageIntradayData(dateTime, SecurityId, jobType, APIQuery, "Time Series FX (5min)");
+                            int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
+                            await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                        }
+
                     }
-                    //Alpha Vantage fx daily
-                    else if (jobType.Id == 3)
-                    {
-                        Clipboard.SetText(APIQuery);
-                        await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series FX (Daily)", "");
-                        int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
-                        await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
-                    }
-                }
+
+                    //Update run date time
+                    job.LastRunDateTime = DateTime.Now;
+                    job.PriceUpdatesNeeded = PricesNeedUpdating;
+                    await dataAccess.Update(job);
+                } 
             }
+            MessageBox.Show("Done");
         }
 
-        private async Task UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuery, string ObjectHeaderString, string ExtraKeyEndingString = null)
+        private async Task<int> UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuery, string ObjectHeaderString, string ExtraKeyEndingString = null)
         {
             AlphaVantageAPI api = new AlphaVantageAPI();
             Dictionary<string, Dictionary<string, string>> timeSeriesData = api.GetTimeSeries(APIQuery, ObjectHeaderString);
@@ -77,7 +99,7 @@ namespace GeneralFormLibrary1
             if(timeSeriesData.Count <= 0)
             {
                MessageBox.Show("API request returned no data.");
-               return; //Error in API request
+               return 0; //Error in API request
             }
 
             //Build list to upload
@@ -159,8 +181,6 @@ namespace GeneralFormLibrary1
             {
                 finalSecVolumesForInsert = SecurityVolumeListToFinalListForInsert(securityVolumes);
             }
-            
-            //MessageBox.Show("Price that need to be updated: " + finalSecPricesForUpdate.Count.ToString() + " prices");
 
             //Insert data
             if (finalSecPricesForInsert.Count > 0)
@@ -179,6 +199,120 @@ namespace GeneralFormLibrary1
                 int recordsInserted = await daSecVolume.Insert(finalSecVolumesForInsert);
                 //MessageBox.Show(recordsInserted.ToString() + " volume records inserted");
             }
+
+            return finalSecPricesForUpdate.Count();
+        }
+
+        private async Task<int> UploadAlphaVantageIntradayData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuery, string ObjectHeaderString, string ExtraKeyEndingString = null)
+        {
+            AlphaVantageAPI api = new AlphaVantageAPI();
+            Dictionary<string, Dictionary<string, string>> timeSeriesData = api.GetTimeSeries(APIQuery, ObjectHeaderString);
+
+            if (timeSeriesData.Count <= 0)
+            {
+                MessageBox.Show("API request returned no data.");
+                return 0; //Error in API request
+            }
+
+            //Build list to upload
+            List<DataModels.Model_SecurityPriceIntraday> securityPrices = new List<DataModels.Model_SecurityPriceIntraday>();
+            List<DataModels.Model_SecurityVolumeIntraday> securityVolumes = new List<DataModels.Model_SecurityVolumeIntraday>();
+
+            foreach (KeyValuePair<string, Dictionary<string, string>> priceObj in timeSeriesData)
+            {
+                //Ignore today's prices
+                if (DateTime.Parse(priceObj.Key) < dateTime)
+                {
+                    bool openFound = false;
+                    bool highFound = false;
+                    bool lowFound = false;
+                    bool closeFound = false;
+                    bool volumeFound = false;
+
+                    foreach (KeyValuePair<string, string> price in priceObj.Value)
+                    {
+                        if (volumeFound == false && price.Key.ToLower().Contains("volume"))
+                        {
+                            volumeFound = true;
+                            DataModels.Model_SecurityVolumeIntraday volume = new DataModels.Model_SecurityVolumeIntraday();
+                            volume.DateTime = DateTime.Parse(priceObj.Key);
+                            volume.DataSourceId = jobType.DataSourceId;
+                            volume.SecurityId = SecurityId;
+                            volume.Value = Decimal.Parse(price.Value);
+                            securityVolumes.Add(volume);
+                        }
+                        else
+                        {
+                            DataModels.Model_SecurityPriceIntraday secPrice = new DataModels.Model_SecurityPriceIntraday();
+                            if (closeFound == false && price.Key.ToLower().Contains("close" + ExtraKeyEndingString))
+                            {
+                                closeFound = true;
+                                secPrice.SecurityPriceTypeId = 1;
+                            }
+                            else if (openFound == false && price.Key.ToLower().Contains("open" + ExtraKeyEndingString))
+                            {
+                                openFound = true;
+                                secPrice.SecurityPriceTypeId = 2;
+                            }
+                            else if (highFound == false && price.Key.ToLower().Contains("high" + ExtraKeyEndingString))
+                            {
+                                highFound = true;
+                                secPrice.SecurityPriceTypeId = 3;
+                            }
+                            else if (lowFound == false && price.Key.ToLower().Contains("low" + ExtraKeyEndingString))
+                            {
+                                lowFound = true;
+                                secPrice.SecurityPriceTypeId = 4;
+                            }
+
+                            if (secPrice.SecurityPriceTypeId > 0)
+                            {
+                                secPrice.DateTime = DateTime.Parse(priceObj.Key);
+                                secPrice.DataSourceId = jobType.DataSourceId;
+                                secPrice.SecurityId = SecurityId;
+                                secPrice.Value = Decimal.Parse(price.Value);
+                                securityPrices.Add(secPrice);
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            List<DataModels.Model_SecurityPriceIntraday> finalSecPricesForInsert = new List<Model_SecurityPriceIntraday>();
+            List<DataModels.Model_SecurityPriceIntraday> finalSecPricesForUpdate = new List<Model_SecurityPriceIntraday>();
+            List<DataModels.Model_SecurityVolumeIntraday> finalSecVolumesForInsert = new List<Model_SecurityVolumeIntraday>();
+            if (securityPrices.Count > 0)
+            {
+                finalSecPricesForInsert = SecurityPriceListToFinalListForInsert_Intraday(securityPrices);
+                finalSecPricesForUpdate = SecurityListToSecurityListForUpdate_Intraday(securityPrices);
+            }
+
+            if (securityVolumes.Count > 0)
+            {
+                finalSecVolumesForInsert = SecurityVolumeListToFinalListForInsert_Intraday(securityVolumes);
+            }
+
+            //Insert data
+            if (finalSecPricesForInsert.Count > 0)
+            {
+                //MessageBox.Show("About to insert " + finalSecPricesForInsert.Count.ToString() +  " prices");
+                DataAccess<DataModels.Model_SecurityPriceIntraday> daSecPrice = new DataAccess<DataModels.Model_SecurityPriceIntraday>(DBcredentials);
+                int recordsInserted = await daSecPrice.Insert(finalSecPricesForInsert);
+                //MessageBox.Show(recordsInserted.ToString() + " price records inserted");
+            }
+
+            //Insert data
+            if (finalSecVolumesForInsert.Count > 0)
+            {
+                //MessageBox.Show("About to insert " +  finalSecVolumesForInsert.Count.ToString() + " volume");
+                DataAccess<DataModels.Model_SecurityVolumeIntraday> daSecVolume = new DataAccess<DataModels.Model_SecurityVolumeIntraday>(DBcredentials);
+                int recordsInserted = await daSecVolume.Insert(finalSecVolumesForInsert);
+                //MessageBox.Show(recordsInserted.ToString() + " volume records inserted");
+            }
+
+            return finalSecPricesForUpdate.Count();
         }
 
         public List<DataModels.Model_SecurityPrice> SecurityPriceListToFinalListForInsert(List<DataModels.Model_SecurityPrice> list)
@@ -270,6 +404,113 @@ namespace GeneralFormLibrary1
             {
                 //If match found in DB
                 int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.SecurityPriceTypeId == price.SecurityPriceTypeId) && (x.Date == price.Date));
+                if (DBListIndex >= 0)
+                {
+                    //Price already exists
+                    if (price.Value != DBList[DBListIndex].Value)
+                    {
+                        //Price did not match. Needs to be updated
+                        finalList.Add(price);
+                    }
+                }
+                else
+                {
+                    //Was not found and we need to insert
+                }
+            }
+
+            return finalList;
+        }
+
+        public List<DataModels.Model_SecurityPriceIntraday> SecurityPriceListToFinalListForInsert_Intraday(List<DataModels.Model_SecurityPriceIntraday> list)
+        {
+            //Get query parameters
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.DateTime).LastOrDefault().DateTime;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.DateTime).FirstOrDefault().DateTime;
+            List<int> SecurityPriceTypeIds = list.Select(x => x.SecurityPriceTypeId).Distinct<int>().ToList();
+            List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
+
+            //Build query
+            string query = "Select * From SecurityPrice Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "' And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
+
+            //Get data to compare from DB
+            List<DataModels.Model_SecurityPriceIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPriceIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+
+            //Get final list of values from API not in the database
+            List<DataModels.Model_SecurityPriceIntraday> finalList = new List<Model_SecurityPriceIntraday>();
+            int count = 0;
+            foreach (DataModels.Model_SecurityPriceIntraday price in list)
+            {
+                //If match found in DB
+                int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.SecurityPriceTypeId == price.SecurityPriceTypeId) && (x.DateTime == price.DateTime));
+                if (DBListIndex >= 0)
+                {
+                    //Do nothing. Price already exists or needs to be updated
+                }
+                else
+                {
+                    //Was not found and we need to insert
+                    count++;
+                    finalList.Add(price);
+                }
+            }
+
+            return finalList;
+        }
+
+        public List<DataModels.Model_SecurityVolumeIntraday> SecurityVolumeListToFinalListForInsert_Intraday(List<DataModels.Model_SecurityVolumeIntraday> list)
+        {
+            //Get query parameters
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.DateTime).LastOrDefault().DateTime;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.DateTime).FirstOrDefault().DateTime;
+            List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
+
+            //Build query
+            string query = "Select * From SecurityVolume Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "';";
+
+            //Get data to compare from DB
+            List<DataModels.Model_SecurityVolumeIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityVolumeIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+
+            //Get final list of values from API not in the database
+            List<DataModels.Model_SecurityVolumeIntraday> finalList = new List<Model_SecurityVolumeIntraday>();
+            foreach (DataModels.Model_SecurityVolumeIntraday price in list)
+            {
+                //If match found in DB
+                int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.DateTime == price.DateTime));
+                if (DBListIndex >= 0)
+                {
+                    //Do nothing. Price already exists or needs to be updated
+                }
+                else
+                {
+                    //Was not found and we need to insert
+                    finalList.Add(price);
+                }
+            }
+
+            return finalList;
+        }
+
+        public List<DataModels.Model_SecurityPriceIntraday> SecurityListToSecurityListForUpdate_Intraday(List<DataModels.Model_SecurityPriceIntraday> list)
+        {
+            //Get query parameters
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.DateTime).LastOrDefault().DateTime;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.DateTime).FirstOrDefault().DateTime;
+            List<int> SecurityPriceTypeIds = list.Select(x => x.SecurityPriceTypeId).Distinct<int>().ToList();
+            List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
+
+            //Build query
+            string query = "Select * From SecurityPrice Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "' And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
+
+            //Get data to compare from DB
+            List<DataModels.Model_SecurityPriceIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPriceIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+
+            //Get final list of values from API not in the database
+            List<DataModels.Model_SecurityPriceIntraday> finalList = new List<Model_SecurityPriceIntraday>();
+            foreach (DataModels.Model_SecurityPriceIntraday price in list)
+            {
+                //If match found in DB
+                int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.SecurityPriceTypeId == price.SecurityPriceTypeId) && (x.DateTime == price.DateTime));
                 if (DBListIndex >= 0)
                 {
                     //Price already exists

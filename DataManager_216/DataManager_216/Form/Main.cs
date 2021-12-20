@@ -14,18 +14,62 @@ namespace DataManager_216
 {
     public partial class frmMain : Form
     {
-        public frmMain()
+        private List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter> gridViewFilters = new List<GeneralFormLibrary1.DataModels.Model_DataGridViewFilter>();
+        private frmLogin frmlogin {get; set;}
+
+        public frmMain(frmLogin login)
         {
             InitializeComponent();
+            frmlogin = login;
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
             this.Text = GlobalAppProperties.AppName;
             //LaunchBloombergTvStream();
-            string query = System.IO.File.ReadAllText(GlobalAppProperties.GetSqlFilePath() + "Main_SecurityPriceAndVolumeReport.sql");
-            SortableBindingList<Model_SecurityPriceAndVolumeReport> list = new SortableBindingList<Model_SecurityPriceAndVolumeReport>(DatabaseAPI.GetData_List<Model_SecurityPriceAndVolumeReport>(DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), query));
-            FormControls.AssignListToDataGridView<Model_SecurityPriceAndVolumeReport>(dataGridView_Main_SecurityPriceReport, list);
+            LoadDataGridViews();
+            dataGridView_Main_SecurityPriceReport.MouseClick += dataGridView_Main_SecurityPriceReport_MouseClick;
+            dataGridView_Main_DataImportReport.MouseClick += dataGridView_Main_DataImportReport_MouseClick;
+        }
+
+        private void dataGridView_Main_SecurityPriceReport_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+
+                RightClickDropDownMenu<Model_SecurityPriceAndVolumeReport> dropDownMenu = new RightClickDropDownMenu<Model_SecurityPriceAndVolumeReport>(contextMenu, dataGridView_Main_SecurityPriceReport, gridViewFilters, GlobalAppProperties.AppName, "SecurityPrice&VolumeReport", GlobalAppProperties.GetCredentials());
+                dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL, e);
+            }
+        }
+
+        private void dataGridView_Main_DataImportReport_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+
+                RightClickDropDownMenu<Model_DataImportReport> dropDownMenu = new RightClickDropDownMenu<Model_DataImportReport>(contextMenu, dataGridView_Main_DataImportReport, gridViewFilters, GlobalAppProperties.AppName, "DataImportReport", GlobalAppProperties.GetCredentials());
+                dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL, e);
+            }
+        }
+
+        private void dataGridView_Main_SecurityPriceReport_Sorted(object sender, EventArgs e)
+        {
+            GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_Main_SecurityPriceReport, gridViewFilters);
+        }
+
+        private void LoadDataGridViews()
+        {
+            string query_PriceReport = System.IO.File.ReadAllText(GlobalAppProperties.GetSqlFilePath() + "Main_SecurityPriceAndVolumeReport.sql");
+            SortableBindingList<Model_SecurityPriceAndVolumeReport> list_PriceReport = new SortableBindingList<Model_SecurityPriceAndVolumeReport>(DatabaseAPI.GetData_List<Model_SecurityPriceAndVolumeReport>(DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), query_PriceReport));
+            FormControls.AssignListToDataGridView<Model_SecurityPriceAndVolumeReport>(dataGridView_Main_SecurityPriceReport, list_PriceReport);
+
+            string query_ImportReport = System.IO.File.ReadAllText(GlobalAppProperties.GetSqlFilePath() + "Main_DataImportReport.sql");
+            SortableBindingList<Model_DataImportReport> list_ImportReport = new SortableBindingList<Model_DataImportReport>(DatabaseAPI.GetData_List<Model_DataImportReport>(DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), query_ImportReport));
+            FormControls.AssignListToDataGridView<Model_DataImportReport>(dataGridView_Main_DataImportReport, list_ImportReport);
+            FormControls.ColorDataGridViewCellThatContains(dataGridView_Main_DataImportReport, 10, "OK", Color.LightGreen, 10);
+            FormControls.ColorDataGridViewCellThatContains(dataGridView_Main_DataImportReport, 10, "Not Run", Color.Red, 10, false);
         }
 
         private void LaunchBloombergTvStream()
@@ -86,7 +130,16 @@ namespace DataManager_216
         {
             DataCollector dataCollector = new DataCollector(GlobalAppProperties.GetCredentials());
             dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily);
+        }
 
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadDataGridViews();
+        }
+
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            frmlogin.Close();
         }
     }
 }
