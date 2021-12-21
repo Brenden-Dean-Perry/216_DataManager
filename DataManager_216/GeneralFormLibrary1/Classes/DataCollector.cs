@@ -39,11 +39,12 @@ namespace GeneralFormLibrary1
 
             foreach (DataModels.Model_DataImportJob job in ImportJobs)
             {
+                bool jobSuccessfullyRun = false;
                 int DataJobImportJobTypeId = job.DataImportJobTypeId;
                 DataAccess<DataModels.Model_DataImportJobType> da = new DataAccess<DataModels.Model_DataImportJobType>(DBcredentials);
                 DataModels.Model_DataImportJobType jobType = await da.Get(DataJobImportJobTypeId);
                 int PricesNeedUpdating = 0;
-                if (job.ActiveState == 1 && (!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date))
+                if (job.ActiveState == 1 && jobType.Id == 5)//(!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date))
                 {
                     if (jobType.DataSourceId == 1)
                     {
@@ -58,6 +59,7 @@ namespace GeneralFormLibrary1
                             PricesNeedUpdating = await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series (Digital Currency Daily)", " (usd)");
                             int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
                             await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                            jobSuccessfullyRun = true;
                         }
                         //Alpha Vantage fx intraday (5min)
                         if (jobType.Id == 2)
@@ -65,6 +67,7 @@ namespace GeneralFormLibrary1
                             PricesNeedUpdating = await UploadAlphaVantageIntradayData(dateTime, SecurityId, jobType, APIQuery, "Time Series Crypto (5min)");
                             int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
                             await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                            jobSuccessfullyRun = true;
                         }
                         //Alpha Vantage fx daily
                         else if (jobType.Id == 3)
@@ -72,20 +75,32 @@ namespace GeneralFormLibrary1
                             PricesNeedUpdating = await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series FX (Daily)");
                             int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
                             await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                            jobSuccessfullyRun = true;
                         }
                         else if (jobType.Id == 4)
                         {
                             PricesNeedUpdating = await UploadAlphaVantageIntradayData(dateTime, SecurityId, jobType, APIQuery, "Time Series FX (5min)");
                             int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
                             await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                            jobSuccessfullyRun = true;
                         }
-
+                        else if (jobType.Id == 5)
+                        {
+                            PricesNeedUpdating = await UploadAlphaVantageDailyData(dateTime, SecurityId, jobType, APIQuery, "Time Series (Daily)");
+                            int requestsPerMinute = dataSources.Find(x => x.Id == 1).RequestLimitPerMin;
+                            await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
+                            jobSuccessfullyRun = true;
+                        }
                     }
 
-                    //Update run date time
-                    job.LastRunDateTime = DateTime.Now;
-                    job.PriceUpdatesNeeded = PricesNeedUpdating;
-                    await dataAccess.Update(job);
+                    if(jobSuccessfullyRun == true)
+                    {
+                        //Update run date time
+                        job.LastRunDateTime = DateTime.Now;
+                        job.PriceUpdatesNeeded = PricesNeedUpdating;
+                        await dataAccess.Update(job);
+                    }
+                    
                 } 
             }
             MessageBox.Show("Done");
@@ -105,6 +120,8 @@ namespace GeneralFormLibrary1
             //Build list to upload
             List<DataModels.Model_SecurityPrice> securityPrices = new List<DataModels.Model_SecurityPrice>();
             List<DataModels.Model_SecurityVolume> securityVolumes = new List<DataModels.Model_SecurityVolume>();
+            List<DataModels.Model_SecurityDistribution> securityDistributions = new List<DataModels.Model_SecurityDistribution>();
+            List<DataModels.Model_SecuritySplit> securitySplit= new List<DataModels.Model_SecuritySplit>();
 
             foreach (KeyValuePair<string, Dictionary<string, string>> priceObj in timeSeriesData)
             {
@@ -116,6 +133,9 @@ namespace GeneralFormLibrary1
                     bool lowFound = false;
                     bool closeFound = false;
                     bool volumeFound = false;
+                    bool adjustedCloseFound = false;
+                    bool splitCoeffiecentFound = false;
+                    bool dividendFound = false;
 
                     foreach (KeyValuePair<string, string> price in priceObj.Value)
                     {
@@ -128,6 +148,35 @@ namespace GeneralFormLibrary1
                             volume.SecurityId = SecurityId;
                             volume.Value = Decimal.Parse(price.Value);
                             securityVolumes.Add(volume);
+                        }
+                        else if (dividendFound == false && price.Key.ToLower().Contains("dividend amount"))
+                        {
+                            //If there is a dividend to report, than save it.
+                            if(Decimal.Parse(price.Value) != 0)
+                            {
+                                dividendFound = true;
+                                DataModels.Model_SecurityDistribution dividend = new DataModels.Model_SecurityDistribution();
+                                dividend.Date = DateTime.Parse(priceObj.Key);
+                                dividend.DataSourceId = jobType.DataSourceId;
+                                dividend.DistributionTypeId = 1; //For dividend type
+                                dividend.SecurityId = SecurityId;
+                                dividend.Value = Decimal.Parse(price.Value);
+                                securityDistributions.Add(dividend);
+                            }
+                        }
+                        else if (splitCoeffiecentFound == false && price.Key.ToLower().Contains("split coefficient"))
+                        {
+                            //If there is a split coeffient to report, then save it.
+                            if(Decimal.Parse(price.Value) != 1)
+                            {
+                                splitCoeffiecentFound = true;
+                                DataModels.Model_SecuritySplit split = new DataModels.Model_SecuritySplit();
+                                split.Date = DateTime.Parse(priceObj.Key);
+                                split.DataSourceId = jobType.DataSourceId;
+                                split.SecurityId = SecurityId;
+                                split.SplitCoefficient = Decimal.Parse(price.Value);
+                                securitySplit.Add(split);
+                            }
                         }
                         else
                         {
@@ -152,6 +201,11 @@ namespace GeneralFormLibrary1
                                 lowFound = true;
                                 secPrice.SecurityPriceTypeId = 4;
                             }
+                            else if (adjustedCloseFound == false && price.Key.ToLower().Contains("adjusted close" + ExtraKeyEndingString))
+                            {
+                                adjustedCloseFound = true;
+                                secPrice.SecurityPriceTypeId = 5;
+                            }
 
                             if (secPrice.SecurityPriceTypeId > 0)
                             {
@@ -161,16 +215,17 @@ namespace GeneralFormLibrary1
                                 secPrice.Value = Decimal.Parse(price.Value);
                                 securityPrices.Add(secPrice);
                             }
-                            
                         }
                     }
-
                 }
             }
 
             List<DataModels.Model_SecurityPrice> finalSecPricesForInsert = new List<Model_SecurityPrice>();
             List<DataModels.Model_SecurityPrice> finalSecPricesForUpdate = new List<Model_SecurityPrice>();
             List<DataModels.Model_SecurityVolume> finalSecVolumesForInsert = new List<Model_SecurityVolume>();
+            List<DataModels.Model_SecurityDistribution> finalSecDistributionsForInsert = new List<Model_SecurityDistribution>();
+            List<DataModels.Model_SecuritySplit> finalSecSplitsForInsert = new List<Model_SecuritySplit>();
+
             if (securityPrices. Count > 0)
             {
                 finalSecPricesForInsert = SecurityPriceListToFinalListForInsert(securityPrices);
@@ -180,6 +235,16 @@ namespace GeneralFormLibrary1
             if(securityVolumes.Count > 0)
             {
                 finalSecVolumesForInsert = SecurityVolumeListToFinalListForInsert(securityVolumes);
+            }
+
+            if(securityDistributions.Count > 0)
+            {
+                finalSecDistributionsForInsert = SecurityDistributionListToFinalListForInsert(securityDistributions);
+            }
+
+            if(securitySplit.Count > 0)
+            {
+                finalSecSplitsForInsert = SecuritySplitListToFinalListForInsert(securitySplit);
             }
 
             //Insert data
@@ -200,6 +265,24 @@ namespace GeneralFormLibrary1
                 //MessageBox.Show(recordsInserted.ToString() + " volume records inserted");
             }
 
+            if(finalSecDistributionsForInsert.Count > 0)
+            {
+                DataAccess<DataModels.Model_SecurityDistribution> daSecDist = new DataAccess<DataModels.Model_SecurityDistribution>(DBcredentials);
+                int recordsInserted = await daSecDist.Insert(finalSecDistributionsForInsert);
+            }
+
+            if (finalSecSplitsForInsert.Count > 0)
+            {
+                DataAccess<DataModels.Model_SecuritySplit> daSecSplits = new DataAccess<DataModels.Model_SecuritySplit>(DBcredentials);
+                int recordsInserted = await daSecSplits.Insert(finalSecSplitsForInsert);
+            }
+
+            //Report securities that need to be updated
+            if (finalSecPricesForUpdate.Count > 0)
+            {
+                ExcelAPI excel = new ExcelAPI();
+                excel.ExportDataToSheet<Model_SecurityPrice>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
+            }
             return finalSecPricesForUpdate.Count();
         }
 
@@ -228,6 +311,7 @@ namespace GeneralFormLibrary1
                     bool lowFound = false;
                     bool closeFound = false;
                     bool volumeFound = false;
+                    bool adjustedCloseFound = false;
 
                     foreach (KeyValuePair<string, string> price in priceObj.Value)
                     {
@@ -263,6 +347,11 @@ namespace GeneralFormLibrary1
                             {
                                 lowFound = true;
                                 secPrice.SecurityPriceTypeId = 4;
+                            }
+                            else if (adjustedCloseFound == false && price.Key.ToLower().Contains("adjusted close" + ExtraKeyEndingString))
+                            {
+                                adjustedCloseFound = true;
+                                secPrice.SecurityPriceTypeId = 5;
                             }
 
                             if (secPrice.SecurityPriceTypeId > 0)
@@ -312,6 +401,9 @@ namespace GeneralFormLibrary1
                 //MessageBox.Show(recordsInserted.ToString() + " volume records inserted");
             }
 
+            //Report securities that need to be updated
+            ExcelAPI excel = new ExcelAPI();
+            excel.ExportDataToSheet<Model_SecurityPriceIntraday>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
             return finalSecPricesForUpdate.Count();
         }
 
@@ -383,6 +475,78 @@ namespace GeneralFormLibrary1
 
             return finalList;
         }
+
+        public List<DataModels.Model_SecurityDistribution> SecurityDistributionListToFinalListForInsert(List<DataModels.Model_SecurityDistribution> list)
+        {
+            //Get query parameters
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).LastOrDefault().Date;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).FirstOrDefault().Date;
+            List<int> DistributionTypeIds = list.Select(x => x.DistributionTypeId).Distinct<int>().ToList();
+            List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
+
+            //Build query
+            string query = "Select * From SecurityDistribution Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "' And DistributionTypeId in (" + string.Join(",", DistributionTypeIds) + ");";
+
+            //Get data to compare from DB
+            List<DataModels.Model_SecurityDistribution> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityDistribution>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+
+            //Get final list of values from API not in the database
+            List<DataModels.Model_SecurityDistribution> finalList = new List<Model_SecurityDistribution>();
+            int count = 0;
+            foreach (DataModels.Model_SecurityDistribution price in list)
+            {
+                //If match found in DB
+                int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.DistributionTypeId == price.DistributionTypeId) && (x.Date == price.Date));
+                if (DBListIndex >= 0)
+                {
+                    //Do nothing. Price already exists or needs to be updated
+                }
+                else
+                {
+                    //Was not found and we need to insert
+                    count++;
+                    finalList.Add(price);
+                }
+            }
+
+            return finalList;
+        }
+
+        public List<DataModels.Model_SecuritySplit> SecuritySplitListToFinalListForInsert(List<DataModels.Model_SecuritySplit> list)
+        {
+            //Get query parameters
+            DateTime startDate = (DateTime)list.OrderByDescending(x => x.Date).LastOrDefault().Date;
+            DateTime endDate = (DateTime)list.OrderByDescending(x => x.Date).FirstOrDefault().Date;
+            List<int> SecurityIds = list.Select(x => x.SecurityId).Distinct<int>().ToList();
+
+            //Build query
+            string query = "Select * From SecuritySplit Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "';";
+
+            //Get data to compare from DB
+            List<DataModels.Model_SecuritySplit> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecuritySplit>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+
+            //Get final list of values from API not in the database
+            List<DataModels.Model_SecuritySplit> finalList = new List<Model_SecuritySplit>();
+            int count = 0;
+            foreach (DataModels.Model_SecuritySplit price in list)
+            {
+                //If match found in DB
+                int DBListIndex = DBList.FindIndex(x => (x.SecurityId == price.SecurityId) && (x.Date == price.Date));
+                if (DBListIndex >= 0)
+                {
+                    //Do nothing. Price already exists or needs to be updated
+                }
+                else
+                {
+                    //Was not found and we need to insert
+                    count++;
+                    finalList.Add(price);
+                }
+            }
+
+            return finalList;
+        }
+
 
         public List<DataModels.Model_SecurityPrice> SecurityListToSecurityListForUpdate(List<DataModels.Model_SecurityPrice> list)
         {

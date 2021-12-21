@@ -135,6 +135,21 @@ namespace DataManager_216
                     RightClickDropDownMenu<Model_SecurityVolumeIntraday> dropDownMenu = new RightClickDropDownMenu<Model_SecurityVolumeIntraday>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
                     dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
                 }
+                else if (ComboBoxItemSelected == "SecurityDistribution")
+                {
+                    RightClickDropDownMenu<Model_SecurityDistribution> dropDownMenu = new RightClickDropDownMenu<Model_SecurityDistribution>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "DistributionType")
+                {
+                    RightClickDropDownMenu<Model_DistributionType> dropDownMenu = new RightClickDropDownMenu<Model_DistributionType>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
+                else if (ComboBoxItemSelected == "SecuritySplit")
+                {
+                    RightClickDropDownMenu<Model_SecuritySplit> dropDownMenu = new RightClickDropDownMenu<Model_SecuritySplit>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
+                    dropDownMenu.Show(CustomRightClickMenu.DefaultMenu_URL_Delete, e);
+                }
                 else
                 {
                     RightClickDropDownMenu<object> dropDownMenu = new RightClickDropDownMenu<object>(contextMenu, dataGridView_DataViewer, gridViewFilters, GlobalAppProperties.AppName, ExportFileName, GlobalAppProperties.GetCredentials());
@@ -257,6 +272,21 @@ namespace DataManager_216
                 SortableBindingList<Model_SecurityVolumeIntraday> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecurityVolumeIntraday>(GlobalAppProperties.GetCredentials()));
                 FormControls.AssignListToDataGridView<Model_SecurityVolumeIntraday>(dataGridView_DataViewer, model, true);
             }
+            else if (ComboBoxItemSelected == "SecuritySplit")
+            {
+                SortableBindingList<Model_SecuritySplit> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecuritySplit>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_SecuritySplit>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "SecurityDistribution")
+            {
+                SortableBindingList<Model_SecurityDistribution> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_SecurityDistribution>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_SecurityDistribution>(dataGridView_DataViewer, model, true);
+            }
+            else if (ComboBoxItemSelected == "DistributionType")
+            {
+                SortableBindingList<Model_DistributionType> model = await Task.Run(() => FormControl_DataAccess.GetSortableBindingListOfData<Model_DistributionType>(GlobalAppProperties.GetCredentials()));
+                FormControls.AssignListToDataGridView<Model_DistributionType>(dataGridView_DataViewer, model, true);
+            }
             else
             {
                 SortableBindingList<string> model = null;
@@ -378,9 +408,21 @@ namespace DataManager_216
                 {
                     recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityPriceIntraday>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
-                else if (ComboBoxItemSelected == "SecurityVolumeIntraday ")
+                else if (ComboBoxItemSelected == "SecurityVolumeIntraday")
                 {
                     recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityVolumeIntraday>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "SecurityDistribution")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecurityDistribution>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "DistributionType")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_DistributionType>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
+                }
+                else if (ComboBoxItemSelected == "SecuritySplit")
+                {
+                    recordID = await form_DataAccess.AddNewRecordFromDataGridView<Model_SecuritySplit>(GlobalAppProperties.GetCredentials(), dataGridView_DataViewer, PriorRowIndex, GlobalAppProperties.AppName);
                 }
                 else
                 {
