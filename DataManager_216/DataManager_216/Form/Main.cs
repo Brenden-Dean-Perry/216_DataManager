@@ -129,7 +129,7 @@ namespace DataManager_216
         private void dataCollectorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataCollector dataCollector = new DataCollector(GlobalAppProperties.GetCredentials());
-            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily);
+            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily, statusStrip_Main);
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)

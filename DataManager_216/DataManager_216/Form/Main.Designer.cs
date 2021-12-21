@@ -29,7 +29,7 @@ namespace DataManager_216
         /// </summary>
         private void InitializeComponent()
         {
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusStrip_Main = new System.Windows.Forms.StatusStrip();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,14 +61,14 @@ namespace DataManager_216
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Main_SecurityPriceReport)).BeginInit();
             this.SuspendLayout();
             // 
-            // statusStrip1
+            // statusStrip_Main
             // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 817);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1197, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip_Main.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip_Main.Location = new System.Drawing.Point(0, 815);
+            this.statusStrip_Main.Name = "statusStrip_Main";
+            this.statusStrip_Main.Size = new System.Drawing.Size(1197, 24);
+            this.statusStrip_Main.TabIndex = 0;
+            this.statusStrip_Main.Text = "statusStrip1";
             // 
             // menuStrip1
             // 
@@ -288,7 +288,7 @@ namespace DataManager_216
             this.ClientSize = new System.Drawing.Size(1197, 839);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.webBrowser_Main_1);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusStrip_Main);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
@@ -309,7 +309,7 @@ namespace DataManager_216
 
         #endregion
 
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusStrip_Main;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dataViewerToolStripMenuItem;
