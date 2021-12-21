@@ -10,7 +10,7 @@
 	D.LastRunDateTime,
 	D.PriceUpdatesNeeded,
 	Case
-	When Convert(date, LastRunDateTime) >= Convert(date, getdate()) Then 'OK'
+	When Convert(date, LastRunDateTime) >= Convert(date, getdate() AT TIME ZONE 'UTC' AT TIME ZONE 'Pacific Standard Time') Then 'OK'
 	Else 'Not Run'
 	End [Status]
 From DataImportJob D
