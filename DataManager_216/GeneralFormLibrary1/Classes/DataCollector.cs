@@ -44,7 +44,7 @@ namespace GeneralFormLibrary1
                 DataAccess<DataModels.Model_DataImportJobType> da = new DataAccess<DataModels.Model_DataImportJobType>(DBcredentials);
                 DataModels.Model_DataImportJobType jobType = await da.Get(DataJobImportJobTypeId);
                 int PricesNeedUpdating = 0;
-                if (job.ActiveState == 1 && jobType.Id == 5)//(!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date))
+                if (job.ActiveState == 1 && (!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date))
                 {
                     if (jobType.DataSourceId == 1)
                     {
