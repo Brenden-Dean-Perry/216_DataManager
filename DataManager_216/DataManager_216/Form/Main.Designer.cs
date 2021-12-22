@@ -53,6 +53,7 @@ namespace DataManager_216
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView_Main_SecurityPriceReport = new System.Windows.Forms.DataGridView();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alphaVanatageCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -174,7 +175,8 @@ namespace DataManager_216
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.testToolStripMenuItem1,
             this.alphaVantageAPIToolStripMenuItem,
-            this.dataCollectorToolStripMenuItem});
+            this.dataCollectorToolStripMenuItem,
+            this.alphaVanatageCSVToolStripMenuItem});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.testToolStripMenuItem.Text = "Test";
@@ -281,6 +283,13 @@ namespace DataManager_216
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
+            // alphaVanatageCSVToolStripMenuItem
+            // 
+            this.alphaVanatageCSVToolStripMenuItem.Name = "alphaVanatageCSVToolStripMenuItem";
+            this.alphaVanatageCSVToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
+            this.alphaVanatageCSVToolStripMenuItem.Text = "Alpha Vanatage CSV";
+            this.alphaVanatageCSVToolStripMenuItem.Click += new System.EventHandler(this.alphaVanatageCSVToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -334,6 +343,7 @@ namespace DataManager_216
         private System.Windows.Forms.DataGridView dataGridView_Main_DataImportReport;
         private System.Windows.Forms.DataGridView dataGridView_Main_SecurityPriceReport;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem alphaVanatageCSVToolStripMenuItem;
     }
 }
 

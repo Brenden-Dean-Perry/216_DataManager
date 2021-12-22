@@ -147,5 +147,11 @@ namespace DataManager_216
             frmDataUploader uploader = new frmDataUploader();
             uploader.Show();
         }
+
+        private void alphaVanatageCSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AlphaVantageAPI api = new AlphaVantageAPI();
+            api.GetTimeSeriesFromCSV(@"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=IBM&interval=15min&slice=year1month1&apikey=demo");
+        }
     }
 }

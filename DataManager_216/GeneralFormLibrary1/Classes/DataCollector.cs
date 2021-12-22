@@ -52,9 +52,11 @@ namespace GeneralFormLibrary1
                     if (jobType.DataSourceId == 1)
                     {
                         int SecurityId = job.SecurityId;
-                        DataAccess<DataModels.Model_Security> da2 = new DataAccess<DataModels.Model_Security>(DBcredentials);
+                        //int DataSourceId = jobType.DataSourceId;
+                        int DataSourceId = 6;
+                        DataAccess <DataModels.Model_Security> da2 = new DataAccess<DataModels.Model_Security>(DBcredentials);
                         DataModels.Model_Security Sec = await da2.Get(SecurityId);
-                        string APIQuery = jobType.Query.Replace("(***TICKER***)", Sec.Ticker).Replace("(***KEY***)", dataSources.Where(x => x.Id == jobType.DataSourceId).FirstOrDefault().Key);
+                        string APIQuery = jobType.Query.Replace("(***TICKER***)", Sec.Ticker).Replace("(***KEY***)", dataSources.Where(x => x.Id == DataSourceId).FirstOrDefault().Key);
 
                         //Alpha Vantage crypto daily
                         if (jobType.Id == 1)
