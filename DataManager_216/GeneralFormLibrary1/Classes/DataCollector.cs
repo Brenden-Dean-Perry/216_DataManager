@@ -136,7 +136,6 @@ namespace GeneralFormLibrary1
                     bool lowFound = false;
                     bool closeFound = false;
                     bool volumeFound = false;
-                    bool adjustedCloseFound = false;
                     bool splitCoeffiecentFound = false;
                     bool dividendFound = false;
 
@@ -203,11 +202,6 @@ namespace GeneralFormLibrary1
                             {
                                 lowFound = true;
                                 secPrice.SecurityPriceTypeId = 4;
-                            }
-                            else if (adjustedCloseFound == false && price.Key.ToLower().Contains("adjusted close" + ExtraKeyEndingString))
-                            {
-                                adjustedCloseFound = true;
-                                secPrice.SecurityPriceTypeId = 5;
                             }
 
                             if (secPrice.SecurityPriceTypeId > 0)
@@ -314,7 +308,6 @@ namespace GeneralFormLibrary1
                     bool lowFound = false;
                     bool closeFound = false;
                     bool volumeFound = false;
-                    bool adjustedCloseFound = false;
 
                     foreach (KeyValuePair<string, string> price in priceObj.Value)
                     {
@@ -351,11 +344,7 @@ namespace GeneralFormLibrary1
                                 lowFound = true;
                                 secPrice.SecurityPriceTypeId = 4;
                             }
-                            else if (adjustedCloseFound == false && price.Key.ToLower().Contains("adjusted close" + ExtraKeyEndingString))
-                            {
-                                adjustedCloseFound = true;
-                                secPrice.SecurityPriceTypeId = 5;
-                            }
+
 
                             if (secPrice.SecurityPriceTypeId > 0)
                             {

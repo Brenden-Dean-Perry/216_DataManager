@@ -141,5 +141,11 @@ namespace DataManager_216
         {
             frmlogin.Close();
         }
+
+        private void dataImporterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmDataUploader uploader = new frmDataUploader();
+            uploader.Show();
+        }
     }
 }

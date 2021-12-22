@@ -64,9 +64,9 @@ namespace DataManager_216
             // statusStrip_Main
             // 
             this.statusStrip_Main.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip_Main.Location = new System.Drawing.Point(0, 815);
+            this.statusStrip_Main.Location = new System.Drawing.Point(0, 817);
             this.statusStrip_Main.Name = "statusStrip_Main";
-            this.statusStrip_Main.Size = new System.Drawing.Size(1197, 24);
+            this.statusStrip_Main.Size = new System.Drawing.Size(1197, 22);
             this.statusStrip_Main.TabIndex = 0;
             this.statusStrip_Main.Text = "statusStrip1";
             // 
@@ -107,6 +107,7 @@ namespace DataManager_216
             this.dataImporterToolStripMenuItem.Name = "dataImporterToolStripMenuItem";
             this.dataImporterToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
             this.dataImporterToolStripMenuItem.Text = "Data Importer";
+            this.dataImporterToolStripMenuItem.Click += new System.EventHandler(this.dataImporterToolStripMenuItem_Click);
             // 
             // modelConstructorToolStripMenuItem
             // 
