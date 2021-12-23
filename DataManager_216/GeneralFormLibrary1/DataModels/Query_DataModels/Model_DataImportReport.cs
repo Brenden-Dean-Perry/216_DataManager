@@ -11,8 +11,10 @@ namespace GeneralFormLibrary1.DataModels.Query_DataModels
 		public string Entity {get; set;}
 		public string UnderlyingAsset {get; set;}
 		public string Contract { get; set; }
+		public int SecurityId { get; set; }
 		public string Ticker { get; set; }
 		public bool ActiveState { get; set; }
+		public string AssetType { get; set; }
 		public string DataImportJobType { get; set; }
 		public string DataSource { get; set; }
 		public string DataImportOccuranceType { get; set; }

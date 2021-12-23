@@ -57,6 +57,7 @@ namespace DataManager_216
         private void dataGridView_Main_SecurityPriceReport_Sorted(object sender, EventArgs e)
         {
             GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_Main_SecurityPriceReport, gridViewFilters);
+            ColorDGVs();
         }
 
         private void LoadDataGridViews()
@@ -68,8 +69,13 @@ namespace DataManager_216
             string query_ImportReport = System.IO.File.ReadAllText(GlobalAppProperties.GetSqlFilePath() + "Main_DataImportReport.sql");
             SortableBindingList<Model_DataImportReport> list_ImportReport = new SortableBindingList<Model_DataImportReport>(DatabaseAPI.GetData_List<Model_DataImportReport>(DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), query_ImportReport));
             FormControls.AssignListToDataGridView<Model_DataImportReport>(dataGridView_Main_DataImportReport, list_ImportReport);
-            FormControls.ColorDataGridViewCellThatContains(dataGridView_Main_DataImportReport, 10, "OK", Color.LightGreen, 10);
-            FormControls.ColorDataGridViewCellThatContains(dataGridView_Main_DataImportReport, 10, "Not Run", Color.Red, 10, false);
+            ColorDGVs();
+        }
+
+        private void ColorDGVs()
+        {
+            FormControls.ColorDataGridViewCellThatContains(dataGridView_Main_DataImportReport, "Status", "OK", Color.LightGreen, "Status");
+            FormControls.ColorDataGridViewCellThatContains(dataGridView_Main_DataImportReport, "Status", "Not Run", Color.Red, "Status", false);
         }
 
         private void LaunchBloombergTvStream()

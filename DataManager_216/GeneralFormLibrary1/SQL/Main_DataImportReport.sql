@@ -2,8 +2,10 @@
 	E.Name [Entity],
 	UA.Name [UnderlyingAsset],
 	C.Name [Contract],
-	S.Ticker, 
+	S.Id SecurityId,
+	S.Ticker,
 	D.ActiveState, 
+	Aty.Name AssetType,
 	JT.Name DataImportJobType, 
 	DS.Name DataSource,
 	OT.Name DataImportOccuranceType,
@@ -20,5 +22,6 @@ Left Join [UnderlyingAsset] UA on UA.Id = C.UnderlyingAssetId
 Left Join [Entity] E on E.Id = UA.EntityId
 Left Join [DataImportJobType] JT on JT.Id = D.DataImportJobTypeId
 Left Join [DataSource] DS on DS.Id = JT.DataSourceId
+Left Join AssetType ATy on ATy.Id = UA.AssetTypeId
 Left Join DataImportOccuranceType OT on OT.Id = D.DataImportOccuranceTypeId
 

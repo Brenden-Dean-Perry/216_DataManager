@@ -8,11 +8,12 @@ namespace GeneralFormLibrary1.DataModels.Query_DataModels
 {
     public class Model_SecurityPriceAndVolumeReport
     {
-        public string EntityName { get; set; }
-        public string UnderlyingAssetName { get; set; }
-
-        public string ContractName { get; set; }
+        public string Entity { get; set; }
+        public string UnderlyingAsset { get; set; }
+        public string Contract { get; set; }
+        public int SecurityId { get; set; }
         public string Ticker { get; set; }
+        public string AssetType { get; set; }
         public DateTime? MinDate_Price { get; set; }
 
         public DateTime? MaxDate_Price { get; set; }

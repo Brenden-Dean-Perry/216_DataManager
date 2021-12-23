@@ -412,9 +412,11 @@ namespace GeneralFormLibrary1
             return entry;
         }
 
-        public static void ColorDataGridViewRowThatContains(DataGridView dataGridView, int columnIndexOfValueToMatch, string matchValue, Color color, bool OverridePriorColors = true)
+        public static void ColorDataGridViewRowThatContains(DataGridView dataGridView, string ColumnHeaderToMatch, string matchValue, Color color, bool OverridePriorColors = true)
         {
-            foreach(DataGridViewRow row in dataGridView.Rows)
+            int columnIndexOfValueToMatch = dataGridView.Columns[ColumnHeaderToMatch].Index;
+
+            foreach (DataGridViewRow row in dataGridView.Rows)
             {
                 if(row.Cells[columnIndexOfValueToMatch].Value.ToString() == matchValue)
                 {
@@ -430,8 +432,11 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public static void ColorDataGridViewCellThatContains(DataGridView dataGridView, int columnIndexOfValueToMatch, string matchValue, Color color, int columnIndexToColor, bool OverridePriorColors = true)
+        public static void ColorDataGridViewCellThatContains(DataGridView dataGridView, string ColumnHeaderOfColumnToMatch, string matchValue, Color color, string ColumnHeaderOfColumnToColor, bool OverridePriorColors = true)
         {
+            int columnIndexOfValueToMatch = dataGridView.Columns[ColumnHeaderOfColumnToMatch].Index;
+            int columnIndexToColor = dataGridView.Columns[ColumnHeaderOfColumnToColor].Index;
+
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
                 if (row.Cells[columnIndexOfValueToMatch].Value.ToString() == matchValue)

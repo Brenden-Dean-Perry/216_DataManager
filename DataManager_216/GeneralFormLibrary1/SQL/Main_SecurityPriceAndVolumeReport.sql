@@ -1,9 +1,11 @@
 ﻿
 Select 
-	E.Name EntityName,
-	UA.Name UnderlyingAssetName,
-	C.Name ContractName,
+	E.Name Entity,
+	UA.Name UnderlyingAsset,
+	C.Name [Contract],
+	S.Id SecurityId,
 	S.Ticker,
+	ATy.Name AssetType,
 	SP2.MinDate_Price,
 	SP1.MaxDate_Price,
 	SP4.MinDate_Price_Intraday,
@@ -15,6 +17,7 @@ Select
 From [Security] S
 Left Join [Contract] C on S.ContractId = C.Id
 Left Join [UnderlyingAsset] UA on UA.Id = C.UnderlyingAssetId
+Left Join AssetType ATy on ATy.Id = UA.AssetTypeId
 Left Join [Entity] E on E.Id = UA.EntityId
 Left Join (Select SP.SecurityId, max(SP.[Date]) MaxDate_Price From SecurityPrice SP Group by SP.SecurityId) SP1 on SP1.SecurityId = S.Id
 Left Join (Select SP.SecurityId, min(SP.[Date]) MinDate_Price From SecurityPrice SP Group by SP.SecurityId) SP2 on SP2.SecurityId = S.Id
