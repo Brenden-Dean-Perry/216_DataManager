@@ -70,6 +70,29 @@ namespace DataManager_216
             SortableBindingList<Model_DataImportReport> list_ImportReport = new SortableBindingList<Model_DataImportReport>(DatabaseAPI.GetData_List<Model_DataImportReport>(DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), query_ImportReport));
             FormControls.AssignListToDataGridView<Model_DataImportReport>(dataGridView_Main_DataImportReport, list_ImportReport);
             ColorDGVs();
+
+            string query_Prices = System.IO.File.ReadAllText(GlobalAppProperties.GetSqlFilePath() + "Main_PriceSnapshot.sql");
+            SortableBindingList<Model_PriceSnapshot> list_Prices = new SortableBindingList<Model_PriceSnapshot>(DatabaseAPI.GetData_List<Model_PriceSnapshot>(DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), query_Prices));
+            UpdateListView(list_Prices);
+        }
+
+        private void UpdateListView(IList<Model_PriceSnapshot> list)
+        {
+            listView_Main_Prices.Clear();
+            string[] headers = { "Contract","Ticker","Date", "Close","Low","High","PriorClose"};
+            foreach(string item in headers)
+            {
+                listView_Main_Prices.Columns.Add(item);
+            }
+            
+            foreach(Model_PriceSnapshot it in list)
+            {
+                string[] rowitem = {it.Contract, it.Ticker, it.Date.ToString("d"), Math.Round(it.Close,4).ToString() ,Math.Round(it.Low,4).ToString(), Math.Round(it.High,4).ToString(), Math.Round(it.PriorClose,4).ToString()};
+                var listViewItem = new ListViewItem(rowitem);
+                listView_Main_Prices.Items.Add(listViewItem);
+            }
+
+            listView_Main_Prices.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void ColorDGVs()

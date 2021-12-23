@@ -54,6 +54,7 @@ namespace DataManager_216
             this.dataGridView_Main_SecurityPriceReport = new System.Windows.Forms.DataGridView();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alphaVanatageCSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listView_Main_Prices = new System.Windows.Forms.ListView();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -67,7 +68,7 @@ namespace DataManager_216
             this.statusStrip_Main.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip_Main.Location = new System.Drawing.Point(0, 817);
             this.statusStrip_Main.Name = "statusStrip_Main";
-            this.statusStrip_Main.Size = new System.Drawing.Size(1197, 22);
+            this.statusStrip_Main.Size = new System.Drawing.Size(1435, 22);
             this.statusStrip_Main.TabIndex = 0;
             this.statusStrip_Main.Text = "statusStrip1";
             // 
@@ -82,7 +83,7 @@ namespace DataManager_216
             this.testToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1197, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1435, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -184,31 +185,31 @@ namespace DataManager_216
             // testToolStripMenuItem1
             // 
             this.testToolStripMenuItem1.Name = "testToolStripMenuItem1";
-            this.testToolStripMenuItem1.Size = new System.Drawing.Size(215, 26);
+            this.testToolStripMenuItem1.Size = new System.Drawing.Size(227, 26);
             this.testToolStripMenuItem1.Text = "Test";
             this.testToolStripMenuItem1.Click += new System.EventHandler(this.testToolStripMenuItem1_Click);
             // 
             // alphaVantageAPIToolStripMenuItem
             // 
             this.alphaVantageAPIToolStripMenuItem.Name = "alphaVantageAPIToolStripMenuItem";
-            this.alphaVantageAPIToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.alphaVantageAPIToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.alphaVantageAPIToolStripMenuItem.Text = "Alpha Vantage API";
             this.alphaVantageAPIToolStripMenuItem.Click += new System.EventHandler(this.alphaVantageAPIToolStripMenuItem_Click);
             // 
             // dataCollectorToolStripMenuItem
             // 
             this.dataCollectorToolStripMenuItem.Name = "dataCollectorToolStripMenuItem";
-            this.dataCollectorToolStripMenuItem.Size = new System.Drawing.Size(215, 26);
+            this.dataCollectorToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.dataCollectorToolStripMenuItem.Text = "Data Collector";
             this.dataCollectorToolStripMenuItem.Click += new System.EventHandler(this.dataCollectorToolStripMenuItem_Click);
             // 
             // webBrowser_Main_1
             // 
             this.webBrowser_Main_1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser_Main_1.Location = new System.Drawing.Point(541, 31);
+            this.webBrowser_Main_1.Location = new System.Drawing.Point(790, 31);
             this.webBrowser_Main_1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser_Main_1.Name = "webBrowser_Main_1";
-            this.webBrowser_Main_1.Size = new System.Drawing.Size(656, 391);
+            this.webBrowser_Main_1.Size = new System.Drawing.Size(645, 391);
             this.webBrowser_Main_1.TabIndex = 0;
             // 
             // tabControl1
@@ -222,7 +223,7 @@ namespace DataManager_216
             this.tabControl1.Location = new System.Drawing.Point(0, 428);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1197, 386);
+            this.tabControl1.Size = new System.Drawing.Size(1435, 386);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -257,7 +258,7 @@ namespace DataManager_216
             this.tabPage2.Location = new System.Drawing.Point(4, 28);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1189, 354);
+            this.tabPage2.Size = new System.Drawing.Size(1427, 354);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Security Price Report";
             // 
@@ -272,7 +273,7 @@ namespace DataManager_216
             this.dataGridView_Main_SecurityPriceReport.Name = "dataGridView_Main_SecurityPriceReport";
             this.dataGridView_Main_SecurityPriceReport.RowHeadersWidth = 51;
             this.dataGridView_Main_SecurityPriceReport.RowTemplate.Height = 24;
-            this.dataGridView_Main_SecurityPriceReport.Size = new System.Drawing.Size(1183, 348);
+            this.dataGridView_Main_SecurityPriceReport.Size = new System.Drawing.Size(1421, 348);
             this.dataGridView_Main_SecurityPriceReport.TabIndex = 0;
             this.dataGridView_Main_SecurityPriceReport.Sorted += new System.EventHandler(this.dataGridView_Main_SecurityPriceReport_Sorted);
             // 
@@ -290,12 +291,26 @@ namespace DataManager_216
             this.alphaVanatageCSVToolStripMenuItem.Text = "Alpha Vanatage CSV";
             this.alphaVanatageCSVToolStripMenuItem.Click += new System.EventHandler(this.alphaVanatageCSVToolStripMenuItem_Click);
             // 
+            // listView_Main_Prices
+            // 
+            this.listView_Main_Prices.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.listView_Main_Prices.ForeColor = System.Drawing.Color.White;
+            this.listView_Main_Prices.FullRowSelect = true;
+            this.listView_Main_Prices.HideSelection = false;
+            this.listView_Main_Prices.Location = new System.Drawing.Point(4, 31);
+            this.listView_Main_Prices.Name = "listView_Main_Prices";
+            this.listView_Main_Prices.Size = new System.Drawing.Size(780, 391);
+            this.listView_Main_Prices.TabIndex = 3;
+            this.listView_Main_Prices.UseCompatibleStateImageBehavior = false;
+            this.listView_Main_Prices.View = System.Windows.Forms.View.Details;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.ClientSize = new System.Drawing.Size(1197, 839);
+            this.ClientSize = new System.Drawing.Size(1435, 839);
+            this.Controls.Add(this.listView_Main_Prices);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.webBrowser_Main_1);
             this.Controls.Add(this.statusStrip_Main);
@@ -344,6 +359,7 @@ namespace DataManager_216
         private System.Windows.Forms.DataGridView dataGridView_Main_SecurityPriceReport;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alphaVanatageCSVToolStripMenuItem;
+        private System.Windows.Forms.ListView listView_Main_Prices;
     }
 }
 

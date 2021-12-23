@@ -20,84 +20,84 @@ namespace GeneralFormLibrary1
             DBConnection = DatabaseAPI.ConnectionString("QuantDB", credentials);
         }
 
-        public async Task<int> Insert(T entity)
+        public async Task<int> Insert(T entity, int CommandTimeout = 45)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
                 connection.Open();
-                var output = await connection.InsertAsync<T>(entity);
+                var output = await connection.InsertAsync<T>(entity, commandTimeout: CommandTimeout);
                 return output;
             }
         }
 
-        public async Task<int> Insert(List<T> entity)
+        public async Task<int> Insert(List<T> entity, int CommandTimeout = 45)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
                 connection.Open();
-                var output = await connection.InsertAsync<List<T>>(entity);
+                var output = await connection.InsertAsync<List<T>>(entity, commandTimeout: CommandTimeout);
                 return output;
             }
         }
 
-        public async Task<bool> Delete(T entity)
+        public async Task<bool> Delete(T entity, int CommandTimeout = 45)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
                 connection.Open();
-                var output = await connection.DeleteAsync<T>(entity);
+                var output = await connection.DeleteAsync<T>(entity, commandTimeout: CommandTimeout);
                 return output;
             }
         }
 
-        public async Task<bool> Delete(List<T> entity)
+        public async Task<bool> Delete(List<T> entity, int CommandTimeout = 45)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
                 connection.Open();
-                var output = await connection.DeleteAsync<List<T>>(entity);
+                var output = await connection.DeleteAsync<List<T>>(entity, commandTimeout: CommandTimeout);
                 return output;
             }
         }
 
-        public async Task<T> Get(int Id)
+        public async Task<T> Get(int Id, int CommandTimeout = 45)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
                 connection.Open();
-                var output = await connection.GetAsync<T>(Id);
+                var output = await connection.GetAsync<T>(Id, commandTimeout: CommandTimeout);
                 return output;
             }
         }
 
-        public async Task<List<T>> GetAll()
+        public async Task<List<T>> GetAll(int CommandTimeout = 45)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
                 connection.Open();
-                var output = await connection.GetAllAsync<T>();
+                var output = await connection.GetAllAsync<T>(commandTimeout: CommandTimeout);
                 return output.ToList();
             }
         }
 
-        public async Task<bool> Update(T entity)
+        public async Task<bool> Update(T entity, int CommandTimeout = 45)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
 
                 connection.Open();
-                var output = await connection.UpdateAsync<T>(entity);
+                var output = await connection.UpdateAsync<T>(entity, commandTimeout: CommandTimeout);
                 return output;
             }
         }
 
-        public async Task<bool> Update(List<T> entity)
+        public async Task<bool> Update(List<T> entity, int CommandTimeout = 45)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
 
                 connection.Open();
-                var output = await connection.UpdateAsync<List<T>>(entity);
+                var output = await connection.UpdateAsync<List<T>>(entity, commandTimeout: CommandTimeout);
                 return output;
             }
         }

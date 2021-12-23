@@ -117,6 +117,7 @@
     <Compile Include="DataModels\Model_UnderlyingAsset.cs" />
     <Compile Include="DataModels\Model_Security.cs" />
     <Compile Include="DataModels\Query_DataModels\Model_DataImportReport.cs" />
+    <Compile Include="DataModels\Query_DataModels\Model_PriceSnapshot.cs" />
     <Compile Include="DataModels\Query_DataModels\Model_SecurityPriceAndVolumeReport.cs" />
     <Compile Include="Enums\Enum_CustomRightClickMenu.cs" />
     <Compile Include="Enums\Enum_ComparisonOperator.cs" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="SQL\Main_PriceSnapshot.sql" />
     <Content Include="SQL\Main_DataImportReport.sql" />
     <Content Include="SQL\Main_SecurityPriceAndVolumeReport.sql" />
   </ItemGroup>

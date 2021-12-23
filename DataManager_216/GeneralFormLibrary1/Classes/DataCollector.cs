@@ -66,7 +66,7 @@ namespace GeneralFormLibrary1
                             await Task.Run(() => System.Threading.Thread.Sleep(60000 / requestsPerMinute));
                             jobSuccessfullyRun = true;
                         }
-                        //Alpha Vantage fx intraday (5min)
+                        //Alpha Vantage crypto intraday (5min)
                         if (jobType.Id == 2)
                         {
                             PricesNeedUpdating = await UploadAlphaVantageIntradayData(dateTime, SecurityId, jobType, APIQuery, "Time Series Crypto (5min)");
