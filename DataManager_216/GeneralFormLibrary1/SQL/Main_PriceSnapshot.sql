@@ -12,5 +12,5 @@ From SecurityPrice SP
 	Left Join (Select * From SecurityPrice Where SecurityPriceTypeId = 1) SP3 on SP3.SecurityId = SP.SecurityId And dateadd(day,-1,SP.[Date]) = Sp3.[Date]
 	Left Join [Security] S on S.Id = SP.SecurityId
 	Left Join [Contract] C on C.Id = S.ContractId
-Where SP.SecurityId in (43,44,45,46,2,3,4,5,6,7,8,9,10, 11,12,13,14) And SP.Date = Cast(dateadd(day,-1,getdate()) As date)
+Where SP.SecurityId in (43,44,45,46,2,3,4,5,6,7,8,9,10, 11,12,13,14) And SP.Date = Cast(dateadd(day,-1,getdate() AT TIME ZONE 'UTC' AT TIME ZONE 'Pacific Standard Time') As date)
 	And SP.SecurityPriceTypeId = 4;

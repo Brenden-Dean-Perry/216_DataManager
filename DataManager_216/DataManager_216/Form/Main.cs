@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeneralFormLibrary1;
 using GeneralFormLibrary1.DataModels.Query_DataModels;
+using System.Timers;
 
 namespace DataManager_216
 {
@@ -57,6 +58,11 @@ namespace DataManager_216
         private void dataGridView_Main_SecurityPriceReport_Sorted(object sender, EventArgs e)
         {
             GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_Main_SecurityPriceReport, gridViewFilters);
+        }
+
+        private void dataGridView_Main_DataImportReport_Sorted(object sender, EventArgs e)
+        {
+            GeneralFormLibrary1.FormControls.FilterDataGridView(dataGridView_Main_DataImportReport, gridViewFilters);
             ColorDGVs();
         }
 
@@ -74,12 +80,14 @@ namespace DataManager_216
             string query_Prices = System.IO.File.ReadAllText(GlobalAppProperties.GetSqlFilePath() + "Main_PriceSnapshot.sql");
             SortableBindingList<Model_PriceSnapshot> list_Prices = new SortableBindingList<Model_PriceSnapshot>(DatabaseAPI.GetData_List<Model_PriceSnapshot>(DatabaseAPI.ConnectionString("QuantDB", GlobalAppProperties.GetCredentials()), query_Prices));
             UpdateListView(list_Prices);
+
+           
         }
 
         private void UpdateListView(IList<Model_PriceSnapshot> list)
         {
             listView_Main_Prices.Clear();
-            string[] headers = { "Contract","Ticker","Date", "Close","Low","High","PriorClose"};
+            string[] headers = { "Contract","Ticker","Date", "Close","PriorClose","Low","High"};
             foreach(string item in headers)
             {
                 listView_Main_Prices.Columns.Add(item);
@@ -157,6 +165,16 @@ namespace DataManager_216
 
         private void dataCollectorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            System.Timers.Timer aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            //aTimer.Interval = 30000000;
+            aTimer.Enabled = true;
+            aTimer.Start();
+        }
+
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
             DataCollector dataCollector = new DataCollector(GlobalAppProperties.GetCredentials());
             dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily, statusStrip_Main);
         }
@@ -182,5 +200,7 @@ namespace DataManager_216
             AlphaVantageAPI api = new AlphaVantageAPI();
             api.GetTimeSeriesFromCSV(@"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED&symbol=IBM&interval=15min&slice=year1month1&apikey=demo");
         }
+
+
     }
 }

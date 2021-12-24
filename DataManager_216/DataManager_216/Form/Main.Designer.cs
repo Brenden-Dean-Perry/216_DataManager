@@ -233,7 +233,7 @@ namespace DataManager_216
             this.tabPage1.Location = new System.Drawing.Point(4, 28);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1189, 354);
+            this.tabPage1.Size = new System.Drawing.Size(1427, 354);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Data Import Report";
             // 
@@ -248,8 +248,9 @@ namespace DataManager_216
             this.dataGridView_Main_DataImportReport.Name = "dataGridView_Main_DataImportReport";
             this.dataGridView_Main_DataImportReport.RowHeadersWidth = 51;
             this.dataGridView_Main_DataImportReport.RowTemplate.Height = 24;
-            this.dataGridView_Main_DataImportReport.Size = new System.Drawing.Size(1183, 348);
+            this.dataGridView_Main_DataImportReport.Size = new System.Drawing.Size(1421, 348);
             this.dataGridView_Main_DataImportReport.TabIndex = 0;
+            this.dataGridView_Main_DataImportReport.Sorted += new System.EventHandler(this.dataGridView_Main_DataImportReport_Sorted);
             // 
             // tabPage2
             // 

@@ -45,7 +45,6 @@ namespace GeneralFormLibrary1
             Newtonsoft.Json.Linq.JObject metaData = Newtonsoft.Json.Linq.JObject.Parse(jobj["Meta Data"].ToString());
 
             //Build dictionary from meta data
-            
             foreach (System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> item in metaData)
             {
                 metaDataDict.Add(item.Key, item.Value.ToString());

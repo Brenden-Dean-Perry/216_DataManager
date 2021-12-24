@@ -122,7 +122,8 @@ namespace GeneralFormLibrary1
             dataGridView.AllowUserToDeleteRows = false;
             dataGridView.EnableHeadersVisualStyles = false;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-
+            
+            
             DataGridViewMakeUneditable(dataGridView, SetToReadOnly);
 
         }
@@ -192,7 +193,8 @@ namespace GeneralFormLibrary1
             // Hide the ones that you want with the filter you want.
             foreach (DataModels.Model_DataGridViewFilter filter in filters)
             {
-                TypeCode FilterValueDataTypeCode = Type.GetTypeCode(dataGridView.Rows[0].Cells[filter.ColumnIndexToFilter].Value.GetType());
+                //TypeCode FilterValueDataTypeCode = Type.GetTypeCode(dataGridView.Rows[0].Cells[filter.ColumnIndexToFilter].Value.GetType());
+                TypeCode FilterValueDataTypeCode = filter.FilterValueDataType;
 
                 for (int i = 0; i < dataGridView.RowCount; i++)
                 {
@@ -202,7 +204,11 @@ namespace GeneralFormLibrary1
                     }
                     else
                     {
-                        if (filter.Operator == ComparisonOperator.Equals && dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().IndexOf(filter.FilterValue.ToString()) >= 0)
+                        if (filter.Operator == ComparisonOperator.Equals && dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value is null && String.IsNullOrEmpty(filter.FilterValue))
+                        { 
+                             //Do nothing keep this visable
+                        }
+                        else if (filter.Operator == ComparisonOperator.Equals && dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value != null && dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString().IndexOf(filter.FilterValue.ToString()) >= 0)
                         {
                             //Do nothing keep this visable
                         }
@@ -218,7 +224,27 @@ namespace GeneralFormLibrary1
                         else if (DataTypes.TypeCodeIsNumeric(FilterValueDataTypeCode) == true)
                         {
                             //If type code of cell value is double then try parse values as double
-                            if (Type.GetTypeCode(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.GetType()) == TypeCode.Double && Double.TryParse(filter.FilterValue.ToString(), out double FilterValue_Double) == true && Double.TryParse(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString(), out double CellValue_Double) == true)
+                            if (dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value is null)
+                            {
+                                //Allow for >=, <, & <= operators here
+                                if (filter.Operator == ComparisonOperator.GreaterThanOrEqualTo && filter.FilterValue == null)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else if (filter.Operator == ComparisonOperator.LessThan)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else if (filter.Operator == ComparisonOperator.LessThanOrEqualTo)
+                                {
+                                    //Do nothing keep this visable
+                                }
+                                else
+                                {
+                                    dataGridView.Rows[i].Visible = false;
+                                }
+                            }
+                            else if(Type.GetTypeCode(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.GetType()) == TypeCode.Double && Double.TryParse(filter.FilterValue.ToString(), out double FilterValue_Double) == true && Double.TryParse(dataGridView.Rows[i].Cells[filter.ColumnIndexToFilter].Value.ToString(), out double CellValue_Double) == true)
                             {
                                 //Allow for >, >=, <, & <= operators here
                                 if (filter.Operator == ComparisonOperator.GreaterThan && CellValue_Double > FilterValue_Double)
@@ -233,7 +259,7 @@ namespace GeneralFormLibrary1
                                 {
                                     //Do nothing keep this visable
                                 }
-                                else if (filter.Operator == ComparisonOperator.LessThanOrEqualTo && CellValue_Double <= FilterValue_Double)
+                                else if (filter.Operator == ComparisonOperator.LessThanOrEqualTo && (CellValue_Double <= FilterValue_Double))
                                 {
                                     //Do nothing keep this visable
                                 }

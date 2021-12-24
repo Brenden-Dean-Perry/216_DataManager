@@ -26,6 +26,7 @@ namespace GeneralFormLibrary1
 
         public async void GetDataFromActiveJobs(Frequency frequency, StatusStrip statusStrip)
         {
+
             DateTime dateTime = DateTime.Today;
 
             DataAccess<DataModels.Model_DataImportJob> dataAccess = new DataAccess<DataModels.Model_DataImportJob>(DBcredentials);
@@ -47,7 +48,7 @@ namespace GeneralFormLibrary1
                 DataAccess<DataModels.Model_DataImportJobType> da = new DataAccess<DataModels.Model_DataImportJobType>(DBcredentials);
                 DataModels.Model_DataImportJobType jobType = await da.Get(DataJobImportJobTypeId);
                 int PricesNeedUpdating = 0;
-                if (job.ActiveState == 1 && (!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date))
+                if (job.ActiveState == 1 && (!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date) && job.Id > 400)
                 {
                     if (jobType.DataSourceId == 1)
                     {
@@ -108,6 +109,7 @@ namespace GeneralFormLibrary1
                     
                 } 
             }
+
             MessageBox.Show("Done");
         }
 
@@ -281,6 +283,8 @@ namespace GeneralFormLibrary1
             {
                 ExcelAPI excel = new ExcelAPI();
                 excel.ExportDataToSheet<Model_SecurityPrice>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
+                DataAccess<DataModels.Model_SecurityPrice> daSecSplits = new DataAccess<DataModels.Model_SecurityPrice>(DBcredentials);
+                await daSecSplits.Update(finalSecPricesForUpdate);
             }
             return finalSecPricesForUpdate.Count();
         }
@@ -292,7 +296,7 @@ namespace GeneralFormLibrary1
 
             if (timeSeriesData.Count <= 0)
             {
-                MessageBox.Show("API request returned no data.");
+                //MessageBox.Show("API request returned no data.");
                 return 0; //Error in API request
             }
 
@@ -400,6 +404,8 @@ namespace GeneralFormLibrary1
             {
                 ExcelAPI excel = new ExcelAPI();
                 excel.ExportDataToSheet<Model_SecurityPriceIntraday>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
+                DataAccess<DataModels.Model_SecurityPriceIntraday> daSecPrice = new DataAccess<DataModels.Model_SecurityPriceIntraday>(DBcredentials);
+                await daSecPrice.Update(finalSecPricesForUpdate);
             }
             return finalSecPricesForUpdate.Count();
         }

@@ -404,8 +404,17 @@ namespace GeneralFormLibrary1
                 contextMenuStrip.Show(currentDataGridView, new System.Drawing.Point(e.X, e.Y));
 
                 //Store filter value & data type
-                filterValue = currentDataGridView[currentMouseOverColumnIndex, currentMouseOverRowIndex].Value.ToString();
-                filterValueDataType = Type.GetTypeCode(currentDataGridView[currentMouseOverColumnIndex, currentMouseOverRowIndex].Value.GetType());
+                if(currentDataGridView[currentMouseOverColumnIndex, currentMouseOverRowIndex].Value is null)
+                {
+                    filterValue = String.Empty;
+                    filterValueDataType = Type.GetTypeCode(TypeCode.String.GetType());
+                }
+                else
+                {
+                    filterValue = currentDataGridView[currentMouseOverColumnIndex, currentMouseOverRowIndex].Value.ToString();
+                    filterValueDataType = Type.GetTypeCode(currentDataGridView[currentMouseOverColumnIndex, currentMouseOverRowIndex].Value.GetType());
+                }
+                
 
                 //Set special value dictionary if available
                 specialValueDictionary.Clear();
