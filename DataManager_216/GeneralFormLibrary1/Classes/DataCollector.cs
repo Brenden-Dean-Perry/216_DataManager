@@ -48,7 +48,7 @@ namespace GeneralFormLibrary1
                 DataAccess<DataModels.Model_DataImportJobType> da = new DataAccess<DataModels.Model_DataImportJobType>(DBcredentials);
                 DataModels.Model_DataImportJobType jobType = await da.Get(DataJobImportJobTypeId);
                 int PricesNeedUpdating = 0;
-                if (job.ActiveState == 1 && (!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date) && job.Id > 400)
+                if (job.ActiveState == 1  && (!job.LastRunDateTime.HasValue || job.LastRunDateTime.Value.Date < DateTime.Today.Date))
                 {
                     if (jobType.DataSourceId == 1)
                     {
@@ -120,7 +120,7 @@ namespace GeneralFormLibrary1
 
             if(timeSeriesData.Count <= 0)
             {
-               MessageBox.Show("API request returned no data.");
+               //MessageBox.Show("API request returned no data.");
                return 0; //Error in API request
             }
 
@@ -232,18 +232,18 @@ namespace GeneralFormLibrary1
                 finalSecPricesForInsert = SecurityPriceListToFinalListForInsert(securityPrices);
                 finalSecPricesForUpdate = SecurityListToSecurityListForUpdate(securityPrices);
             }
-            
-            if(securityVolumes.Count > 0)
+
+            if (securityVolumes.Count > 0)
             {
                 finalSecVolumesForInsert = SecurityVolumeListToFinalListForInsert(securityVolumes);
             }
 
-            if(securityDistributions.Count > 0)
+            if (securityDistributions.Count > 0)
             {
                 finalSecDistributionsForInsert = SecurityDistributionListToFinalListForInsert(securityDistributions);
             }
 
-            if(securitySplit.Count > 0)
+            if (securitySplit.Count > 0)
             {
                 finalSecSplitsForInsert = SecuritySplitListToFinalListForInsert(securitySplit);
             }
@@ -253,7 +253,7 @@ namespace GeneralFormLibrary1
             {
                 //MessageBox.Show("About to insert " + finalSecPricesForInsert.Count.ToString() +  " prices");
                 DataAccess<DataModels.Model_SecurityPrice> daSecPrice = new DataAccess<DataModels.Model_SecurityPrice>(DBcredentials);
-                int recordsInserted = await daSecPrice.Insert(finalSecPricesForInsert);
+                int recordsInserted = await daSecPrice.Insert(finalSecPricesForInsert, 2200);
                 //MessageBox.Show(recordsInserted.ToString() + " price records inserted");
             }
 
@@ -262,20 +262,20 @@ namespace GeneralFormLibrary1
             {
                 //MessageBox.Show("About to insert " +  finalSecVolumesForInsert.Count.ToString() + " volume");
                 DataAccess<DataModels.Model_SecurityVolume> daSecVolume = new DataAccess<DataModels.Model_SecurityVolume>(DBcredentials);
-                int recordsInserted = await daSecVolume.Insert(finalSecVolumesForInsert);
+                int recordsInserted = await daSecVolume.Insert(finalSecVolumesForInsert, 2200);
                 //MessageBox.Show(recordsInserted.ToString() + " volume records inserted");
             }
 
-            if(finalSecDistributionsForInsert.Count > 0)
+            if (finalSecDistributionsForInsert.Count > 0)
             {
                 DataAccess<DataModels.Model_SecurityDistribution> daSecDist = new DataAccess<DataModels.Model_SecurityDistribution>(DBcredentials);
-                int recordsInserted = await daSecDist.Insert(finalSecDistributionsForInsert);
+                int recordsInserted = await daSecDist.Insert(finalSecDistributionsForInsert, 2200);
             }
 
             if (finalSecSplitsForInsert.Count > 0)
             {
                 DataAccess<DataModels.Model_SecuritySplit> daSecSplits = new DataAccess<DataModels.Model_SecuritySplit>(DBcredentials);
-                int recordsInserted = await daSecSplits.Insert(finalSecSplitsForInsert);
+                int recordsInserted = await daSecSplits.Insert(finalSecSplitsForInsert, 2200);
             }
 
             //Report securities that need to be updated
@@ -284,7 +284,7 @@ namespace GeneralFormLibrary1
                 ExcelAPI excel = new ExcelAPI();
                 excel.ExportDataToSheet<Model_SecurityPrice>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
                 DataAccess<DataModels.Model_SecurityPrice> daSecSplits = new DataAccess<DataModels.Model_SecurityPrice>(DBcredentials);
-                await daSecSplits.Update(finalSecPricesForUpdate);
+                await daSecSplits.Update(finalSecPricesForUpdate, 2200);
             }
             return finalSecPricesForUpdate.Count();
         }
@@ -386,7 +386,7 @@ namespace GeneralFormLibrary1
             {
                 //MessageBox.Show("About to insert " + finalSecPricesForInsert.Count.ToString() +  " prices");
                 DataAccess<DataModels.Model_SecurityPriceIntraday> daSecPrice = new DataAccess<DataModels.Model_SecurityPriceIntraday>(DBcredentials);
-                int recordsInserted = await daSecPrice.Insert(finalSecPricesForInsert);
+                int recordsInserted = await daSecPrice.Insert(finalSecPricesForInsert, 2400);
                 //MessageBox.Show(recordsInserted.ToString() + " price records inserted");
             }
 
@@ -395,7 +395,7 @@ namespace GeneralFormLibrary1
             {
                 //MessageBox.Show("About to insert " +  finalSecVolumesForInsert.Count.ToString() + " volume");
                 DataAccess<DataModels.Model_SecurityVolumeIntraday> daSecVolume = new DataAccess<DataModels.Model_SecurityVolumeIntraday>(DBcredentials);
-                int recordsInserted = await daSecVolume.Insert(finalSecVolumesForInsert);
+                int recordsInserted = await daSecVolume.Insert(finalSecVolumesForInsert, 2400);
                 //MessageBox.Show(recordsInserted.ToString() + " volume records inserted");
             }
 
@@ -405,7 +405,7 @@ namespace GeneralFormLibrary1
                 ExcelAPI excel = new ExcelAPI();
                 excel.ExportDataToSheet<Model_SecurityPriceIntraday>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
                 DataAccess<DataModels.Model_SecurityPriceIntraday> daSecPrice = new DataAccess<DataModels.Model_SecurityPriceIntraday>(DBcredentials);
-                await daSecPrice.Update(finalSecPricesForUpdate);
+                await daSecPrice.Update(finalSecPricesForUpdate, 2400);
             }
             return finalSecPricesForUpdate.Count();
         }
@@ -422,7 +422,7 @@ namespace GeneralFormLibrary1
             string query = "Select * From SecurityPrice Where SecurityId in (" + string.Join(",", SecurityIds)+ ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "' And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
 
             //Get data to compare from DB
-            List<DataModels.Model_SecurityPrice> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPrice>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+            List<DataModels.Model_SecurityPrice> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPrice>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query, 2400);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecurityPrice> finalList = new List<Model_SecurityPrice>();
@@ -441,6 +441,7 @@ namespace GeneralFormLibrary1
                     count++;
                     finalList.Add(price);
                 }
+                
             }
 
             return finalList;
@@ -457,7 +458,7 @@ namespace GeneralFormLibrary1
             string query = "Select * From SecurityVolume Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "';";
 
             //Get data to compare from DB
-            List<DataModels.Model_SecurityVolume> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityVolume>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+            List<DataModels.Model_SecurityVolume> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityVolume>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query, 2400);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecurityVolume> finalList = new List<Model_SecurityVolume>();
@@ -491,7 +492,7 @@ namespace GeneralFormLibrary1
             string query = "Select * From SecurityDistribution Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "' And DistributionTypeId in (" + string.Join(",", DistributionTypeIds) + ");";
 
             //Get data to compare from DB
-            List<DataModels.Model_SecurityDistribution> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityDistribution>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+            List<DataModels.Model_SecurityDistribution> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityDistribution>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query, 2400);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecurityDistribution> finalList = new List<Model_SecurityDistribution>();
@@ -526,7 +527,7 @@ namespace GeneralFormLibrary1
             string query = "Select * From SecuritySplit Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "';";
 
             //Get data to compare from DB
-            List<DataModels.Model_SecuritySplit> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecuritySplit>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+            List<DataModels.Model_SecuritySplit> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecuritySplit>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query, 2400);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecuritySplit> finalList = new List<Model_SecuritySplit>();
@@ -563,7 +564,7 @@ namespace GeneralFormLibrary1
             string query = "Select * From SecurityPrice Where SecurityId in (" + string.Join(",", SecurityIds) + ") And Date >= '" + startDate.ToString("d") + "' And Date <= '" + endDate.ToString("d") + "' And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
 
             //Get data to compare from DB
-            List<DataModels.Model_SecurityPrice> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPrice>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+            List<DataModels.Model_SecurityPrice> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPrice>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query, 2400);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecurityPrice> finalList = new List<Model_SecurityPrice>();
@@ -599,10 +600,9 @@ namespace GeneralFormLibrary1
 
             //Build query
             string query = "Select * From SecurityPriceIntraday Where SecurityId in (" + string.Join(",", SecurityIds) + ") And DateTime >= '" + startDate.ToString("d") + "' And DateTime <= DATEADD(day, 1,'" + endDate.ToString("d") + "') And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
-            Clipboard.SetText(query);
 
             //Get data to compare from DB
-            List<DataModels.Model_SecurityPriceIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPriceIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+            List<DataModels.Model_SecurityPriceIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPriceIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query, 2400);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecurityPriceIntraday> finalList = new List<Model_SecurityPriceIntraday>();
@@ -637,7 +637,7 @@ namespace GeneralFormLibrary1
             string query = "Select * From SecurityVolumeIntraday Where SecurityId in (" + string.Join(",", SecurityIds) + ") And DateTime >= '" + startDate.ToString("d") + "' And DateTime <= DATEADD(day, 1,'" + endDate.ToString("d") + "');";
 
             //Get data to compare from DB
-            List<DataModels.Model_SecurityVolumeIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityVolumeIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+            List<DataModels.Model_SecurityVolumeIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityVolumeIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query, 2400);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecurityVolumeIntraday> finalList = new List<Model_SecurityVolumeIntraday>();
@@ -671,7 +671,7 @@ namespace GeneralFormLibrary1
             string query = "Select * From SecurityPriceIntraday Where SecurityId in (" + string.Join(",", SecurityIds) + ") And DateTime >= '" + startDate.ToString("d") + "' And DateTime <= DATEADD(day, 1,'" + endDate.ToString("d") + "') And SecurityPriceTypeId in (" + string.Join(",", SecurityPriceTypeIds) + ");";
 
             //Get data to compare from DB
-            List<DataModels.Model_SecurityPriceIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPriceIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query);
+            List<DataModels.Model_SecurityPriceIntraday> DBList = DatabaseAPI.GetData_List<DataModels.Model_SecurityPriceIntraday>(DatabaseAPI.ConnectionString("QuantDB", DBcredentials), query, 2400);
 
             //Get final list of values from API not in the database
             List<DataModels.Model_SecurityPriceIntraday> finalList = new List<Model_SecurityPriceIntraday>();

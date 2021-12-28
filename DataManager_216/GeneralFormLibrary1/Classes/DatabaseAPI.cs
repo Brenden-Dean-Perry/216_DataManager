@@ -38,18 +38,18 @@ namespace GeneralFormLibrary1
         /// <param name="SQLquery">SQL query. Make sure you include a "Use" statement</param>
         /// <param name="Parameter_obj">Parameter object</param>
         /// <returns></returns>
-        public static List<T> GetData_List<T>(string ConnectionString, string SQLquery, object Parameter_obj = null)
+        public static List<T> GetData_List<T>(string ConnectionString, string SQLquery, object Parameter_obj = null, int ConnectionTimeout = 1200)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionString))
             {
 
                 if (Parameter_obj == null)
                 {
-                    return connection.Query<T>(SQLquery).ToList();
+                    return connection.Query<T>(SQLquery, commandTimeout: ConnectionTimeout).ToList();
                 }
                 else
                 {
-                    return connection.Query<T>(SQLquery, Parameter_obj).ToList();
+                    return connection.Query<T>(SQLquery, Parameter_obj, commandTimeout: ConnectionTimeout).ToList();
                 }
 
             }
@@ -63,18 +63,18 @@ namespace GeneralFormLibrary1
         /// <param name="SQLquery">SQL query. Make sure you include a "Use" statement</param>
         /// <param name="Parameter_obj">Parameter object</param>
         /// <returns></returns>
-        internal static T GetData<T>(string ConnectionString, string SQLquery, object Parameter_obj = null)
+        internal static T GetData<T>(string ConnectionString, string SQLquery, object Parameter_obj = null, int ConnectionTimeout = 1200)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionString))
             {
-
+ 
                 if (Parameter_obj == null)
                 {
-                    return connection.Query<T>(SQLquery).FirstOrDefault<T>();
+                    return connection.Query<T>(SQLquery, commandTimeout: ConnectionTimeout).FirstOrDefault<T>();
                 }
                 else
                 {
-                    return connection.Query<T>(SQLquery, Parameter_obj).FirstOrDefault<T>();
+                    return connection.Query<T>(SQLquery, Parameter_obj, commandTimeout: ConnectionTimeout).FirstOrDefault<T>();
                 }
             }
         }

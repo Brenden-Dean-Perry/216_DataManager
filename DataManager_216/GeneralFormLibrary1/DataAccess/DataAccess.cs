@@ -20,7 +20,7 @@ namespace GeneralFormLibrary1
             DBConnection = DatabaseAPI.ConnectionString("QuantDB", credentials);
         }
 
-        public async Task<int> Insert(T entity, int CommandTimeout = 45)
+        public async Task<int> Insert(T entity, int CommandTimeout = 120)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
@@ -30,7 +30,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public async Task<int> Insert(List<T> entity, int CommandTimeout = 45)
+        public async Task<int> Insert(List<T> entity, int CommandTimeout = 120)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
@@ -40,7 +40,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public async Task<bool> Delete(T entity, int CommandTimeout = 45)
+        public async Task<bool> Delete(T entity, int CommandTimeout = 120)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
@@ -50,7 +50,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public async Task<bool> Delete(List<T> entity, int CommandTimeout = 45)
+        public async Task<bool> Delete(List<T> entity, int CommandTimeout = 120)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
@@ -60,7 +60,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public async Task<T> Get(int Id, int CommandTimeout = 45)
+        public async Task<T> Get(int Id, int CommandTimeout = 120)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
@@ -70,7 +70,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public async Task<List<T>> GetAll(int CommandTimeout = 45)
+        public async Task<List<T>> GetAll(int CommandTimeout = 120)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
@@ -80,7 +80,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public async Task<bool> Update(T entity, int CommandTimeout = 45)
+        public async Task<bool> Update(T entity, int CommandTimeout = 120)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {
@@ -91,7 +91,7 @@ namespace GeneralFormLibrary1
             }
         }
 
-        public async Task<bool> Update(List<T> entity, int CommandTimeout = 45)
+        public async Task<bool> Update(List<T> entity, int CommandTimeout = 120)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(DBConnection))
             {

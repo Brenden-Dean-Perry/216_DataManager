@@ -95,7 +95,7 @@ namespace DataManager_216
             
             foreach(Model_PriceSnapshot it in list)
             {
-                string[] rowitem = {it.Contract, it.Ticker, it.Date.ToString("d"), Math.Round(it.Close,4).ToString() ,Math.Round(it.Low,4).ToString(), Math.Round(it.High,4).ToString(), Math.Round(it.PriorClose,4).ToString()};
+                string[] rowitem = {it.Contract, it.Ticker, it.Date.ToString("d"), Math.Round(it.Close,4).ToString(), Math.Round(it.PriorClose, 4).ToString(), Math.Round(it.Low,4).ToString(), Math.Round(it.High,4).ToString()};
                 var listViewItem = new ListViewItem(rowitem);
                 listView_Main_Prices.Items.Add(listViewItem);
             }
@@ -165,11 +165,12 @@ namespace DataManager_216
 
         private void dataCollectorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Timers.Timer aTimer = new System.Timers.Timer();
-            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            //System.Timers.Timer aTimer = new System.Timers.Timer();
+            //aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             //aTimer.Interval = 30000000;
-            aTimer.Enabled = true;
-            aTimer.Start();
+            //aTimer.Enabled = true;
+            //aTimer.Start();
+            OnTimedEvent(this, null);
         }
 
 
