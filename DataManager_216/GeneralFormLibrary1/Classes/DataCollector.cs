@@ -141,8 +141,6 @@ namespace GeneralFormLibrary1
                     
                 } 
             }
-
-            MessageBox.Show("Done with " + JobTypeName + " import at " + DateTime.Now.ToString("G"));
         }
 
         private async Task<int> UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuery, string ObjectHeaderString, string ExtraKeyEndingString = null)

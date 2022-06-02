@@ -163,8 +163,9 @@ namespace DataManager_216
             MessageBox.Show("end");
         }
 
-        private void dataCollectorToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void dataCollectorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            GeneralFormLibrary1.Email.SendEmail("perry470063@gmail.com", "Data Import - Started at " + DateTime.Now.ToString("G") , "Data Import Started");
             //System.Timers.Timer aTimer = new System.Timers.Timer();
             //aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             //aTimer.Interval = 30000000;
@@ -172,16 +173,21 @@ namespace DataManager_216
             //aTimer.Start();
             try
             {
-                OnTimedEvent(this, null);
+                await OnTimedEvent(this, null);
             }
             catch
             {
                 dataCollectorToolStripMenuItem_Click(sender, e);
+                return;
             }
+            
+            //Send success message
+            GeneralFormLibrary1.Email.SendEmail("perry470063@gmail.com", "Data Import - Completed at " + DateTime.Now.ToString("G"), "Data Import Completed!");
+ 
         }
 
 
-        private async void OnTimedEvent(object source, ElapsedEventArgs e)
+        private async Task OnTimedEvent(object source, ElapsedEventArgs e)
         {
             DataCollector dataCollector = new DataCollector(GlobalAppProperties.GetCredentials());
             await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Intraday, statusStrip_Main);
@@ -190,6 +196,7 @@ namespace DataManager_216
             await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Monthly, statusStrip_Main);
             await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Quarterly, statusStrip_Main);
             await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Other, statusStrip_Main);
+            MessageBox.Show("Done with data import at " + DateTime.Now.ToString("G"));
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
