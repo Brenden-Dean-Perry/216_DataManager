@@ -181,15 +181,15 @@ namespace DataManager_216
         }
 
 
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        private async void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             DataCollector dataCollector = new DataCollector(GlobalAppProperties.GetCredentials());
-            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Intraday, statusStrip_Main);
-            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily, statusStrip_Main);
-            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Weekly, statusStrip_Main);
-            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Monthly, statusStrip_Main);
-            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Quarterly, statusStrip_Main);
-            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Other, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Intraday, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Weekly, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Monthly, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Quarterly, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Other, statusStrip_Main);
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)

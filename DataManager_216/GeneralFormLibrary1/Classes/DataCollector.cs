@@ -27,10 +27,11 @@ namespace GeneralFormLibrary1
             Other
         }
 
-        public async void GetDataFromActiveJobs(Frequency frequency, StatusStrip statusStrip)
+        public async Task GetDataFromActiveJobs(Frequency frequency, StatusStrip statusStrip)
         {
 
             DateTime dateTime = DateTime.Today;
+            string JobTypeName = Enum.GetName(typeof(Frequency), frequency);
 
             DataAccess<DataModels.Model_DataImportJob> dataAccess = new DataAccess<DataModels.Model_DataImportJob>(DBcredentials);
             List<DataModels.Model_DataImportJob> ImportJobs = await dataAccess.GetAll();
@@ -46,33 +47,33 @@ namespace GeneralFormLibrary1
             List<DataModels.Model_DataImportJob> importJobsToRun = new List<Model_DataImportJob>();
             if (frequency == Frequency.Intraday)
             {
-                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 4);
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 4).ToList();
             }
             else if (frequency == Frequency.Daily)
             {
-                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 1);
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 1).ToList();
             }
             else if (frequency == Frequency.Weekly)
             {
-                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 2);
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 2).ToList();
             }
             else if (frequency == Frequency.Monthly)
             {
-                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 3);
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 3).ToList();
             }
             else if (frequency == Frequency.Quarterly)
             {
-                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 5);
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 5).ToList();
             }
             else if (frequency == Frequency.Other)
             {
-                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId >= 6);
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId >= 6).ToList();
             }
 
             foreach (DataModels.Model_DataImportJob job in importJobsToRun)
             {
                 count++;
-                string Status = "Running Job: " + count.ToString() + " of " + ImportJobs.Count();
+                string Status = "Running " +  JobTypeName + " Job: " + count.ToString() + " of " + importJobsToRun.Count();
                 FormControls.UpdateToolStripItemLabel_Async(statusStrip, Status);
                 bool jobSuccessfullyRun = false;
                 int DataJobImportJobTypeId = job.DataImportJobTypeId;
@@ -141,7 +142,7 @@ namespace GeneralFormLibrary1
                 } 
             }
 
-            MessageBox.Show("Done " + DateTime.Now.ToString("G"));
+            MessageBox.Show("Done with " + JobTypeName + " import at " + DateTime.Now.ToString("G"));
         }
 
         private async Task<int> UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuery, string ObjectHeaderString, string ExtraKeyEndingString = null)
