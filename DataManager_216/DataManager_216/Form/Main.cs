@@ -196,7 +196,10 @@ namespace DataManager_216
             await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Monthly, statusStrip_Main);
             await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Quarterly, statusStrip_Main);
             await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Other, statusStrip_Main);
-            MessageBox.Show("Done with data import at " + DateTime.Now.ToString("G"));
+
+            //update complete message
+            string Status = "Done with data import at " + DateTime.Now.ToString("G");
+            FormControls.UpdateToolStripItemLabel_Async(statusStrip_Main, Status);
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
