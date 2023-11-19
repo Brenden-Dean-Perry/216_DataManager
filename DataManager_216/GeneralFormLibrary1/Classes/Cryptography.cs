@@ -347,8 +347,8 @@ namespace GeneralFormLibrary1
         /// <param name="keySizeInBits">Specified key size in bits</param>
         public void GenerateKeys_RSA(int keySizeInBits)
         {
-            RSAConnection = null;
-            RSAConnection.Dispose();
+            //RSAConnection = null;
+            //RSAConnection.Dispose();
 
             RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
             try
@@ -418,7 +418,7 @@ namespace GeneralFormLibrary1
         public RSAParameters LoadKeyFromXMLFormat_RSA(string xml_key, bool includePrivateParamaters)
         {
             RSAConnection = null;
-            RSAConnection.Dispose();
+            //RSAConnection.Dispose();
             RSAConnection = new RSACryptoServiceProvider();
 
             try

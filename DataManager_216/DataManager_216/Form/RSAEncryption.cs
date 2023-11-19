@@ -56,5 +56,10 @@ namespace DataManager_216
             byte[] encryptedMessage = GeneralFormLibrary1.Cryptography.ConvertHexadecimalStringToByteArray(tb_RSA_CipherText.Text);
             tb_RSA_DecryptedMessage.Text = GeneralFormLibrary1.Cryptography.ConvertByteArrayToString(GeneralFormLibrary1.Cryptography.RSADecrypt(encryptedMessage, _privateKey, false));
         }
+
+        private void frmRSAEncryption_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

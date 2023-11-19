@@ -47,9 +47,10 @@ namespace DataManager_216
             // 
             // btn_RSA_GenerateKeys
             // 
-            this.btn_RSA_GenerateKeys.Location = new System.Drawing.Point(875, 863);
+            this.btn_RSA_GenerateKeys.Location = new System.Drawing.Point(1750, 1672);
+            this.btn_RSA_GenerateKeys.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_RSA_GenerateKeys.Name = "btn_RSA_GenerateKeys";
-            this.btn_RSA_GenerateKeys.Size = new System.Drawing.Size(138, 37);
+            this.btn_RSA_GenerateKeys.Size = new System.Drawing.Size(276, 72);
             this.btn_RSA_GenerateKeys.TabIndex = 0;
             this.btn_RSA_GenerateKeys.Text = "Generate Keys";
             this.btn_RSA_GenerateKeys.UseVisualStyleBackColor = true;
@@ -59,20 +60,22 @@ namespace DataManager_216
             // 
             this.tb_RSA_PublicKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.tb_RSA_PublicKey.ForeColor = System.Drawing.Color.White;
-            this.tb_RSA_PublicKey.Location = new System.Drawing.Point(223, 42);
+            this.tb_RSA_PublicKey.Location = new System.Drawing.Point(446, 81);
+            this.tb_RSA_PublicKey.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tb_RSA_PublicKey.Multiline = true;
             this.tb_RSA_PublicKey.Name = "tb_RSA_PublicKey";
-            this.tb_RSA_PublicKey.Size = new System.Drawing.Size(1235, 240);
+            this.tb_RSA_PublicKey.Size = new System.Drawing.Size(2466, 461);
             this.tb_RSA_PublicKey.TabIndex = 1;
             // 
             // tb_RSA_PrivateKey
             // 
             this.tb_RSA_PrivateKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.tb_RSA_PrivateKey.ForeColor = System.Drawing.Color.White;
-            this.tb_RSA_PrivateKey.Location = new System.Drawing.Point(223, 300);
+            this.tb_RSA_PrivateKey.Location = new System.Drawing.Point(446, 581);
+            this.tb_RSA_PrivateKey.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tb_RSA_PrivateKey.Multiline = true;
             this.tb_RSA_PrivateKey.Name = "tb_RSA_PrivateKey";
-            this.tb_RSA_PrivateKey.Size = new System.Drawing.Size(1235, 240);
+            this.tb_RSA_PrivateKey.Size = new System.Drawing.Size(2466, 461);
             this.tb_RSA_PrivateKey.TabIndex = 2;
             // 
             // label3
@@ -80,10 +83,10 @@ namespace DataManager_216
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(26, 56);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(52, 108);
+            this.label3.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(91, 19);
+            this.label3.Size = new System.Drawing.Size(183, 40);
             this.label3.TabIndex = 4;
             this.label3.Text = "Public Key:";
             // 
@@ -92,18 +95,19 @@ namespace DataManager_216
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(26, 314);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(52, 608);
+            this.label1.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 19);
+            this.label1.Size = new System.Drawing.Size(195, 40);
             this.label1.TabIndex = 5;
             this.label1.Text = "Private Key:";
             // 
             // btn_RSA_LoadKeys
             // 
-            this.btn_RSA_LoadKeys.Location = new System.Drawing.Point(1019, 863);
+            this.btn_RSA_LoadKeys.Location = new System.Drawing.Point(2038, 1672);
+            this.btn_RSA_LoadKeys.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_RSA_LoadKeys.Name = "btn_RSA_LoadKeys";
-            this.btn_RSA_LoadKeys.Size = new System.Drawing.Size(138, 37);
+            this.btn_RSA_LoadKeys.Size = new System.Drawing.Size(276, 72);
             this.btn_RSA_LoadKeys.TabIndex = 6;
             this.btn_RSA_LoadKeys.Text = "Load Keys";
             this.btn_RSA_LoadKeys.UseVisualStyleBackColor = true;
@@ -113,10 +117,11 @@ namespace DataManager_216
             // 
             this.tb_RSA_Message.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.tb_RSA_Message.ForeColor = System.Drawing.Color.White;
-            this.tb_RSA_Message.Location = new System.Drawing.Point(223, 546);
+            this.tb_RSA_Message.Location = new System.Drawing.Point(446, 1058);
+            this.tb_RSA_Message.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tb_RSA_Message.Multiline = true;
             this.tb_RSA_Message.Name = "tb_RSA_Message";
-            this.tb_RSA_Message.Size = new System.Drawing.Size(1235, 89);
+            this.tb_RSA_Message.Size = new System.Drawing.Size(2466, 169);
             this.tb_RSA_Message.TabIndex = 7;
             // 
             // label2
@@ -124,10 +129,10 @@ namespace DataManager_216
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(26, 556);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(52, 1077);
+            this.label2.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 19);
+            this.label2.Size = new System.Drawing.Size(158, 40);
             this.label2.TabIndex = 8;
             this.label2.Text = "Message:";
             // 
@@ -136,10 +141,10 @@ namespace DataManager_216
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(26, 651);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(52, 1261);
+            this.label4.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(160, 19);
+            this.label4.Size = new System.Drawing.Size(318, 40);
             this.label4.TabIndex = 10;
             this.label4.Text = "Encrypted Message:";
             // 
@@ -147,20 +152,22 @@ namespace DataManager_216
             // 
             this.tb_RSA_CipherText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.tb_RSA_CipherText.ForeColor = System.Drawing.Color.White;
-            this.tb_RSA_CipherText.Location = new System.Drawing.Point(223, 641);
+            this.tb_RSA_CipherText.Location = new System.Drawing.Point(446, 1242);
+            this.tb_RSA_CipherText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tb_RSA_CipherText.Multiline = true;
             this.tb_RSA_CipherText.Name = "tb_RSA_CipherText";
-            this.tb_RSA_CipherText.Size = new System.Drawing.Size(1235, 89);
+            this.tb_RSA_CipherText.Size = new System.Drawing.Size(2466, 169);
             this.tb_RSA_CipherText.TabIndex = 9;
             // 
             // tb_RSA_DecryptedMessage
             // 
             this.tb_RSA_DecryptedMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.tb_RSA_DecryptedMessage.ForeColor = System.Drawing.Color.White;
-            this.tb_RSA_DecryptedMessage.Location = new System.Drawing.Point(223, 736);
+            this.tb_RSA_DecryptedMessage.Location = new System.Drawing.Point(446, 1426);
+            this.tb_RSA_DecryptedMessage.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tb_RSA_DecryptedMessage.Multiline = true;
             this.tb_RSA_DecryptedMessage.Name = "tb_RSA_DecryptedMessage";
-            this.tb_RSA_DecryptedMessage.Size = new System.Drawing.Size(1235, 89);
+            this.tb_RSA_DecryptedMessage.Size = new System.Drawing.Size(2466, 169);
             this.tb_RSA_DecryptedMessage.TabIndex = 11;
             // 
             // label5
@@ -168,18 +175,19 @@ namespace DataManager_216
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(26, 737);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(52, 1428);
+            this.label5.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(162, 19);
+            this.label5.Size = new System.Drawing.Size(323, 40);
             this.label5.TabIndex = 12;
             this.label5.Text = "Decrypted Message:";
             // 
             // btn_RSA_Encrypt
             // 
-            this.btn_RSA_Encrypt.Location = new System.Drawing.Point(1163, 863);
+            this.btn_RSA_Encrypt.Location = new System.Drawing.Point(2326, 1672);
+            this.btn_RSA_Encrypt.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_RSA_Encrypt.Name = "btn_RSA_Encrypt";
-            this.btn_RSA_Encrypt.Size = new System.Drawing.Size(138, 37);
+            this.btn_RSA_Encrypt.Size = new System.Drawing.Size(276, 72);
             this.btn_RSA_Encrypt.TabIndex = 13;
             this.btn_RSA_Encrypt.Text = "Encrypt";
             this.btn_RSA_Encrypt.UseVisualStyleBackColor = true;
@@ -187,9 +195,10 @@ namespace DataManager_216
             // 
             // btn_RSA_Decrypt
             // 
-            this.btn_RSA_Decrypt.Location = new System.Drawing.Point(1307, 863);
+            this.btn_RSA_Decrypt.Location = new System.Drawing.Point(2614, 1672);
+            this.btn_RSA_Decrypt.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btn_RSA_Decrypt.Name = "btn_RSA_Decrypt";
-            this.btn_RSA_Decrypt.Size = new System.Drawing.Size(138, 37);
+            this.btn_RSA_Decrypt.Size = new System.Drawing.Size(276, 72);
             this.btn_RSA_Decrypt.TabIndex = 14;
             this.btn_RSA_Decrypt.Text = "Decrypt";
             this.btn_RSA_Decrypt.UseVisualStyleBackColor = true;
@@ -197,10 +206,10 @@ namespace DataManager_216
             // 
             // frmRSAEncryption
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.ClientSize = new System.Drawing.Size(1480, 934);
+            this.ClientSize = new System.Drawing.Size(2960, 1810);
             this.Controls.Add(this.btn_RSA_Decrypt);
             this.Controls.Add(this.btn_RSA_Encrypt);
             this.Controls.Add(this.label5);
@@ -215,8 +224,10 @@ namespace DataManager_216
             this.Controls.Add(this.tb_RSA_PrivateKey);
             this.Controls.Add(this.tb_RSA_PublicKey);
             this.Controls.Add(this.btn_RSA_GenerateKeys);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "frmRSAEncryption";
             this.Text = "RSAEncryption";
+            this.Load += new System.EventHandler(this.frmRSAEncryption_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
