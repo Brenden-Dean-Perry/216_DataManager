@@ -19,15 +19,19 @@ namespace GeneralFormLibrary1
 
         public enum Frequency
         {
+            Intraday,
             Daily,
+            Weekly,
             Monthly,
-            Quarterly
+            Quarterly,
+            Other
         }
 
-        public async void GetDataFromActiveJobs(Frequency frequency, StatusStrip statusStrip)
+        public async Task GetDataFromActiveJobs(Frequency frequency, StatusStrip statusStrip)
         {
 
             DateTime dateTime = DateTime.Today;
+            string JobTypeName = Enum.GetName(typeof(Frequency), frequency);
 
             DataAccess<DataModels.Model_DataImportJob> dataAccess = new DataAccess<DataModels.Model_DataImportJob>(DBcredentials);
             List<DataModels.Model_DataImportJob> ImportJobs = await dataAccess.GetAll();
@@ -38,10 +42,38 @@ namespace GeneralFormLibrary1
             DataAccess<DataModels.Model_SecurityPriceType> dataAccess3 = new DataAccess<DataModels.Model_SecurityPriceType>(DBcredentials);
             List<DataModels.Model_SecurityPriceType> secPriceTypes = await dataAccess3.GetAll();
             int count = 0;
-            foreach (DataModels.Model_DataImportJob job in ImportJobs)
+
+            //Get list to run
+            List<DataModels.Model_DataImportJob> importJobsToRun = new List<Model_DataImportJob>();
+            if (frequency == Frequency.Intraday)
+            {
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 4).ToList();
+            }
+            else if (frequency == Frequency.Daily)
+            {
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 1).ToList();
+            }
+            else if (frequency == Frequency.Weekly)
+            {
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 2).ToList();
+            }
+            else if (frequency == Frequency.Monthly)
+            {
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 3).ToList();
+            }
+            else if (frequency == Frequency.Quarterly)
+            {
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId == 5).ToList();
+            }
+            else if (frequency == Frequency.Other)
+            {
+                importJobsToRun = (List<DataModels.Model_DataImportJob>)ImportJobs.Where(x => x.DataImportOccuranceTypeId >= 6).ToList();
+            }
+
+            foreach (DataModels.Model_DataImportJob job in importJobsToRun)
             {
                 count++;
-                string Status = "Running Job: " + count.ToString() + " of " + ImportJobs.Count();
+                string Status = "Running " +  JobTypeName + " Job: " + count.ToString() + " of " + importJobsToRun.Count();
                 FormControls.UpdateToolStripItemLabel_Async(statusStrip, Status);
                 bool jobSuccessfullyRun = false;
                 int DataJobImportJobTypeId = job.DataImportJobTypeId;
@@ -109,8 +141,6 @@ namespace GeneralFormLibrary1
                     
                 } 
             }
-
-            MessageBox.Show("Done");
         }
 
         private async Task<int> UploadAlphaVantageDailyData(DateTime dateTime, int SecurityId, Model_DataImportJobType jobType, string APIQuery, string ObjectHeaderString, string ExtraKeyEndingString = null)
@@ -281,8 +311,8 @@ namespace GeneralFormLibrary1
             //Report securities that need to be updated
             if (finalSecPricesForUpdate.Count > 0)
             {
-                ExcelAPI excel = new ExcelAPI();
-                excel.ExportDataToSheet<Model_SecurityPrice>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
+                //ExcelAPI excel = new ExcelAPI();
+                //excel.ExportDataToSheet<Model_SecurityPrice>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
                 DataAccess<DataModels.Model_SecurityPrice> daSecSplits = new DataAccess<DataModels.Model_SecurityPrice>(DBcredentials);
                 await daSecSplits.Update(finalSecPricesForUpdate, 2200);
             }
@@ -402,8 +432,8 @@ namespace GeneralFormLibrary1
             //Report securities that need to be updated
             if (finalSecPricesForUpdate.Count > 0)
             {
-                ExcelAPI excel = new ExcelAPI();
-                excel.ExportDataToSheet<Model_SecurityPriceIntraday>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
+                //ExcelAPI excel = new ExcelAPI();
+                //excel.ExportDataToSheet<Model_SecurityPriceIntraday>(finalSecPricesForUpdate, true, FileName: "PricesToUpdate");
                 DataAccess<DataModels.Model_SecurityPriceIntraday> daSecPrice = new DataAccess<DataModels.Model_SecurityPriceIntraday>(DBcredentials);
                 await daSecPrice.Update(finalSecPricesForUpdate, 2400);
             }

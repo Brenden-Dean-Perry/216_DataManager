@@ -163,21 +163,43 @@ namespace DataManager_216
             MessageBox.Show("end");
         }
 
-        private void dataCollectorToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void dataCollectorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            GeneralFormLibrary1.Email.SendEmail("perry470063@gmail.com", "Data Import - Started at " + DateTime.Now.ToString("G") , "Data Import Started");
             //System.Timers.Timer aTimer = new System.Timers.Timer();
             //aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             //aTimer.Interval = 30000000;
             //aTimer.Enabled = true;
             //aTimer.Start();
-            OnTimedEvent(this, null);
+            try
+            {
+                await OnTimedEvent(this, null);
+            }
+            catch
+            {
+                dataCollectorToolStripMenuItem_Click(sender, e);
+                return;
+            }
+            
+            //Send success message
+            GeneralFormLibrary1.Email.SendEmail("perry470063@gmail.com", "Data Import - Completed at " + DateTime.Now.ToString("G"), "Data Import Completed!");
+ 
         }
 
 
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        private async Task OnTimedEvent(object source, ElapsedEventArgs e)
         {
             DataCollector dataCollector = new DataCollector(GlobalAppProperties.GetCredentials());
-            dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Intraday, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Daily, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Weekly, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Monthly, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Quarterly, statusStrip_Main);
+            await dataCollector.GetDataFromActiveJobs(DataCollector.Frequency.Other, statusStrip_Main);
+
+            //update complete message
+            string Status = "Done with data import at " + DateTime.Now.ToString("G");
+            FormControls.UpdateToolStripItemLabel_Async(statusStrip_Main, Status);
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
